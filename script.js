@@ -6,7 +6,7 @@ const gameover = new Audio('sounds/gameover.mp3');
 const step = new Audio('sounds/step.mp3');
 const restart = new Audio('sounds/restart.mp3');
 
-let autoPlayEnabled = true; // This is the flag
+let autoPlayEnabled = false; // This is the flag
 
 let level = 1;
 let score = 0;
@@ -391,13 +391,11 @@ document.getElementById('restartButton').addEventListener('click', () => {
 
 // --- 
 
+let intervalID;
+
 function playAutomatically(player, zombies) {
-    let interval = getRandomInt(150, 300); // Random interval between 150ms to 300ms
-    let intervalID;
-
-    intervalID = setInterval(function() {
-
-        // If the game loop is not running don't try to move the player
+    function gameLogic() {
+        // If the game loop is not running, don't try to move the player
         if (!gameLoopRunning) {
             clearInterval(intervalID);
             return;
@@ -421,28 +419,27 @@ function playAutomatically(player, zombies) {
 
         console.log(`Nearest zombie is at (${nearestZombie.x}, ${nearestZombie.y}) with distance: ${nearestDistance}`);
 
-        let dx = player.x - nearestZombie.x;
-        let dy = player.y - nearestZombie.y;
-        let direction = "";
+    // Calculate new interval based on nearestDistance
+    let newInterval = Math.max(150, nearestDistance); // Assuming nearestDistance is in a reasonable range
 
-        if (Math.abs(dx) > Math.abs(dy)) {
-            if (dx > 0) {
-                direction = 'right';
-            } else {
-                direction = 'left';
-            }
-        } else {
-            if (dy > 0) {
-                direction = 'down';
-            } else {
-                direction = 'up';
-            }
-        }
+    clearInterval(intervalID);
+    intervalID = setInterval(gameLogic, newInterval);
+
+    let dx = player.x - nearestZombie.x;
+    let dy = player.y - nearestZombie.y;
+    let direction = "";
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+        direction = dx > 0 ? 'right' : 'left';
+    } else {
+        direction = dy > 0 ? 'down' : 'up';
+    }
 
         console.log(`Moving player ${direction}`);
         player.move(direction);
+    }
 
-    }, interval);
+    intervalID = setInterval(gameLogic, getRandomInt(150, 300));
 }
 
 function distance(x1, y1, x2, y2) {
