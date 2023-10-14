@@ -256,10 +256,35 @@ function checkCollisions() {
     return false;  // No collision
 }
 
+function generateQRCode(data) {
+
+    // Clear the element
+    document.getElementById("qrcode").innerHTML = "";
+
+    // Create QR Code
+    const qr = new QRCode(document.getElementById("qrcode"), {
+        text: data,
+        width: 128,
+        height: 128,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+}
+
 function playSound(audioElement) {
     let sound = audioElement.cloneNode(true);
     sound.play();
 }
+
+async function sendScoreAndGenerateQR(score) {
+
+    // TODO
+    // Send score to the server
+
+    // Generate a QR code with the hashed value
+    generateQRCode(score);
+  }
 
 function update() {
 
@@ -291,6 +316,7 @@ function update() {
     if (checkCollisions()) {
         playSound(gameover);
         document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
+        sendScoreAndGenerateQR(score);
         document.getElementById('gameOverModal').style.display = 'flex';
         gameLoopRunning = false;
         return;  // End the game loop by not calling requestAnimationFrame
