@@ -6,6 +6,8 @@ const gameover = new Audio('sounds/gameover.mp3');
 const step = new Audio('sounds/step.mp3');
 const restart = new Audio('sounds/restart.mp3');
 
+let autoPlayEnabled = true; // This is the flag
+
 let level = 1;
 let score = 0;
 
@@ -307,8 +309,7 @@ function update() {
         zombie.moveTowards(player);
         zombie.draw(ctx);
     }
-
-    //player.move();
+    
     player.draw(ctx);
 	drawScore();
     drawLevel();
@@ -358,6 +359,9 @@ function startGame() {
     setupPits();
     setupZombies();
     update(); // Start the game loop
+    if (autoPlayEnabled) {
+        playAutomatically(player, zombies);
+    }
 }
 
 // Listen for the first keypress to hide the modal and start the game
@@ -380,4 +384,73 @@ document.getElementById('restartButton').addEventListener('click', () => {
 
     // Start the game loop again
     update();
+    if (autoPlayEnabled) {
+        playAutomatically(player, zombies);
+    }
 });
+
+// --- 
+
+function playAutomatically(player, zombies) {
+    let interval = getRandomInt(150, 300); // Random interval between 150ms to 300ms
+    let intervalID;
+
+    intervalID = setInterval(function() {
+
+        // If the game loop is not running don't try to move the player
+        if (!gameLoopRunning) {
+            clearInterval(intervalID);
+            return;
+        }
+
+        if (zombies.length === 0) {
+            console.log("No zombies to run from.");
+            return; // No zombies to run from
+        }
+
+        let nearestZombie = zombies[0];
+        let nearestDistance = distance(player.x, player.y, zombies[0].x, zombies[0].y);
+
+        for (const zombie of zombies) {
+            const currentDistance = distance(player.x, player.y, zombie.x, zombie.y);
+            if (currentDistance < nearestDistance) {
+                nearestDistance = currentDistance;
+                nearestZombie = zombie;
+            }
+        }
+
+        console.log(`Nearest zombie is at (${nearestZombie.x}, ${nearestZombie.y}) with distance: ${nearestDistance}`);
+
+        let dx = player.x - nearestZombie.x;
+        let dy = player.y - nearestZombie.y;
+        let direction = "";
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            if (dx > 0) {
+                direction = 'right';
+            } else {
+                direction = 'left';
+            }
+        } else {
+            if (dy > 0) {
+                direction = 'down';
+            } else {
+                direction = 'up';
+            }
+        }
+
+        console.log(`Moving player ${direction}`);
+        player.move(direction);
+
+    }, interval);
+}
+
+function distance(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
