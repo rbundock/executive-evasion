@@ -28,14 +28,24 @@ class Player {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.stepSize = 50;  // Set the step size (adjust as needed)
+        this.stepSize = 20;  // Set the step size (adjust as needed)
     }
     
-    move() {
-        if (keys.ArrowLeft) this.x -= 5;
-        if (keys.ArrowRight) this.x += 5;
-        if (keys.ArrowUp) this.y -= 5;
-        if (keys.ArrowDown) this.y += 5;
+    move(direction) {
+        switch(direction) {
+            case 'left':
+                this.x = Math.max(0, this.x - this.stepSize);
+                break;
+            case 'right':
+                this.x = Math.min(canvas.width - 20, this.x + this.stepSize);
+                break;
+            case 'up':
+                this.y = Math.max(0, this.y - this.stepSize);
+                break;
+            case 'down':
+                this.y = Math.min(canvas.height - 20, this.y + this.stepSize);
+                break;
+        }
     }
 
     draw(ctx) {
@@ -201,7 +211,20 @@ function update() {
 }
 
 window.addEventListener('keydown', (e) => {
-    keys[e.code] = true;
+    switch(e.code) {
+        case 'ArrowLeft':
+            player.move('left');
+            break;
+        case 'ArrowRight':
+            player.move('right');
+            break;
+        case 'ArrowUp':
+            player.move('up');
+            break;
+        case 'ArrowDown':
+            player.move('down');
+            break;
+    }
 });
 
 window.addEventListener('keyup', (e) => {
