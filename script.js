@@ -28,7 +28,7 @@ class Player {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.stepSize = 2;  // Set the step size (adjust as needed)
+        this.stepSize = 20;  // Set the step size (adjust as needed)
     }
     
     move(direction) {
