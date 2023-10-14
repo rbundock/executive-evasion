@@ -1,6 +1,11 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+const fallen = new Audio('sounds/fallen.mp3');
+const gameover = new Audio('sounds/gameover.mp3');
+const step = new Audio('sounds/step.mp3');
+const restart = new Audio('sounds/restart.mp3');
+
 let level = 1;
 let score = 0;
 
@@ -28,7 +33,7 @@ class Player {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.stepSize = 20;  // Set the step size (adjust as needed)
+        this.stepSize = 19;  // Set the step size (adjust as needed)
     }
     
     move(direction) {
@@ -94,6 +99,12 @@ function drawScore() {
     ctx.fillStyle = 'black';
     ctx.font = '24px Arial';
     ctx.fillText('Score: ' + score, 10, 30);
+}
+
+function drawLevel() {
+    ctx.fillStyle = 'black';
+    ctx.font = '24px Arial';
+    ctx.fillText('Level: ' + level, 10, 60);  // Positioning it below the score
 }
 
 function setupPits() {
@@ -184,6 +195,7 @@ function checkCollisions() {
             ) {
                 inPit = true;
                 score++;  // Increase the score when a zombie falls into a pit
+                fallen.play();
                 break;
             }
         }
@@ -199,6 +211,7 @@ function checkCollisions() {
 function update() {
 
     if (zombies.length === 0) {  // All zombies have been removed
+        
         level++;  // Increase the level
         setupPits(); 
         setupZombies();  // Restart the game with more zombies
@@ -218,8 +231,10 @@ function update() {
     player.move();
     player.draw(ctx);
 	drawScore();
+    drawLevel();
 
     if (checkCollisions()) {
+        gameover.play();
         alert('Game Over!');
         return;  // End the game loop by not calling requestAnimationFrame
     }
