@@ -37,6 +37,7 @@ class Player {
     }
     
     move(direction) {
+        step.play();
         switch(direction) {
             case 'left':
                 this.x = Math.max(0, this.x - this.stepSize);
@@ -205,6 +206,8 @@ function checkCollisions() {
     }
     zombies = newZombies;
 
+
+    
     return false;  // No collision
 }
 
@@ -228,14 +231,15 @@ function update() {
         zombie.draw(ctx);
     }
 
-    player.move();
+    //player.move();
     player.draw(ctx);
 	drawScore();
     drawLevel();
 
     if (checkCollisions()) {
         gameover.play();
-        alert('Game Over!');
+        document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
+        document.getElementById('gameOverModal').style.display = 'flex';
         return;  // End the game loop by not calling requestAnimationFrame
     }
 
@@ -263,6 +267,29 @@ window.addEventListener('keyup', (e) => {
     keys[e.code] = false;
 });
 
-setupPits();
-setupZombies();
-update();  // Start the game loop
+function startGame() {
+    document.getElementById('startModal').style.display = 'none';
+    setupPits();
+    setupZombies();
+    update(); // Start the game loop
+}
+
+// Listen for the first keypress to hide the modal and start the game
+window.addEventListener('keydown', function startKeyListener() {
+    startGame();
+    window.removeEventListener('keydown', startKeyListener); // Remove this listener to avoid calling startGame() again
+});
+
+document.getElementById('restartButton').addEventListener('click', () => {
+    // Reset the game state
+    level = 1;
+    score = 0;
+    setupPits();
+    setupZombies();
+    
+    // Hide the game over modal
+    document.getElementById('gameOverModal').style.display = 'none';
+
+    // Start the game loop again
+    update();
+});
