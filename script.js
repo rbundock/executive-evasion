@@ -98,10 +98,27 @@ function drawScore() {
 
 function setupPits() {
     pits = [];  // Clear any existing pits
-    for (let i = 0; i < 5; i++) {  // Create 5 pits
+    let attempts = 0;  // Variable to track the number of attempts to place a pit
+
+    while (pits.length < 5 && attempts < 1000) {  // Create 5 pits, with a limit on attempts to prevent an infinite loop
         let x = Math.random() * (canvas.width - 50);  // Random X position, ensuring pit fits within canvas
         let y = Math.random() * (canvas.height - 50);  // Random Y position, ensuring pit fits within canvas
-        pits.push(new Pit(x, y, 50, 50));
+
+        // Check for overlap with existing pits
+        let overlapping = false;
+        for (let pit of pits) {
+            let distance = Math.sqrt(Math.pow(pit.x - x, 2) + Math.pow(pit.y - y, 2));
+            if (distance < 50) {  // Assuming a pit width of 50, adjust as needed
+                overlapping = true;
+                break;
+            }
+        }
+
+        if (!overlapping) {
+            pits.push(new Pit(x, y, 50, 50));  // No overlap, so add the pit
+        }
+
+        attempts++;  // Increment the number of attempts
     }
 }
 
