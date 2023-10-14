@@ -37,7 +37,7 @@ class Player {
     }
     
     move(direction) {
-        step.play();
+        playSound(step);
         switch(direction) {
             case 'left':
                 this.x = Math.max(0, this.x - this.stepSize);
@@ -196,7 +196,7 @@ function checkCollisions() {
             ) {
                 inPit = true;
                 score++;  // Increase the score when a zombie falls into a pit
-                fallen.play();
+                playSound(fallen);
                 break;
             }
         }
@@ -205,10 +205,13 @@ function checkCollisions() {
         }
     }
     zombies = newZombies;
-
-
     
     return false;  // No collision
+}
+
+function playSound(audioElement) {
+    let sound = audioElement.cloneNode(true);
+    sound.play();
 }
 
 function update() {
@@ -237,7 +240,7 @@ function update() {
     drawLevel();
 
     if (checkCollisions()) {
-        gameover.play();
+        playSound(gameover);
         document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
         document.getElementById('gameOverModal').style.display = 'flex';
         return;  // End the game loop by not calling requestAnimationFrame
@@ -287,6 +290,8 @@ document.getElementById('restartButton').addEventListener('click', () => {
     setupPits();
     setupZombies();
     
+    playSound(restart);
+
     // Hide the game over modal
     document.getElementById('gameOverModal').style.display = 'none';
 
