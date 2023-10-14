@@ -19,6 +19,14 @@ let keys = {
     ArrowDown: false
 };
 
+let playerImage = new Image();
+playerImage.src = 'img/cto_1.png';  
+
+let pitImage = new Image();
+pitImage.src = 'img/meeting.png'; 
+
+let zombieImage = new Image();
+zombieImage.src = 'img/recruiter.png'; 
 
 // Set the canvas size
 canvas.width = window.innerWidth;
@@ -30,7 +38,21 @@ window.addEventListener('resize', () => {
 });
 
 class Player {
-    constructor(x, y) {
+    constructor() {
+        let safeSpawn = false;  // Flag to check if spawn location is safe
+        let x, y; // Declare the coordinates of the player
+
+        while (!safeSpawn) {
+            // Generate random coordinates within the canvas
+            x = Math.random() * canvas.width;
+            y = Math.random() * canvas.height;
+
+            // Check if this position overlaps with any pit or zombie
+            if (!overlapsEntity(x, y, pits, 100) && !overlapsEntity(x, y, zombies, 100)) {
+                safeSpawn = true;  // Found a safe spawn location
+            }
+        }
+
         this.x = x;
         this.y = y;
         this.stepSize = 19;  // Set the step size (adjust as needed)
@@ -57,6 +79,11 @@ class Player {
     draw(ctx) {
         ctx.fillStyle = 'blue';
         ctx.fillRect(this.x, this.y, 20, 20);
+
+        // Make sure the image is loaded before drawing
+        if (playerImage.complete) {
+            ctx.drawImage(playerImage, this.x, this.y, 80, 80);
+        }
     }
 }
 
@@ -71,6 +98,10 @@ class Pit {
     draw(ctx) {
         ctx.fillStyle = 'black';
         ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (pitImage.complete) {
+            ctx.drawImage(pitImage, this.x, this.y, this.width, this.height);
+        }
+
     }
 
 }
@@ -91,10 +122,16 @@ class Zombie {
     draw(ctx) {
         ctx.fillStyle = 'green';
         ctx.fillRect(this.x, this.y, 20, 20);
+
+        // Make sure the image is loaded before drawing
+        if (zombieImage.complete) {
+            ctx.drawImage(zombieImage, this.x, this.y, 80, 157);
+        }
     }
 }
 
-let player = new Player(50, 50);
+let player;
+let gameLoopRunning = false;
 
 function drawScore() {
     ctx.fillStyle = 'black';
@@ -108,26 +145,36 @@ function drawLevel() {
     ctx.fillText('Level: ' + level, 10, 60);  // Positioning it below the score
 }
 
+function overlapsEntity(x, y, entities, buffer) {
+    for (let entity of entities) {
+        let distance = Math.sqrt(Math.pow(entity.x - x, 2) + Math.pow(entity.y - y, 2));
+        if (distance < buffer) {  
+            return true;  // Overlap detected
+        }
+    }
+    return false;  // No overlap
+}
+
 function setupPits() {
     pits = [];  // Clear any existing pits
     let attempts = 0;  // Variable to track the number of attempts to place a pit
 
     while (pits.length < 5 && attempts < 1000) {  // Create 5 pits, with a limit on attempts to prevent an infinite loop
-        let x = Math.random() * (canvas.width - 50);  // Random X position, ensuring pit fits within canvas
-        let y = Math.random() * (canvas.height - 50);  // Random Y position, ensuring pit fits within canvas
+        let x = Math.random() * (canvas.width - 100);  // Random X position, ensuring pit fits within canvas
+        let y = Math.random() * (canvas.height - 100);  // Random Y position, ensuring pit fits within canvas
 
         // Check for overlap with existing pits
         let overlapping = false;
         for (let pit of pits) {
             let distance = Math.sqrt(Math.pow(pit.x - x, 2) + Math.pow(pit.y - y, 2));
-            if (distance < 50) {  // Assuming a pit width of 50, adjust as needed
+            if (distance < (pit.width*2)) {  // Twice the pit width, adjust as needed
                 overlapping = true;
                 break;
             }
         }
 
         if (!overlapping) {
-            pits.push(new Pit(x, y, 50, 50));  // No overlap, so add the pit
+            pits.push(new Pit(x, y, 100, 100));  // No overlap, so add the pit
         }
 
         attempts++;  // Increment the number of attempts
@@ -216,8 +263,10 @@ function playSound(audioElement) {
 
 function update() {
 
+    gameLoopRunning = true;
+
     if (zombies.length === 0) {  // All zombies have been removed
-        
+        playSound(restart);
         level++;  // Increase the level
         setupPits(); 
         setupZombies();  // Restart the game with more zombies
@@ -243,6 +292,7 @@ function update() {
         playSound(gameover);
         document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
         document.getElementById('gameOverModal').style.display = 'flex';
+        gameLoopRunning = false;
         return;  // End the game loop by not calling requestAnimationFrame
     }
 
@@ -250,6 +300,12 @@ function update() {
 }
 
 window.addEventListener('keydown', (e) => {
+    
+    // If the game loop is not running don't try to move the player
+    if (!gameLoopRunning) {
+        return;
+    }
+
     switch(e.code) {
         case 'ArrowLeft':
             player.move('left');
@@ -271,6 +327,7 @@ window.addEventListener('keyup', (e) => {
 });
 
 function startGame() {
+    player = new Player(); // Initialize player with random safe location
     document.getElementById('startModal').style.display = 'none';
     setupPits();
     setupZombies();
