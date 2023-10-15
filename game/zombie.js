@@ -22,6 +22,44 @@ class Zombie {
     }
 }
 
+// Function to spawn a single zombie based on player coordinates
+function spawnZombie(playerX, playerY) {
+    // Determine canvas edges
+    let topEdge = 0;
+    let bottomEdge = canvas.height;
+    let leftEdge = 0;
+    let rightEdge = canvas.width;
+
+    let x, y;
+
+    // Calculate distance to each edge from the player
+    let distToTop = Math.abs(playerY - topEdge);
+    let distToBottom = Math.abs(bottomEdge - playerY);
+    let distToLeft = Math.abs(playerX - leftEdge);
+    let distToRight = Math.abs(rightEdge - playerX);
+
+    // Determine the closest edge
+    let closestEdge = Math.min(distToTop, distToBottom, distToLeft, distToRight);
+    
+    // Determine spawn coordinates based on the closest edge
+    if (closestEdge === distToTop) {
+        y = topEdge - 20;  // Spawn above the canvas
+        x = playerX;
+    } else if (closestEdge === distToBottom) {
+        y = bottomEdge + 20;  // Spawn below the canvas
+        x = playerX;
+    } else if (closestEdge === distToLeft) {
+        x = leftEdge - 20;  // Spawn to the left of the canvas
+        y = playerY;
+    } else {
+        x = rightEdge + 20;  // Spawn to the right of the canvas
+        y = playerY;
+    }
+
+    // Create new Zombie and add to zombies array
+    zombies.push(new Zombie(x, y));
+}
+
 function setupZombies() {
     zombies = [];  // Clear any existing zombies
     for (let i = 0; i < 6 + level; i++) {  // Spawn 6 zombies plus additional zombies based on the level

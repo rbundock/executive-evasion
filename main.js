@@ -185,6 +185,7 @@ function checkCollisions() {
                 inPit = true;
                 score++;  // Increase the score when a zombie falls into a pit
                 playSound(fallen);
+                spawnZombie(player.x, player.y);  // Create another zombie
                 break;
             }
         }
