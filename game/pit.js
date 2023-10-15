@@ -17,13 +17,19 @@ class Pit {
 
 }
 
-function setupPits() {
+function setupPits(totalRequired) {
     pits = [];  // Clear any existing pits
     let attempts = 0;  // Variable to track the number of attempts to place a pit
+    let borderSize = 300;
 
-    while (pits.length < 5 && attempts < 1000) {  // Create 5 pits, with a limit on attempts to prevent an infinite loop
-        let x = Math.random() * (canvas.width - 100);  // Random X position, ensuring pit fits within canvas
-        let y = Math.random() * (canvas.height - 100);  // Random Y position, ensuring pit fits within canvas
+    console.log("totalRequired" + totalRequired);
+
+    while (pits.length < totalRequired && attempts < 1000) {  // Create pits, with a limit on attempts to prevent an infinite loop
+        let x = Math.random() * (canvas.width - borderSize) + (borderSize/2);  // Random X position, ensuring pit fits within canvas
+        let y = Math.random() * (canvas.height - borderSize) + (borderSize/2);  // Random Y position, ensuring pit fits within canvas
+
+        console.log("x:" + x);
+        console.log("y:" + y);
 
         // Check for overlap with existing pits
         let overlapping = false;
@@ -31,6 +37,7 @@ function setupPits() {
             let distance = Math.sqrt(Math.pow(pit.x - x, 2) + Math.pow(pit.y - y, 2));
             if (distance < (pit.width*2)) {  // Twice the pit width, adjust as needed
                 overlapping = true;
+                console.log("overlapping pit!")
                 break;
             }
         }

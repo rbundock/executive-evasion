@@ -37,6 +37,7 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
+let zombieSpeed = 1.8;
 
 let gameLoopRunning = false;
 
@@ -44,12 +45,13 @@ function gameLoop() {
 
     gameLoopRunning = true;
 
+    // RESTART
     if (zombies.length === 0) {  // All zombies have been removed
         playSound(restart);
         level++;  // Increase the level
-        setupPits(); 
-        setupZombies();  // Restart the game with more zombies
-        setupTreasure();
+        zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
+
+        resetGame();
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -99,8 +101,6 @@ window.addEventListener('keydown', (e) => {
         return;
     }
 
-    console.log(e.code);
-
     switch(e.code) {
         case 'ArrowLeft':
             player.move('left');
@@ -122,16 +122,32 @@ window.addEventListener('keyup', (e) => {
 });
 
 function startGame() {
-    player = new Player(); // Initialize player with random safe location
+
     document.getElementById('startModal').style.display = 'none';
-    setupPits(); 
-    setupZombies();
-    setupTreasure();
+
+    // Reinitialise
+    zombieSpeed = 1 // Reset Zombie speed
+
+    // Reset Game
+    resetGame();
+    player = new Player(); // Initialize player with random safe location
+
     //playSound(restart);
     gameLoop(); // Start the game loop
     if (autoPlayEnabled) {
         playAI(player, zombies, pit);
     }
+}
+
+function resetGame() {
+
+    // TOOD: Make sure Zombies/Pits don't spawn on/near player
+    setupPits(5); 
+    setupZombies();
+    setupTreasure();
+
+    console.log("ZOMBIE SPEED: " + zombieSpeed);
+
 }
 
 function checkCollisions() {

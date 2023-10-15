@@ -2,7 +2,7 @@ class Zombie {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.speed = 1;  // Adjust speed as needed
+        this.speed = zombieSpeed;  // Adjust speed as needed
     }
 
     moveTowards(player) {
@@ -54,7 +54,7 @@ function spawnZombie() {
 
 function setupZombies() {
     zombies = [];  // Clear any existing zombies
-    for (let i = 0; i < 6 + level; i++) {  // Spawn 6 zombies plus additional zombies based on the level
+    for (let i = 0; i < 6 + (level * 2 ); i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
             x = Math.random() * canvas.width;
