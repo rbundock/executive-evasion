@@ -83,9 +83,9 @@ function gameLoop() {
    if (shouldSpawnTreasure()) {
         // Only spawn one
         if (treasures.length === 0) {
-            console.log("CONSTRUCT");
             const newTreasure = new Treasure();
             treasures.push(newTreasure);
+            treasure_spawn.play();
         }
    }
 
