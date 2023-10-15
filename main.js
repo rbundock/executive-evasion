@@ -125,7 +125,7 @@ function startGame() {
     setupPits(); 
     setupZombies();
     setupTreasure();
-    playSound(restart);
+    //playSound(restart);
     gameLoop(); // Start the game loop
     if (autoPlayEnabled) {
         playAI(player, zombies, pit);
