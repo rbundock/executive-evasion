@@ -44,6 +44,7 @@ let gameLoopRunning = false;
 function gameLoop() {
 
     gameLoopRunning = true;
+    canvas.style.cursor = 'none';
 
     // RESTART
     if (zombies.length === 0) {  // All zombies have been removed
@@ -79,6 +80,7 @@ function gameLoop() {
         sendScoreAndGenerateQR(score);
         document.getElementById('gameOverModal').style.display = 'flex';
         gameLoopRunning = false;
+        canvas.style.cursor = 'auto';
         return;  // End the game loop by not calling requestAnimationFrame
     }
 

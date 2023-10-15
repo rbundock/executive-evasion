@@ -20,6 +20,7 @@ class Pit {
 function setupPits(totalRequired) {
     pits = [];  // Clear any existing pits
     let attempts = 0;  // Variable to track the number of attempts to place a pit
+    let minDistanceFromPlayer = 100;
     let borderSize = 300;
 
     console.log("totalRequired" + totalRequired);
@@ -43,11 +44,22 @@ function setupPits(totalRequired) {
         }
 
         if (!overlapping) {
-            pits.push(new Pit(x, y, 100, 100));  // No overlap, so add the pit
+            // Just check we aren't spawning on the player if this is a new level
+            if (isValidPitSpawnPoint(x, y, minDistanceFromPlayer)) {
+                pits.push(new Pit(x, y, 100, 100));   // No overlap, so add the pit
+            }
         }
 
         attempts++;  // Increment the number of attempts
     }
+}
+
+function isValidPitSpawnPoint(x, y, minDistance) {
+    console.log("isValidPitSpawnPoint: " + minDistance);
+    if (!player) return true;  // If player is undefined, skip the check
+    const distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
+    console.log("distance: " + distance);
+    return distance >= minDistance;
 }
 
 function overlapsPit(x, y, width, height) {

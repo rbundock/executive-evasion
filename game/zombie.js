@@ -54,12 +54,22 @@ function spawnZombie() {
 
 function setupZombies() {
     zombies = [];  // Clear any existing zombies
-    for (let i = 0; i < 6 + (level * 2 ); i++) {  // Spawn 6 zombies plus additional zombies based on the level
+    const minDistanceFromPlayer = 100;  // Set minimum distance from player
+    for (let i = 0; i < 6 + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
             x = Math.random() * canvas.width;
             y = Math.random() * canvas.height;
-        } while (overlapsPit(x, y, 20, 20));  // Repeat until a position not overlapping a pit is found
+        } while (
+            overlapsPit(x, y, 20, 20) || 
+            (player && !isValidSpawnPoint(x, y, minDistanceFromPlayer))  // Skip the check if player is undefined
+        );  
+        // Repeat until a position not overlapping a pit and far enough from the player is found
         zombies.push(new Zombie(x, y));
     }
+}
+
+function isValidSpawnPoint(x, y, minDistance) {
+    const distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
+    return distance >= minDistance;
 }
