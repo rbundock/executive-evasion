@@ -17,7 +17,7 @@ class Zombie {
 
         // Make sure the image is loaded before drawing
         if (zombieImage.complete) {
-            ctx.drawImage(zombieImage, this.x, this.y, 80, 157);
+            ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
         }
     }
 }

@@ -99,6 +99,8 @@ window.addEventListener('keydown', (e) => {
         return;
     }
 
+    console.log(e.code);
+
     switch(e.code) {
         case 'ArrowLeft':
             player.move('left');
@@ -185,7 +187,7 @@ function checkCollisions() {
                 inPit = true;
                 score++;  // Increase the score when a zombie falls into a pit
                 playSound(fallen);
-                spawnZombie(player.x, player.y);  // Create another zombie
+                //spawnZombie(player.x, player.y);  // Create another zombie
                 break;
             }
         }
