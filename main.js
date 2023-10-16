@@ -103,19 +103,23 @@ window.addEventListener('keydown', (e) => {
         return;
     }
 
-    switch(e.code) {
-        case 'ArrowLeft':
-            player.move('left');
-            break;
-        case 'ArrowRight':
-            player.move('right');
-            break;
-        case 'ArrowUp':
-            player.move('up');
-            break;
-        case 'ArrowDown':
-            player.move('down');
-            break;
+    if (!keys[e.code]) {
+        keys[e.code] = true;
+
+        switch(e.code) {
+            case 'ArrowLeft':
+                player.move('left');
+                break;
+            case 'ArrowRight':
+                player.move('right');
+                break;
+            case 'ArrowUp':
+                player.move('up');
+                break;
+            case 'ArrowDown':
+                player.move('down');
+                break;
+        }
     }
 });
 
