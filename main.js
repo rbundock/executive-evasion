@@ -6,6 +6,20 @@ let autoPlayEnabled = false; // This is the flag
 let level = 1;
 let score = 0;
 
+/*
+
+TODO:
+
+- Speed up the zombies by half for every half that are removed
+- Move to a grid
+- Zombies to step
+
+
+
+*//////
+
+
+
 // Initilise 
 let player;
 let zombies = [];
