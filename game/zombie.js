@@ -1,14 +1,63 @@
 class Zombie {
-    constructor(x, y) {
+    static RECRUITER = 'RECRUITER';
+    static CFO = 'CFO';
+    static VC_EXEC = 'VC_EXEC';
+
+    constructor(x, y, type = Zombie.RECRUITER) {
         this.x = x;
         this.y = y;
+        this.stepSize = 20;
         this.speed = zombieSpeed;  // Adjust speed as needed
+        this.type = Zombie.RECRUITER;
     }
 
+    /* Original movement code
     moveTowards(player) {
         let angle = Math.atan2(player.y - this.y, player.x - this.x);
         this.x += Math.cos(angle) * this.speed;
         this.y += Math.sin(angle) * this.speed;
+    }
+    */
+
+    moveTowards(player) {
+
+        // Find the angle
+        let angle = Math.atan2(player.y - this.y, player.x - this.x);
+ 
+        // Convert to degrees
+        let angleInDegrees = angle * (180 / Math.PI);
+
+        // Normalize the angle to a value between 0 and 360 degrees
+        angleInDegrees = (angleInDegrees + 360) % 360;
+
+        let direction;
+
+        // Determine cardinal direction based on angle
+        if (angleInDegrees >= 45 && angleInDegrees < 135) {
+            direction = "down";
+        } else if (angleInDegrees >= 135 && angleInDegrees < 225) {
+            direction = "left";
+        } else if (angleInDegrees >= 225 && angleInDegrees < 315) {
+            direction = "up";
+        } else {
+            direction = "right";
+        }
+
+        switch(direction) {
+            case 'left':
+                this.x = Math.max(0, this.x - this.stepSize);
+                break;
+            case 'right':
+                this.x = Math.min(canvas.width - 20, this.x + this.stepSize);
+                break;
+            case 'up':
+                this.y = Math.max(0, this.y - this.stepSize);
+                break;
+            case 'down':
+                this.y = Math.min(canvas.height - 20, this.y + this.stepSize);
+                break;
+        }
+
     }
 
     draw(ctx) {
@@ -55,7 +104,7 @@ function spawnZombie() {
 function setupZombies() {
     zombies = [];  // Clear any existing zombies
     const minDistanceFromPlayer = 100;  // Set minimum distance from player
-    for (let i = 0; i < 6 + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
+    for (let i = 0; i < numStartingZombies + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
             x = Math.random() * canvas.width;

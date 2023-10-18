@@ -1,13 +1,13 @@
 function drawScore() {
     ctx.fillStyle = 'black';
-    ctx.font = '24px Arial';
+    ctx.font = '24px Barlow';
     ctx.fillText('Score: ' + score, 10, 30);
 }
 
 function drawLevel() {
     ctx.fillStyle = 'black';
-    ctx.font = '24px Arial';
-    ctx.fillText('Level: ' + level, 10, 60);  // Positioning it below the score
+    ctx.font = '24px Barlow';
+    ctx.fillText('Day: ' + level, 10, 60);  // Positioning it below the score
 }
 
 

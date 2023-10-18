@@ -17,7 +17,7 @@ class Player {
 
         this.x = x;
         this.y = y;
-        this.stepSize = 19;  // Set the step size (adjust as needed)
+        this.stepSize = 20;  // Set the step size (adjust as needed)
     }
     
     move(direction) {

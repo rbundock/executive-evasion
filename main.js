@@ -5,6 +5,7 @@ let autoPlayEnabled = false; // This is the flag
 
 let level = 1;
 let score = 0;
+let numStartingZombies = 6;
 
 /*
 
@@ -51,7 +52,7 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
-let zombieSpeed = 1.8;
+let zombieSpeed = 5;
 
 let gameLoopRunning = false;
 
@@ -69,6 +70,7 @@ function gameLoop() {
         resetGame();
     }
 
+    // DRAW ----
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     for (let pit of pits) {
@@ -76,7 +78,7 @@ function gameLoop() {
     }
 
     for (let zombie of zombies) {
-        zombie.moveTowards(player);
+        //zombie.moveTowards(player);
         zombie.draw(ctx);
     }
 
@@ -87,6 +89,8 @@ function gameLoop() {
     player.draw(ctx);
 	drawScore();
     drawLevel();
+    /// 
+
 
     if (checkCollisions()) {
         playSound(gameover);
@@ -154,10 +158,30 @@ function startGame() {
 
     //playSound(restart);
     gameLoop(); // Start the game loop
+    animateZombies();
     if (autoPlayEnabled) {
         playAI(player, zombies, pit);
     }
 }
+
+function animateZombies() {
+
+    // If the game loop is not running, don't try to move the zombies
+    if (!gameLoopRunning) {
+        return;
+    }
+
+    // Percentage of Zombies left
+    let zombiesLeftPercentage = zombies.length / numStartingZombies;
+
+    // Animate
+    zombies.forEach(zombie => {
+        zombie.moveTowards(player);
+    });
+
+    setTimeout(animateZombies, zombiesLeftPercentage * 1000);
+}
+
 
 function resetGame() {
 
