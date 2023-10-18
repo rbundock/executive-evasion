@@ -58,10 +58,14 @@ window.addEventListener('resize', () => {
 let zombieSpeed = 5;
 
 let gameLoopRunning = false;
+let levelStartTime;
 
 function gameLoop() {
 
-    gameLoopRunning = true;
+    if (!gameLoopRunning) {
+        gameLoopRunning = true;
+        levelStartTime = Date.now();
+    }
     canvas.style.cursor = 'none';
 
     // RESTART
@@ -69,6 +73,7 @@ function gameLoop() {
         playSound(restart);
         level++;  // Increase the level
         // zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
+        console.log("Last level time: " + (Date.now() - levelStartTime) / 1000);
         resetLevel();
     }
 
@@ -94,6 +99,9 @@ function gameLoop() {
 
 
     if (checkCollisions()) {
+
+        console.log("Total game time: " + (Date.now() - levelStartTime) / 1000);
+
         playSound(gameover);
         document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
         sendScoreAndGenerateQR(score);
@@ -192,7 +200,7 @@ function resetLevel() {
     setupZombies();
     setupTreasure();
 
-    console.log("ZOMBIE SPEED: " + zombieSpeed);
+    //("ZOMBIE SPEED: " + zombieSpeed);
 
 }
 

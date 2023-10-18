@@ -23,14 +23,14 @@ function setupPits(totalRequired) {
     let minDistanceFromPlayer = 100;
     let borderSize = 300;
 
-    console.log("totalRequired" + totalRequired);
+    //console.log("totalRequired" + totalRequired);
 
     while (pits.length < totalRequired && attempts < 1000) {  // Create pits, with a limit on attempts to prevent an infinite loop
         let x = Math.random() * (canvas.width - borderSize) + (borderSize/2);  // Random X position, ensuring pit fits within canvas
         let y = Math.random() * (canvas.height - borderSize) + (borderSize/2);  // Random Y position, ensuring pit fits within canvas
 
-        console.log("x:" + x);
-        console.log("y:" + y);
+        //console.log("x:" + x);
+        //console.log("y:" + y);
 
         // Check for overlap with existing pits
         let overlapping = false;
@@ -55,10 +55,10 @@ function setupPits(totalRequired) {
 }
 
 function isValidPitSpawnPoint(x, y, minDistance) {
-    console.log("isValidPitSpawnPoint: " + minDistance);
+    //console.log("isValidPitSpawnPoint: " + minDistance);
     if (!player) return true;  // If player is undefined, skip the check
     const distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
-    console.log("distance: " + distance);
+    //console.log("distance: " + distance);
     return distance >= minDistance;
 }
 
