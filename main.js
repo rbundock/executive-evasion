@@ -99,14 +99,15 @@ function gameLoop() {
 
 
     if (checkCollisions()) {
-
+        gameLoopRunning = false;
+        
         console.log("Total game time: " + (Date.now() - levelStartTime) / 1000);
 
         playSound(gameover);
         document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
         sendScoreAndGenerateQR(score);
         document.getElementById('gameOverModal').style.display = 'flex';
-        gameLoopRunning = false;
+
         canvas.style.cursor = 'auto';
         return;  // End the game loop by not calling requestAnimationFrame
     }

@@ -64,10 +64,17 @@ class Zombie {
         ctx.fillStyle = 'green';
         ctx.fillRect(this.x, this.y, 20, 20);
 
-        // Make sure the image is loaded before drawing
-        //if (zombieImage.complete) {
+        switch(this.type) {
+        case Zombie.RECRUITER:
             ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
-        //}
+            break;
+        case Zombie.VC_EXEC:
+            ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
+            break;
+        case Zombie.CFO:
+                ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
+                break;
+        }
     }
 }
 
