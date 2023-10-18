@@ -8,6 +8,11 @@ function drawLevel() {
     ctx.fillStyle = 'black';
     ctx.font = '24px Barlow';
     ctx.fillText('Day: ' + level, 10, 60);  // Positioning it below the score
+
+    let gridX = parseInt(canvas.width / 20);
+    let gridY = parseInt(canvas.height / 20);
+    ctx.fillText('Grid X: ' + gridX + " Y:" + gridY, 10, 90);  // Positioning it below the score
+
 }
 
 

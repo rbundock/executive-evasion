@@ -19,6 +19,7 @@ document.getElementById('restartButton').addEventListener('click', () => {
 
     // Start the game loop again
     gameLoop();
+    animateZombies();
     if (autoPlayEnabled) {
         playAI(player, zombies, pit);
     }

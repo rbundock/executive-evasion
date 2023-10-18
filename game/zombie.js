@@ -6,7 +6,7 @@ class Zombie {
     constructor(x, y, type = Zombie.RECRUITER) {
         this.x = x;
         this.y = y;
-        this.stepSize = 20;
+        this.stepSize = numZombieStepSize;
         this.speed = zombieSpeed;  // Adjust speed as needed
         this.type = Zombie.RECRUITER;
     }
@@ -65,9 +65,9 @@ class Zombie {
         ctx.fillRect(this.x, this.y, 20, 20);
 
         // Make sure the image is loaded before drawing
-        if (zombieImage.complete) {
+        //if (zombieImage.complete) {
             ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
-        }
+        //}
     }
 }
 
@@ -103,7 +103,7 @@ function spawnZombie() {
 
 function setupZombies() {
     zombies = [];  // Clear any existing zombies
-    const minDistanceFromPlayer = 100;  // Set minimum distance from player
+    const minDistanceFromPlayer = 200;  // Set minimum distance from player
     for (let i = 0; i < numStartingZombies + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {

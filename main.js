@@ -5,15 +5,18 @@ let autoPlayEnabled = false; // This is the flag
 
 let level = 1;
 let score = 0;
+
 let numStartingZombies = 6;
+let numZombieStepSize = 20;
+let maxZombieDelay = 500;
 
 /*
 
 TODO:
 
-- Speed up the zombies by half for every half that are removed
+- xSpeed up the zombies by half for every half that are removed
 - Move to a grid
-- Zombies to step
+- xZombies to step
 
 
 
@@ -65,9 +68,8 @@ function gameLoop() {
     if (zombies.length === 0) {  // All zombies have been removed
         playSound(restart);
         level++;  // Increase the level
-        zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
-
-        resetGame();
+        // zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
+        resetLevel();
     }
 
     // DRAW ----
@@ -78,7 +80,6 @@ function gameLoop() {
     }
 
     for (let zombie of zombies) {
-        //zombie.moveTowards(player);
         zombie.draw(ctx);
     }
 
@@ -153,7 +154,7 @@ function startGame() {
     zombieSpeed = 1 // Reset Zombie speed
 
     // Reset Game
-    resetGame();
+    resetLevel();
     player = new Player(); // Initialize player with random safe location
 
     //playSound(restart);
@@ -179,11 +180,12 @@ function animateZombies() {
         zombie.moveTowards(player);
     });
 
-    setTimeout(animateZombies, zombiesLeftPercentage * 1000);
+    // console.log("Zombie Delay:" + maxZombieDelay * zombiesLeftPercentage)
+    setTimeout(animateZombies, maxZombieDelay * zombiesLeftPercentage);
 }
 
 
-function resetGame() {
+function resetLevel() {
 
     // TOOD: Make sure Zombies/Pits don't spawn on/near player
     setupPits(5); 
