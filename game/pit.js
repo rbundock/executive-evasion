@@ -10,9 +10,13 @@ class Pit {
     draw(ctx) {
         ctx.fillStyle = 'black';
         ctx.fillRect(this.x, this.y, this.width, this.height);
-        if (pitImage.complete) {
-            ctx.drawImage(pitImage, this.x, this.y, this.width, this.height);
-        }
+        
+        ctx.drawImage(pitImage, this.x, this.y, this.width, this.height);
+        
+        ctx.fillStyle = 'white';
+        ctx.font = '24px Barlow';
+        ctx.fillText(this.attendance, this.x+15, this.y+25);  // Positioning it below the score
+
 
     }
 

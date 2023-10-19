@@ -7,8 +7,8 @@ let level = 1;
 let score = 0;
 
 let numStartingZombies = 6;
-let numZombieStepSize = 20;
-let maxZombieDelay = 500;
+let numZombieStepSize = 10;
+let maxZombieDelay = 300;
 
 let maxPitCapacity = 3;
 
@@ -20,7 +20,8 @@ TODO:
 - Move to a grid
 - xZombies to step
 
-
+AUDIO
+- https://www.youtube.com/watch?v=oy_usKHTXOY
 
 *//////
 
