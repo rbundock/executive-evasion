@@ -114,8 +114,10 @@ function setupZombies() {
     for (let i = 0; i < numStartingZombies + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
-            x = Math.random() * canvas.width;
-            y = Math.random() * canvas.height;
+            x = (Math.random() * parseInt(canvas.width / 20));
+            y = (Math.random() * parseInt(canvas.height / 20));
+            x = x * 20;
+            y = y * 20;
         } while (
             overlapsPit(x, y, 20, 20) || 
             (player && !isValidSpawnPoint(x, y, minDistanceFromPlayer))  // Skip the check if player is undefined
