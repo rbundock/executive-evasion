@@ -10,6 +10,8 @@ let numStartingZombies = 6;
 let numZombieStepSize = 20;
 let maxZombieDelay = 500;
 
+let maxPitCapacity = 3;
+
 /*
 
 TODO:
@@ -213,7 +215,7 @@ function checkCollisions() {
             player.y < pit.y + pit.height &&
             player.y + 20 > pit.y
         ) {
-            return true;  // Collision detected
+            return true;  // Collision with pit detected
         }
     }
 
@@ -255,11 +257,21 @@ function checkCollisions() {
                 zombie.y < pit.y + pit.height &&
                 zombie.y + 20 > pit.y 
             ) {
-                inPit = true;
-                score++;  // Increase the score when a zombie falls into a pit
-                playSound(fallen);
-                //spawnZombie(player.x, player.y);  // Create another zombie
-                break;
+
+                // Pits have maximum capacity
+                if (pit.attendance < maxPitCapacity) {
+                    inPit = true;
+                    score++;  // Increase the score when a zombie falls into a pit
+                    playSound(fallen);
+                    pit.incBodies();
+
+                    if (pit.attendance >= maxPitCapacity){
+                        // Remove pit !
+                        pits = pits.filter(p => p.attendance < maxPitCapacity);
+                    }
+                    //spawnZombie(player.x, player.y);  // Create another zombie
+                    break;
+                }
             }
         }
         if (!inPit) {

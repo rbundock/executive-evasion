@@ -4,6 +4,7 @@ class Pit {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.attendance = 0;
     }
 
     draw(ctx) {
@@ -15,6 +16,12 @@ class Pit {
 
     }
 
+    incBodies() {
+        // Increase the count of zombies in pit
+        this.attendance++;
+        console.log("Pit has: " + this.attendance);
+    }
+
 }
 
 function setupPits(totalRequired) {
@@ -23,14 +30,9 @@ function setupPits(totalRequired) {
     let minDistanceFromPlayer = 100;
     let borderSize = 300;
 
-    //console.log("totalRequired" + totalRequired);
-
     while (pits.length < totalRequired && attempts < 1000) {  // Create pits, with a limit on attempts to prevent an infinite loop
         let x = Math.random() * (canvas.width - borderSize) + (borderSize/2);  // Random X position, ensuring pit fits within canvas
         let y = Math.random() * (canvas.height - borderSize) + (borderSize/2);  // Random Y position, ensuring pit fits within canvas
-
-        //console.log("x:" + x);
-        //console.log("y:" + y);
 
         // Check for overlap with existing pits
         let overlapping = false;
