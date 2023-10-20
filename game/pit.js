@@ -4,7 +4,7 @@ class Pit {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.attendance = 0;
+        this.capacity = Math.floor(Math.random() * (maxPitCapacity - minPitCapacity + 1)) + minPitCapacity;
     }
 
     draw(ctx) {
@@ -15,15 +15,15 @@ class Pit {
         
         ctx.fillStyle = 'white';
         ctx.font = '24px Barlow';
-        ctx.fillText(this.attendance, this.x+15, this.y+25);  // Positioning it below the score
+        ctx.fillText(this.capacity, this.x+15, this.y+25);  // Positioning it below the score
 
 
     }
 
     incBodies() {
         // Increase the count of zombies in pit
-        this.attendance++;
-        console.log("Pit has: " + this.attendance);
+        this.capacity--;
+        console.log("Pit has: " + this.capacity);
     }
 
 }
