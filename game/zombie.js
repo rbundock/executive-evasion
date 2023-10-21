@@ -8,7 +8,6 @@ class Zombie {
         this.y = y;
         this.width = gridSize;
         this.height = gridSize;
-        this.speed = zombieSpeed;  // Adjust speed as needed
         this.type = Zombie.RECRUITER;
     }
 
