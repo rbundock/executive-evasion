@@ -21,7 +21,11 @@ function drawFloorTiles() {
   
     for (let x = 0; x < canvas.width; x += tileSize) {
       for (let y = 0; y < canvas.height; y += tileSize) {
-        ctx.drawImage(tileImage, x, y, tileSize, tileSize);
+        //if (Math.random() < 0.99) {
+            ctx.drawImage(tileImage, x, y, tileSize, tileSize);
+         //} else {
+         //   ctx.drawImage(tileHCImage, x, y, tileSize, tileSize);
+         //}
       }
     }
   }

@@ -39,6 +39,7 @@ GRAPHICS
 - https://limezu.itch.io/modernoffice
 
 AUDIO
+- Zombie stepßß
 - https://www.youtube.com/watch?v=oy_usKHTXOY
 
 *//////
@@ -70,6 +71,9 @@ zombieImage.src = 'img/recruiter.png';
 let tileImage = new Image();
 tileImage.src = 'img/floor_tile.png';
 
+let tileHCImage = new Image();
+tileHCImage.src = 'img/floor_tile_hc.png';
+
 let treasureImage = new Image();
 treasureImage.src = 'img/watercooler.png';
 
@@ -87,6 +91,9 @@ window.addEventListener('resize', () => {
 
 let gameLoopRunning = false;
 let levelStartTime;
+let zombieTimeoutId = null;
+
+ModalIntroScreen.loadIntroScreen();
 
 function gameLoop() {
 
@@ -143,16 +150,14 @@ function gameLoop() {
 
 
     if (checkCollisions()) {
+
         gameLoopRunning = false;
         
         console.log("Total game time: " + (Date.now() - levelStartTime) / 1000);
-
         playSound(gameover);
-        document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
-        sendScoreAndGenerateQR(score);
-        document.getElementById('gameOverModal').style.display = 'flex';
 
-        canvas.style.cursor = 'auto';
+        ModalGameOverScreen.loadGameOverScreen();
+
         return;  // End the game loop by not calling requestAnimationFrame
     }
 
@@ -204,7 +209,7 @@ window.addEventListener('keyup', (e) => {
 
 function startGame() {
 
-    document.getElementById('startModal').style.display = 'none';
+    ModalIntroScreen.unloadGameOverScreen();
 
     // Reset Game
     player = new Player(); // Initialize player with random safe location
@@ -222,6 +227,10 @@ function animateZombies() {
 
     // If the game loop is not running, don't try to move the zombies
     if (!gameLoopRunning) {
+        if (zombieTimeoutId) {
+            clearTimeout(zombieTimeoutId);
+            zombieTimeoutId = null;
+        }
         return;
     }
 
@@ -233,10 +242,16 @@ function animateZombies() {
         zombie.moveTowards(player);
     });
 
-    playSound(zombie_step);
+    //playSound(zombie_step);
 
-    // console.log("Zombie Delay:" + maxZombieDelay * zombiesLeftPercentage)
-    setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
+    console.log("Zombie Delay: " + (minZombieDelay + (maxZombieDelay * zombiesLeftPercentage)))
+
+    // Clear any existing timeout before setting a new one
+    if (zombieTimeoutId) {
+        clearTimeout(zombieTimeoutId);
+    }
+    
+    zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
 }
 
 
@@ -309,4 +324,33 @@ function checkCollisions() {
     zombies = newZombies;
     
     return false;  // No collision with player
+}
+
+
+function cyclePressAnyKey() {
+    const h1Element = document.querySelector('.cycle-colour');
+
+    const startColor = { r: 255, g: 70, b: 250 };
+    const endColor = { r: 218, g: 255, b: 2 };
+    let step = 0.01;  // Change this value to adjust the speed of the transition
+    let t = 0;  // Parameter to interpolate between startColor and endColor
+
+    function lerp(start, end, t) {
+        return start + t * (end - start);
+    }
+
+    setInterval(function() {
+        const r = Math.round(lerp(startColor.r, endColor.r, t));
+        const g = Math.round(lerp(startColor.g, endColor.g, t));
+        const b = Math.round(lerp(startColor.b, endColor.b, t));
+
+        h1Element.style.color = `rgb(${r}, ${g}, ${b})`;
+
+        t += step;
+
+        // If t exceeds 1 or goes below 0, reverse the direction
+        if (t >= 1 || t <= 0) {
+            step = -step;
+        }
+    }, 10); 
 }
