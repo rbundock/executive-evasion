@@ -5,8 +5,8 @@ class Treasure {
 
         while (!safeSpawn) {
             // Generate random coordinates within the canvas
-            x = getRandomCoordinate(canvas.width, safeBorderSize);  // Random X position, ensuring treasure fits within canvas
-            y = getRandomCoordinate(canvas.height, safeBorderSize);  // Random Y position, ensuring treasure fits within canvas
+            x = getRandomCoordinate(canvas.width, safeBorderSize, gridSize);  // Random X position, ensuring treasure fits within canvas
+            y = getRandomCoordinate(canvas.height, safeBorderSize, gridSize);  // Random Y position, ensuring treasure fits within canvas
 
             // Check if this position overlaps with any pit or zombie
             if (!overlapsEntity(x, y, pits, minSpawnDistanceFromPlayer) && !overlapsEntity(x, y, zombies, minSpawnDistanceFromPlayer)) {

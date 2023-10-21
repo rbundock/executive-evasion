@@ -4,8 +4,10 @@ const ctx = canvas.getContext('2d');
 const gridSize = 40;
 const stepSize = 20;
 const pitSize = gridSize * 5;
-const minSpawnDistanceFromPlayer = 100;
-const safeBorderSize = 300;
+const minSpawnDistanceFromPlayer = 300;
+const safeBorderSize = 200;
+
+const debugMode = false;
 
 let autoPlayEnabled = false; // This is the flag
 
@@ -15,11 +17,10 @@ let score = 0;
 let numStartingZombies = 6;
 let numZombieStepSize = gridSize / 2;
 let maxZombieDelay = 300;
+let minZombieDelay = 100;
 
 let minPitCapacity = 2;
 let maxPitCapacity = 6;
-
-
 
 /*
 
@@ -84,7 +85,7 @@ function gameLoop() {
     canvas.style.cursor = 'none';
 
     // RESTART
-    if (zombies.length === 0) {  // All zombies have been removed
+    if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
         playSound(restart);
         level++;  // Increase the level
         // zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
@@ -93,8 +94,15 @@ function gameLoop() {
     }
 
     // DRAW ----
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    if (debugMode) {
+        ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
+        ctx.fillStyle = 'green';
+        ctx.fillRect(safeBorderSize/2, safeBorderSize/2, canvas.width - safeBorderSize, canvas.height - safeBorderSize);
+        ctx.globalAlpha = 1;  // Reset
+    }
+
     for (let pit of pits) {
         pit.draw(ctx);
     }
@@ -178,8 +186,8 @@ function startGame() {
     zombieSpeed = 1 // Reset Zombie speed
 
     // Reset Game
-    resetLevel();
     player = new Player(); // Initialize player with random safe location
+    resetLevel();
 
     //playSound(restart);
     gameLoop(); // Start the game loop
@@ -207,7 +215,7 @@ function animateZombies() {
     playSound(zombie_step);
 
     // console.log("Zombie Delay:" + maxZombieDelay * zombiesLeftPercentage)
-    setTimeout(animateZombies, maxZombieDelay * zombiesLeftPercentage);
+    setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
 }
 
 
@@ -239,12 +247,7 @@ function checkCollisions() {
 
     let newTreasures = [];
     for (let treasure of treasures) {
-        if (
-            player.x < treasure.x + 20 &&
-            player.x + 20 > treasure.x &&
-            player.y < treasure.y + 20 &&
-            player.y + 20 > treasure.y
-        ) {
+        if (isColliding(treasure, player)) {
             // Collision detected, add 10 points to the score
             score += 10;
         } else {

@@ -17,8 +17,10 @@ function drawLevel() {
 
 
 // Utility function to generate random coordinates within given boundaries
-function getRandomCoordinate(max, borderSize) {
-    const coordinate = (parseInt((Math.random() * (max - borderSize) + (borderSize/2)) / gridSize)) * gridSize;
+function getRandomCoordinate(canvasSize, borderSize, objectSize) {
+    const min = borderSize/2; 
+    const max = canvasSize - borderSize - objectSize;
+    const coordinate = (parseInt((Math.random() * (max - min) + min) / gridSize)) * gridSize;
     return parseInt(coordinate);
 }
 

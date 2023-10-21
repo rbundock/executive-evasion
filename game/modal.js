@@ -8,9 +8,8 @@ document.getElementById('restartButton').addEventListener('click', () => {
     // Reset the game state
     level = 1;
     score = 0;
-    setupPits(5); 
-    setupZombies();
-    setupTreasure();
+    
+    resetLevel();
     
     playSound(restart);
 

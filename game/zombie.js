@@ -106,8 +106,8 @@ function setupZombies() {
     for (let i = 0; i < numStartingZombies + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
-            x = getRandomCoordinate(canvas.width, safeBorderSize);
-            y = getRandomCoordinate(canvas.height, safeBorderSize);
+            x = getRandomCoordinate(canvas.width, safeBorderSize, gridSize);
+            y = getRandomCoordinate(canvas.height, safeBorderSize, gridSize);
 
         } while (
             overlapsPit(x, y, gridSize, gridSize) || 

@@ -5,8 +5,8 @@ class Player {
 
         while (!safeSpawn) {
             // Generate random coordinates within the canvas        
-            x = getRandomCoordinate(canvas.width, safeBorderSize);  // Random X position, ensuring player fits within canvas
-            y = getRandomCoordinate(canvas.height, safeBorderSize);  // Random Y position, ensuring player fits within canvas
+            x = getRandomCoordinate(canvas.width, safeBorderSize, gridSize);  // Random X position, ensuring player fits within canvas
+            y = getRandomCoordinate(canvas.height, safeBorderSize, gridSize);  // Random Y position, ensuring player fits within canvas
 
             // Check if this position overlaps with any pit or zombie
             if (!overlapsEntity(x, y, pits, 100) && !overlapsEntity(x, y, zombies, 100)) {

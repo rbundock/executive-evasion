@@ -33,8 +33,8 @@ function setupPits(totalRequired) {
     let attempts = 0;  // Variable to track the number of attempts to place a pit
 
     while (pits.length < totalRequired && attempts < 1000) {  // Create pits, with a limit on attempts to prevent an infinite loop
-        let x = getRandomCoordinate(canvas.width, safeBorderSize);  // Random X position, ensuring pit fits within canvas
-        let y = getRandomCoordinate(canvas.height, safeBorderSize);  // Random Y position, ensuring pit fits within canvas
+        let x = getRandomCoordinate(canvas.width, safeBorderSize, pitSize);  // Random X position, ensuring pit fits within canvas
+        let y = getRandomCoordinate(canvas.height, safeBorderSize, pitSize);  // Random Y position, ensuring pit fits within canvas
 
         // Check for overlap with existing pits
         let overlapping = false;
@@ -49,7 +49,7 @@ function setupPits(totalRequired) {
 
         if (!overlapping) {
             // Just check we aren't spawning on the player if this is a new level
-            if (isValidPitSpawnPoint(x, y, minSpawnDistanceFromPlayer)) {
+            if (!isColliding({ x, y, width: pitSize, height: pitSize }, player)) {
                 pits.push(new Pit(x, y, pitSize, pitSize));   // No overlap, so add the pit
             }
         }
