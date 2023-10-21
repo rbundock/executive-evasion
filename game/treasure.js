@@ -21,8 +21,12 @@ class Treasure {
     }
 
     draw(ctx) {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(this.x, this.y, gridSize, gridSize);
+      if (debugMode) {
+          ctx.fillStyle = 'red';
+          ctx.fillRect(this.x, this.y, gridSize, gridSize);
+      }
+    
+      ctx.drawImage(treasureImage, this.x, this.y - 48, 48, 96);
     }
 }
 

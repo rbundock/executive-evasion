@@ -18,7 +18,7 @@ let autoPlayEnabled = false; // This is the flag
 let level = 1;
 let score = 0;
 
-let numStartingZombies = 20;
+let numStartingZombies = 6;
 let numZombieStepSize = gridSize / 2;
 let maxZombieDelay = 300; // in ms
 let minZombieDelay = 90; // in ms
@@ -33,6 +33,7 @@ TODO:
 - xSpeed up the zombies by half for every half that are removed
 - xMove to a grid
 - xZombies to step
+- Zombies avoid pits once full
 
 GRAPHICS
 - https://limezu.itch.io/modernoffice
@@ -61,13 +62,16 @@ let playerImage = new Image();
 playerImage.src = 'img/cto_1.png';  
 
 let pitImage = new Image();
-pitImage.src = 'img/meeting_room.png'; 
+pitImage.src = 'img/meeting_space.png'; 
 
 let zombieImage = new Image();
 zombieImage.src = 'img/recruiter.png'; 
 
 let tileImage = new Image();
 tileImage.src = 'img/floor_tile.png';
+
+let treasureImage = new Image();
+treasureImage.src = 'img/watercooler.png';
 
 // Set the canvas size
 canvas.width = window.innerWidth;
@@ -154,7 +158,7 @@ function gameLoop() {
 
     // If the player has closed a pit, then spawn treasure to help them out
     if (pits.length < numPitsPerLevel) {
-        if (shouldSpawnTreasure()) {
+        if (shouldSpawnTreasure() || debugMode) {
             // Only spawn one
             if (treasures.length === 0) {
                 const newTreasure = new Treasure();

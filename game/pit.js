@@ -8,9 +8,14 @@ class Pit {
     }
 
     draw(ctx) {
-        ctx.fillStyle = 'black';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-        
+
+        if (!debugMode) {
+            ctx.globalAlpha = 0.1;
+            ctx.fillStyle = 'black';
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.globalAlpha = 1;
+        }
+
         ctx.drawImage(pitImage, this.x, this.y, this.width, this.height);
         
         ctx.fillStyle = 'white';
