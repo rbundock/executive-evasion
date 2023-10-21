@@ -53,12 +53,15 @@ class Zombie {
     }
 
     draw(ctx) {
-        ctx.fillStyle = 'green';
-        ctx.fillRect(this.x, this.y, gridSize, gridSize);
+
+        if (debugMode) {
+            ctx.fillStyle = 'green';
+            ctx.fillRect(this.x, this.y, gridSize, gridSize);
+        }
 
         switch(this.type) {
         case Zombie.RECRUITER:
-            ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
+            ctx.drawImage(zombieImage, this.x - 4, this.y - 50, 45, 88);
             break;
         case Zombie.VC_EXEC:
             ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);

@@ -39,12 +39,15 @@ class Player {
     }
 
     draw(ctx) {
-        ctx.fillStyle = 'blue';
-        ctx.fillRect(this.x, this.y, gridSize, gridSize);
-
+        
+        if (debugMode){
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(this.x, this.y, gridSize, gridSize);
+        }
+        
         // Make sure the image is loaded before drawing
         if (playerImage.complete) {
-            ctx.drawImage(playerImage, this.x - 30, this.y - 44, 80, 80);
+            ctx.drawImage(playerImage, this.x - 30, this.y - 52, 100, 100);
         }
     }
 }

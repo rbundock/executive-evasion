@@ -61,7 +61,7 @@ let playerImage = new Image();
 playerImage.src = 'img/cto_1.png';  
 
 let pitImage = new Image();
-pitImage.src = 'img/meeting.png'; 
+pitImage.src = 'img/meeting_room.png'; 
 
 let zombieImage = new Image();
 zombieImage.src = 'img/recruiter.png'; 
