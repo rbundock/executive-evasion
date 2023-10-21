@@ -58,6 +58,7 @@ function setupPits(totalRequired) {
     }
 }
 
+/*
 function isValidPitSpawnPoint(x, y, minDistance) {
     //console.log("isValidPitSpawnPoint: " + minDistance);
     if (!player) return true;  // If player is undefined, skip the check
@@ -65,17 +66,11 @@ function isValidPitSpawnPoint(x, y, minDistance) {
     //console.log("distance: " + distance);
     return distance >= minDistance;
 }
+*/
 
 function overlapsPit(x, y, width, height) {
     for (let pit of pits) {
-        if (
-            x < pit.x + pit.width &&
-            x + width > pit.x &&
-            y < pit.y + pit.height &&
-            y + height > pit.y
-        ) {
-            return true;  // Overlap detected
-        }
+        return isColliding({ x, y, width: pitSize, height: pitSize }, player);  // Overlap detected
     }
     return false;  // No overlap
 }
