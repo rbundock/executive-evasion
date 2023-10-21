@@ -16,6 +16,15 @@ function drawLevel() {
     }
 }
 
+function drawFloorTiles() {
+    const tileSize = tileImage.width; // Assuming a square tile; adjust as needed
+  
+    for (let x = 0; x < canvas.width; x += tileSize) {
+      for (let y = 0; y < canvas.height; y += tileSize) {
+        ctx.drawImage(tileImage, x, y, tileSize, tileSize);
+      }
+    }
+  }
 
 // Utility function to generate random coordinates within given boundaries
 function getRandomCoordinate(canvasSize, borderSize, objectSize) {

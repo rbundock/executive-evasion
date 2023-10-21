@@ -35,21 +35,40 @@ class Zombie {
             direction = "right";
         }
 
+        let potentialX = this.x;
+        let potentialY = this.y;
+
         switch(direction) {
             case 'left':
-                this.x = Math.max(0, this.x - numZombieStepSize);
+                potentialX = Math.max(0, this.x - numZombieStepSize);
                 break;
             case 'right':
-                this.x = Math.min(canvas.width - numZombieStepSize, this.x + numZombieStepSize);
+                potentialX = Math.min(canvas.width - numZombieStepSize, this.x + numZombieStepSize);
                 break;
             case 'up':
-                this.y = Math.max(0, this.y - numZombieStepSize);
+                potentialY = Math.max(0, this.y - numZombieStepSize);
                 break;
             case 'down':
-                this.y = Math.min(canvas.height - numZombieStepSize, this.y + numZombieStepSize);
+                potentialY = Math.min(canvas.height - numZombieStepSize, this.y + numZombieStepSize);
                 break;
         }
 
+        // If other zombies exist, check we aren't stepping on their toes. 
+        let collision = false;
+        if (zombies.length> 1) {
+            for (let otherZombie of zombies) {
+                if (otherZombie !== this) {
+                    if (isColliding({ x: potentialX, y: potentialY, width: this.width, height: this.height }, otherZombie)) {
+                        collision = true;
+                    }
+                }
+            } 
+        }
+
+        if (!collision) {
+            this.x = potentialX;
+            this.y = potentialY; 
+        }
     }
 
     draw(ctx) {
@@ -76,7 +95,7 @@ class Zombie {
 function spawnZombie() {
 
     let x, y;
-
+    
     // Randomly choose one of the four edges (top, right, bottom, left)
     const edge = Math.floor(Math.random() * 4);
 

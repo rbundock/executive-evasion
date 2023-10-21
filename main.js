@@ -1,12 +1,12 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const gridSize = 40;
-const stepSize = 20;
+const gridSize = 48;
+const stepSize = 24;
 const pitSize = gridSize * 5;
-const minSpawnDistanceFromPlayer = 300;
-const safeBorderSize = 120;
-const spawnDistanceTreasure = 100;
+const minSpawnDistanceFromPlayer = gridSize * 6;
+const safeBorderSize = gridSize * 3;
+const spawnDistanceTreasure = gridSize * 6;
 const numPitsPerLevel = 5;
 
 const debugMode = false;
@@ -18,7 +18,7 @@ let autoPlayEnabled = false; // This is the flag
 let level = 1;
 let score = 0;
 
-let numStartingZombies = 6;
+let numStartingZombies = 20;
 let numZombieStepSize = gridSize / 2;
 let maxZombieDelay = 300; // in ms
 let minZombieDelay = 90; // in ms
@@ -66,6 +66,9 @@ pitImage.src = 'img/meeting_room.png';
 let zombieImage = new Image();
 zombieImage.src = 'img/recruiter.png'; 
 
+let tileImage = new Image();
+tileImage.src = 'img/floor_tile.png';
+
 // Set the canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -105,6 +108,9 @@ function gameLoop() {
 
     // DRAW ----
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    // Draw the floor    
+    drawFloorTiles();
 
     if (debugMode) {
         ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
@@ -125,6 +131,7 @@ function gameLoop() {
         zombie.draw(ctx);
     }
     
+
     player.draw(ctx);
 	drawScore();
     drawLevel();
