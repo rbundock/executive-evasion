@@ -5,7 +5,9 @@ const gridSize = 40;
 const stepSize = 20;
 const pitSize = gridSize * 5;
 const minSpawnDistanceFromPlayer = 300;
-const safeBorderSize = 200;
+const safeBorderSize = 120;
+const spawnDistanceTreasure = 100;
+const numPitsPerLevel = 5;
 
 const debugMode = false;
 
@@ -16,11 +18,11 @@ let score = 0;
 
 let numStartingZombies = 6;
 let numZombieStepSize = gridSize / 2;
-let maxZombieDelay = 300;
-let minZombieDelay = 100;
+let maxZombieDelay = 300; // in ms
+let minZombieDelay = 90; // in ms
 
-let minPitCapacity = 2;
-let maxPitCapacity = 6;
+let minPitCapacity = 1;
+let maxPitCapacity = 4;
 
 /*
 
@@ -70,8 +72,6 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
-
-let zombieSpeed = 5;
 
 let gameLoopRunning = false;
 let levelStartTime;
@@ -135,14 +135,17 @@ function gameLoop() {
         return;  // End the game loop by not calling requestAnimationFrame
     }
 
-   if (shouldSpawnTreasure()) {
-        // Only spawn one
-        if (treasures.length === 0) {
-            const newTreasure = new Treasure();
-            treasures.push(newTreasure);
-            treasure_spawn.play();
+    // If the player has closed a pit, then spawn treasure to help them out
+    if (pits.length < numPitsPerLevel) {
+        if (shouldSpawnTreasure()) {
+            // Only spawn one
+            if (treasures.length === 0) {
+                const newTreasure = new Treasure();
+                treasures.push(newTreasure);
+                treasure_spawn.play();
+            }
         }
-   }
+    }
 
     requestAnimationFrame(gameLoop);
 }
@@ -182,9 +185,6 @@ function startGame() {
 
     document.getElementById('startModal').style.display = 'none';
 
-    // Reinitialise
-    zombieSpeed = 1 // Reset Zombie speed
-
     // Reset Game
     player = new Player(); // Initialize player with random safe location
     resetLevel();
@@ -222,7 +222,7 @@ function animateZombies() {
 function resetLevel() {
 
     // TOOD: Make sure Zombies/Pits don't spawn on/near player
-    setupPits(5); 
+    setupPits(numPitsPerLevel); 
     setupZombies();
     setupTreasure();
 
@@ -250,6 +250,7 @@ function checkCollisions() {
         if (isColliding(treasure, player)) {
             // Collision detected, add 10 points to the score
             score += 10;
+            spawnPit(1);
         } else {
             newTreasures.push(treasure);
         }

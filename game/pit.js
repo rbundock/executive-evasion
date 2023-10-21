@@ -30,9 +30,16 @@ class Pit {
 
 function setupPits(totalRequired) {
     pits = [];  // Clear any existing pits
+
+    while (pits.length < totalRequired) {
+        spawnPit(totalRequired);
+    }
+}
+
+function spawnPit(totalRequired) {
     let attempts = 0;  // Variable to track the number of attempts to place a pit
 
-    while (pits.length < totalRequired && attempts < 1000) {  // Create pits, with a limit on attempts to prevent an infinite loop
+    while (attempts < 1000) {  // Create pits, with a limit on attempts to prevent an infinite loop
         let x = getRandomCoordinate(canvas.width, safeBorderSize, pitSize);  // Random X position, ensuring pit fits within canvas
         let y = getRandomCoordinate(canvas.height, safeBorderSize, pitSize);  // Random Y position, ensuring pit fits within canvas
 
@@ -43,7 +50,6 @@ function setupPits(totalRequired) {
             if (distance < (pit.width*2)) {  // Twice the pit width, adjust as needed
                 overlapping = true;
                 console.log("overlapping pit!")
-                break;
             }
         }
 
@@ -51,12 +57,14 @@ function setupPits(totalRequired) {
             // Just check we aren't spawning on the player if this is a new level
             if (!isColliding({ x, y, width: pitSize, height: pitSize }, player)) {
                 pits.push(new Pit(x, y, pitSize, pitSize));   // No overlap, so add the pit
+                return;
             }
         }
 
         attempts++;  // Increment the number of attempts
     }
 }
+
 
 /*
 function isValidPitSpawnPoint(x, y, minDistance) {

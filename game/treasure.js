@@ -31,8 +31,11 @@ function setupTreasure() {
 }
 
 function shouldSpawnTreasure() {
+
+    
+
     // Define the bounding box for the player
-    const playerMargin = 500;  // Adjust this value as you see fit
+    const playerMargin = spawnDistanceTreasure;  // Adjust this value as you see fit
     const playerLeft = player.x - playerMargin;
     const playerRight = player.x + playerMargin;
     const playerTop = player.y - playerMargin;
