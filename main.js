@@ -11,6 +11,8 @@ const numPitsPerLevel = 5;
 
 const debugMode = false;
 
+const gamepad = navigator.getGamepads()[0];
+
 let autoPlayEnabled = false; // This is the flag
 
 let level = 1;
@@ -67,10 +69,13 @@ zombieImage.src = 'img/recruiter.png';
 // Set the canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.height/gridSize));
 
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+
+    console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.height/gridSize));
 });
 
 let gameLoopRunning = false;
@@ -83,6 +88,11 @@ function gameLoop() {
         levelStartTime = Date.now();
     }
     canvas.style.cursor = 'none';
+
+    if (gamepad) {
+        console.log("Gamepad: " + gamepad.axes[0]);
+    }
+
 
     // RESTART
     if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
@@ -103,16 +113,16 @@ function gameLoop() {
         ctx.globalAlpha = 1;  // Reset
     }
 
+    for (let treasure of treasures) {
+        treasure.draw(ctx);
+    }
+
     for (let pit of pits) {
         pit.draw(ctx);
     }
 
     for (let zombie of zombies) {
         zombie.draw(ctx);
-    }
-
-    for (let treasure of treasures) {
-        treasure.draw(ctx);
     }
     
     player.draw(ctx);
@@ -262,14 +272,8 @@ function checkCollisions() {
     for (let zombie of zombies) {
         let inPit = false;
         for (let pit of pits) {
-            if (
-                zombie.x < pit.x + pit.width &&
-                zombie.x + 20 > pit.x &&
-                zombie.y < pit.y + pit.height &&
-                zombie.y + 20 > pit.y 
-            ) {
+            if (isColliding(pit, zombie)) {
 
-            
                 // Pits have maximum capacity
                 if (pit.capacity > 0) {
                     inPit = true;
