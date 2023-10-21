@@ -2,7 +2,8 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 const gridSize = 40;
-const pitSize = 160;
+const stepSize = 20;
+const pitSize = gridSize * 5;
 const minSpawnDistanceFromPlayer = 100;
 const safeBorderSize = 300;
 
@@ -25,7 +26,7 @@ let maxPitCapacity = 6;
 TODO:
 
 - xSpeed up the zombies by half for every half that are removed
-- Move to a grid
+- xMove to a grid
 - xZombies to step
 
 GRAPHICS
@@ -223,26 +224,18 @@ function resetLevel() {
 
 function checkCollisions() {
     for (let pit of pits) {
-        if (
-            player.x < pit.x + pit.width &&
-            player.x + 20 > pit.x &&
-            player.y < pit.y + pit.height &&
-            player.y + 20 > pit.y
-        ) {
-            return true;  // Collision with pit detected
-        }
-    }
-
-    for (let zombie of zombies) {
-        if (
-            player.x < zombie.x + 20 &&
-            player.x + 20 > zombie.x &&
-            player.y < zombie.y + 20 &&
-            player.y + 20 > zombie.y
-        ) {
+        if (isColliding(pit, player)) {
             return true;  // Collision with zombie detected
         }
     }
+
+    
+    for (let zombie of zombies) {
+        if (isColliding(zombie, player)) {
+            return true;  // Collision with zombie detected
+        }
+    }
+    
 
     let newTreasures = [];
     for (let treasure of treasures) {

@@ -6,7 +6,8 @@ class Zombie {
     constructor(x, y, type = Zombie.RECRUITER) {
         this.x = x;
         this.y = y;
-        this.stepSize = numZombieStepSize;
+        this.width = gridSize;
+        this.height = gridSize;
         this.speed = zombieSpeed;  // Adjust speed as needed
         this.type = Zombie.RECRUITER;
     }
@@ -37,16 +38,16 @@ class Zombie {
 
         switch(direction) {
             case 'left':
-                this.x = Math.max(0, this.x - this.stepSize);
+                this.x = Math.max(0, this.x - numZombieStepSize);
                 break;
             case 'right':
-                this.x = Math.min(canvas.width - 20, this.x + this.stepSize);
+                this.x = Math.min(canvas.width - numZombieStepSize, this.x + numZombieStepSize);
                 break;
             case 'up':
-                this.y = Math.max(0, this.y - this.stepSize);
+                this.y = Math.max(0, this.y - numZombieStepSize);
                 break;
             case 'down':
-                this.y = Math.min(canvas.height - 20, this.y + this.stepSize);
+                this.y = Math.min(canvas.height - numZombieStepSize, this.y + numZombieStepSize);
                 break;
         }
 

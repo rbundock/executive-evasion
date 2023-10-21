@@ -9,18 +9,20 @@ class Treasure {
             y = getRandomCoordinate(canvas.height, safeBorderSize);  // Random Y position, ensuring treasure fits within canvas
 
             // Check if this position overlaps with any pit or zombie
-            if (!overlapsEntity(x, y, pits, 100) && !overlapsEntity(x, y, zombies, 100)) {
+            if (!overlapsEntity(x, y, pits, minSpawnDistanceFromPlayer) && !overlapsEntity(x, y, zombies, minSpawnDistanceFromPlayer)) {
                 safeSpawn = true;  // Found a safe spawn location
             }
         }
 
         this.x = x;
         this.y = y;
+        this.width = gridSize;
+        this.height = gridSize;
     }
 
     draw(ctx) {
         ctx.fillStyle = 'red';
-        ctx.fillRect(this.x, this.y, 20, 20);
+        ctx.fillRect(this.x, this.y, gridSize, gridSize);
     }
 }
 

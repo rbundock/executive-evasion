@@ -16,23 +16,24 @@ class Player {
 
         this.x = x;
         this.y = y;
-        this.stepSize = 20;  // Set the step size (adjust as needed)
+        this.width = gridSize;
+        this.height = gridSize;
     }
     
     move(direction) {
         playSound(step);
         switch(direction) {
             case 'left':
-                this.x = Math.max(0, this.x - this.stepSize);
+                this.x = Math.max(0, this.x - stepSize);
                 break;
             case 'right':
-                this.x = Math.min(canvas.width - 20, this.x + this.stepSize);
+                this.x = Math.min(canvas.width - stepSize, this.x + stepSize);
                 break;
             case 'up':
-                this.y = Math.max(0, this.y - this.stepSize);
+                this.y = Math.max(0, this.y - stepSize);
                 break;
             case 'down':
-                this.y = Math.min(canvas.height - 20, this.y + this.stepSize);
+                this.y = Math.min(canvas.height - stepSize, this.y + stepSize);
                 break;
         }
     }
