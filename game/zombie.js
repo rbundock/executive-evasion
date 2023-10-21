@@ -55,9 +55,14 @@ class Zombie {
 
         // If other zombies exist, check we aren't stepping on their toes. 
         let collision = false;
+        let alreadyColliding = false;
         if (zombies.length> 1) {
             for (let otherZombie of zombies) {
                 if (otherZombie !== this) {
+                    if (isColliding(this, otherZombie)) {
+                        // break the deadlock when two zombies are ontop of each other
+                        alreadyColliding = true;
+                    }
                     if (isColliding({ x: potentialX, y: potentialY, width: this.width, height: this.height }, otherZombie)) {
                         collision = true;
                     }
@@ -65,7 +70,7 @@ class Zombie {
             } 
         }
 
-        if (!collision) {
+        if (!collision || alreadyColliding) {
             this.x = potentialX;
             this.y = potentialY; 
         }
