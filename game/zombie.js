@@ -11,14 +11,6 @@ class Zombie {
         this.type = Zombie.RECRUITER;
     }
 
-    /* Original movement code
-    moveTowards(player) {
-        let angle = Math.atan2(player.y - this.y, player.x - this.x);
-        this.x += Math.cos(angle) * this.speed;
-        this.y += Math.sin(angle) * this.speed;
-    }
-    */
-
     moveTowards(player) {
 
         // Find the angle
@@ -62,7 +54,7 @@ class Zombie {
 
     draw(ctx) {
         ctx.fillStyle = 'green';
-        ctx.fillRect(this.x, this.y, 20, 20);
+        ctx.fillRect(this.x, this.y, gridSize, gridSize);
 
         switch(this.type) {
         case Zombie.RECRUITER:
@@ -72,8 +64,8 @@ class Zombie {
             ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
             break;
         case Zombie.CFO:
-                ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
-                break;
+            ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
+            break;
         }
     }
 }
@@ -110,24 +102,22 @@ function spawnZombie() {
 
 function setupZombies() {
     zombies = [];  // Clear any existing zombies
-    const minDistanceFromPlayer = 200;  // Set minimum distance from player
     for (let i = 0; i < numStartingZombies + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
-            x = (Math.random() * parseInt(canvas.width / 20));
-            y = (Math.random() * parseInt(canvas.height / 20));
-            x = x * 20;
-            y = y * 20;
+            x = getRandomCoordinate(canvas.width, safeBorderSize);
+            y = getRandomCoordinate(canvas.height, safeBorderSize);
+
         } while (
-            overlapsPit(x, y, 20, 20) || 
-            (player && !isValidSpawnPoint(x, y, minDistanceFromPlayer))  // Skip the check if player is undefined
+            overlapsPit(x, y, gridSize, gridSize) || 
+            (player && !isValidZombieSpawnPoint(x, y, minSpawnDistanceFromPlayer))  // Skip the check if player is undefined
         );  
         // Repeat until a position not overlapping a pit and far enough from the player is found
         zombies.push(new Zombie(x, y));
     }
 }
 
-function isValidSpawnPoint(x, y, minDistance) {
+function isValidZombieSpawnPoint(x, y, minDistance) {
     const distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
     return distance >= minDistance;
 }

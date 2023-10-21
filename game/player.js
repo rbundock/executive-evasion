@@ -2,14 +2,11 @@ class Player {
     constructor() {
         let safeSpawn = false;  // Flag to check if spawn location is safe
         let x, y; // Declare the coordinates of the player
-        let borderSize = 200;
 
         while (!safeSpawn) {
             // Generate random coordinates within the canvas        
-            x = parseInt((Math.random() * (canvas.width - borderSize) + (borderSize/2)) /20);  // Random X position, ensuring player fits within canvas
-            y = parseInt((Math.random() * (canvas.height - borderSize) + (borderSize/2)) /20);  // Random Y position, ensuring player fits within canvas
-            x = x * 20;
-            y = y * 20;
+            x = getRandomCoordinate(canvas.width, safeBorderSize);  // Random X position, ensuring player fits within canvas
+            y = getRandomCoordinate(canvas.height, safeBorderSize);  // Random Y position, ensuring player fits within canvas
 
             // Check if this position overlaps with any pit or zombie
             if (!overlapsEntity(x, y, pits, 100) && !overlapsEntity(x, y, zombies, 100)) {
@@ -42,7 +39,7 @@ class Player {
 
     draw(ctx) {
         ctx.fillStyle = 'blue';
-        ctx.fillRect(this.x, this.y, 20, 20);
+        ctx.fillRect(this.x, this.y, gridSize, gridSize);
 
         // Make sure the image is loaded before drawing
         if (playerImage.complete) {

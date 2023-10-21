@@ -2,12 +2,11 @@ class Treasure {
     constructor() {
         let safeSpawn = false;  // Flag to check if spawn location is safe
         let x, y; // Declare the coordinates of the player
-        let borderSize = 50;
 
         while (!safeSpawn) {
             // Generate random coordinates within the canvas
-            x = Math.random() * (canvas.width - borderSize) + (borderSize/2);  // Random X position, ensuring treasure fits within canvas
-            y = Math.random() * (canvas.height - borderSize) + (borderSize/2);  // Random Y position, ensuring treasure fits within canvas
+            x = getRandomCoordinate(canvas.width, safeBorderSize);  // Random X position, ensuring treasure fits within canvas
+            y = getRandomCoordinate(canvas.height, safeBorderSize);  // Random Y position, ensuring treasure fits within canvas
 
             // Check if this position overlaps with any pit or zombie
             if (!overlapsEntity(x, y, pits, 100) && !overlapsEntity(x, y, zombies, 100)) {

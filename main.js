@@ -1,17 +1,24 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+const gridSize = 40;
+const pitSize = 160;
+const minSpawnDistanceFromPlayer = 100;
+const safeBorderSize = 300;
+
 let autoPlayEnabled = false; // This is the flag
 
 let level = 1;
 let score = 0;
 
 let numStartingZombies = 6;
-let numZombieStepSize = 10;
+let numZombieStepSize = gridSize / 2;
 let maxZombieDelay = 300;
 
 let minPitCapacity = 2;
 let maxPitCapacity = 6;
+
+
 
 /*
 
@@ -195,6 +202,8 @@ function animateZombies() {
     zombies.forEach(zombie => {
         zombie.moveTowards(player);
     });
+
+    playSound(zombie_step);
 
     // console.log("Zombie Delay:" + maxZombieDelay * zombiesLeftPercentage)
     setTimeout(animateZombies, maxZombieDelay * zombiesLeftPercentage);
