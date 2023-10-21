@@ -1,0 +1,541 @@
+@font-face {
+    font-family: "Barlow";
+    src: url("./../fonts/Barlow-BlackItalic.ttf") format("truetype");
+    font-display: swap;
+    font-weight: 900;
+    font-style: normal
+}
+
+@font-face {
+    font-family: "Urbanist-Bold";
+    src: url("./../fonts/Urbanist-Bold.ttf") format("truetype");
+    font-display: swap;
+    font-weight: 700;
+    font-style: normal
+}
+
+@font-face {
+    font-family: "Urbanist-Regular";
+    src: url("./../fonts/Urbanist-Regular.ttf") format("truetype");
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal
+}
+
+* {
+    box-sizing: border-box
+}
+
+html {
+    scroll-behavior: smooth
+}
+
+html,body {
+    font-family: "Urbanist-Regular","Arial",sans-serif;
+    font-size: 1rem
+}
+
+h1,h2,h3,h4,h5,h6 {
+    text-transform: uppercase;
+    font-family: "Barlow",sans-serif
+}
+
+.container {
+    max-width: 72.9375rem;
+    padding: 0 .9375rem
+}
+
+a {
+    text-decoration: none
+}
+
+
+.cta-btn {
+    padding: 0rem 0rem 1rem 0rem;
+}
+
+.btn {
+    display: inline-block;
+    border-radius: 62.4375rem;
+    padding: 1rem 1.5rem;
+    background: #262626;
+    font-family: "Barlow",sans-serif;
+    color: #DAFF02;
+    text-transform: uppercase;
+    line-height: 1.0625rem;
+    font-size: 1.0625rem
+}
+
+.btn:hover {
+    color: #DAFF02;
+    background: #262626
+}
+
+.btn_magenta {
+    display: inline-block;
+    border-radius: 62.4375rem;
+    padding: 1rem 1.5rem;
+    background: #000000;
+    font-family: "Barlow",sans-serif;
+    color: #ff46fa;
+    text-transform: uppercase;
+    line-height: 1.0625rem;
+    font-size: 1.0625rem
+}
+
+.btn_magenta:hover {
+    color: #ff46fa;
+    background: #000000
+}
+
+.divider-line {
+    background: #DAFF02;
+    height: .125rem;
+    margin: 4rem 0;
+    opacity: 20%
+}
+
+.sr-only {
+    width: 0.0625rem;
+    height: 0.0625rem;
+    padding: 0rem;
+    margin: -0.0625rem;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0rem;
+    position: absolute
+}
+
+img {
+    display: block;
+    max-width: 100%
+}
+
+.contact-us {
+    background: #262626;
+    padding: 5rem 0;
+    position: relative;
+    z-index: 1
+}
+
+.contact-us::before {
+    content: '';
+    background: url("./../images/contact-graphic.svg") no-repeat bottom center;
+    background-size: contain;
+    background-position: 0 100%;
+    width: 21.8125rem;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -1
+}
+
+@media (max-width: 991.98px) {
+    .contact-us__detail {
+        margin-bottom:2rem
+    }
+}
+
+.contact-us__detail h2,.contact-us__detail h3 {
+    margin-bottom: 1rem
+}
+
+.contact-us__detail h2 {
+    color: #DAFF02;
+    line-height: 2.375rem;
+    margin-bottom: 2rem;
+    font-size: 2.75rem
+}
+
+.contact-us__detail h2 span {
+    color: #FF46FA
+}
+
+@media (min-width: 992px) {
+    .contact-us__detail h2 {
+        margin-bottom:1rem;
+        line-height: 3.625rem;
+        font-size: 4rem
+    }
+}
+
+.contact-us__detail h3 {
+    color: #fff;
+    line-height: 2.5rem;
+    font-size: 2.0625rem
+}
+
+.contact-us__detail p {
+    color: #fff;
+    line-height: 1.75rem;
+    font-size: 1.3125rem
+}
+
+.contact-us__form {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 1.5rem;
+    border: .25rem solid #DAFF02
+}
+
+@media (min-width: 992px) {
+    .contact-us__form {
+        max-width:32.25rem;
+        margin-left: auto
+    }
+}
+
+.contact-us__form input,.contact-us__form label {
+    display: block;
+    width: 100%
+}
+
+.contact-us__form label {
+    line-height: 1.0625rem;
+    margin-bottom: .5rem;
+    font-family: "Barlow",sans-serif;
+    font-size: 1.0625rem
+}
+
+.contact-us__form input {
+    padding: .625rem;
+    border: .0625rem solid #0000001A;
+    margin-bottom: 1.5rem
+}
+
+.contact-us__form input[type="submit"] {
+    padding: 1rem 1.5rem;
+    display: inline-block;
+    width: auto;
+    margin: 0
+}
+
+.hero-banner {
+    padding-top: 9.4375rem;
+    background: url("./../images/banner-img.png") no-repeat top center;
+    background-size: cover;
+    position: relative;
+    z-index: 1
+}
+
+.hero-banner::before {
+    content: '';
+    background-image: url("./../images/header-left-ghraphic.svg"),url("./../images/header-right-ghraphic.svg");
+    background-position: left top, right bottom;
+    background-repeat: no-repeat, no-repeat;
+    background-size: 35%, 20%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1
+}
+
+@media (min-width: 992px) {
+    .hero-banner::before {
+        background:url("./../images/hero-graphic.svg") no-repeat top center;
+        background-size: cover;
+        background-position: 0 0
+    }
+}
+
+.hero-banner::after {
+    content: '';
+    background: #000;
+    opacity: 30%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -2
+}
+
+.hero-banner h1 {
+    color: #DAFF02;
+    margin-bottom: 2rem;
+    line-height: 2.375rem;
+    font-size: 2.75rem
+}
+
+.hero-banner h1 span {
+    color: #fff
+}
+
+@media (min-width: 992px) {
+    .hero-banner h1 {
+        line-height:3.625rem;
+        font-size: 4rem
+    }
+}
+
+.hero-banner__content {
+    max-width: 53rem;
+    width: 100%;
+    padding: 3.5rem 0 12.5rem
+}
+
+.hero-banner__content p {
+    width: 100%;
+    max-width: 43rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    line-height: 1.75rem;
+    font-size: 1.3125rem
+}
+
+.hero-banner__content .cta-btn,.hero-banner__content .cta-links {
+    vertical-align: middle;
+    display: inline-block
+}
+
+.hero-banner__content .cta-links {
+    margin-left: .875rem
+}
+
+.hero-banner__content .cta-links a {
+    color: #fff;
+    display: block
+}
+
+.hero-banner__content .cta-links a.phone-link {
+    font-family: "Urbanist-Bold","Arial",sans-serif;
+    line-height: 1.25rem;
+    font-size: 1.0625rem
+}
+
+.hero-banner__content .cta-links span.small-link {
+    color: #fff;
+    font-family: "Barlow",sans-serif;
+    line-height: 1rem;
+    text-transform: uppercase;
+    font-size: .875rem
+}
+
+header {
+    padding: 2rem 0;
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 22
+}
+
+header .main-logo a {
+    display: inline-block
+}
+
+header .main-logo img {
+    width: 10.4375rem
+}
+
+footer {
+    background: #262626;
+    padding: 6rem 0 5rem;
+    text-align: center;
+    position: relative;
+    z-index: 1
+}
+
+@media (max-width: 991.98px) {
+    footer {
+        background-image:url("./../images/footer-left-graphic.png"),url("./../images/footer-right-graphic.png");
+        background-position: left top, right bottom;
+        background-repeat: no-repeat, no-repeat;
+        background-size: 20%
+    }
+}
+
+footer::before {
+    content: '';
+    background: url("./../images/top-line-graphic.svg") no-repeat top center;
+    background-size: 100%;
+    height: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: -1
+}
+
+@media (min-width: 992px) {
+    footer::after {
+        content:'';
+        background: url("./../images/footer-graphic.svg") no-repeat top center;
+        background-size: cover;
+        background-position: 0 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -2
+    }
+}
+
+footer .footer-logo {
+    margin-bottom: 2rem
+}
+
+footer .footer-logo a {
+    display: inline-block
+}
+
+footer .footer-logo img {
+    width: 8.375rem
+}
+
+footer .cta-blocks {
+    margin-bottom: 2rem
+}
+
+footer .cta-blocks a {
+    color: #DAFF02
+}
+
+footer .cta-blocks .cta-btn,footer .cta-blocks .cta-links {
+    vertical-align: middle;
+    display: inline-block
+}
+
+footer .cta-blocks .cta-btn a {
+    font-family: "Barlow",sans-serif;
+    line-height: 1.0625rem;
+    font-size: 1.0625rem
+}
+
+footer .cta-blocks .cta-links {
+    margin-left: .875rem;
+    text-align: left
+}
+
+footer .cta-blocks .cta-links a {
+    display: block
+}
+
+footer .cta-blocks .cta-links a.phone-link {
+    font-family: "Urbanist-Bold","Arial",sans-serif;
+    line-height: 1.25rem;
+    font-size: 1.0625rem
+}
+
+footer .cta-blocks .cta-links span.small-link {
+    color: #DAFF02;
+    font-family: "Barlow",sans-serif;
+    line-height: 1rem;
+    text-transform: uppercase;
+    font-size: .875rem
+}
+
+footer .social-icons {
+    margin-bottom: 2rem
+}
+
+footer .social-icons a {
+    color: #fff;
+    opacity: 20%;
+    font-size: 1.25rem
+}
+
+footer .social-icons a:not(:last-child) {
+    margin-right: 1rem
+}
+
+footer .social-icons a:hover {
+    opacity: 1;
+    color: #fff
+}
+
+.copyright-text {
+    line-height: .8125rem;
+    color: #fff;
+    opacity: 60%;
+    margin: 0;
+    font-size: .6875rem
+}
+
+.software-specialist {
+    background: #262626
+}
+
+.software-specialist__about {
+    color: #fff;
+    padding: 5rem 0
+}
+
+.software-specialist__heading {
+    color: #DAFF02;
+    line-height: 2.375rem;
+    font-size: 2.75rem;
+    margin-bottom: 2rem
+}
+
+.software-specialist__heading span {
+    color: #FF46FA
+}
+
+@media (min-width: 992px) {
+    .software-specialist__heading {
+        margin:0;
+        line-height: 3.625rem;
+        font-size: 4rem
+    }
+}
+
+.software-specialist__desc {
+    line-height: 1.75rem;
+    font-size: 1.3125rem
+}
+
+@media (max-width: 991.98px) {
+    .software-specialist__detail {
+        margin-bottom:2rem
+    }
+}
+
+.software-specialist__detail .software-specialist__icon,.software-specialist__detail h3 {
+    margin-bottom: 1rem
+}
+
+.software-specialist__detail img {
+    width: 3rem
+}
+
+.software-specialist__detail h3 {
+    line-height: 1.3125rem;
+    font-size: 1.3125rem
+}
+
+.software-specialist__detail p {
+    line-height: 1.75rem;
+    font-size: 1.3125rem
+}
+
+.software-specialist__brands {
+    text-align: center;
+    padding: 1.25rem 0
+}
+
+.software-specialist__brands-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center
+}
+
+@media (min-width: 768px) {
+    .software-specialist__brands-wrapper {
+        justify-content:space-between
+    }
+}
+
+.software-specialist__brands img {
+    width: 7.5rem;
+    display: inline-block
+}
+
+.software-specialist__brands img:not(:last-child) {
+    margin-right: 1rem
+}
+
+/*# sourceMappingURL=style.min.css.map */

@@ -23,7 +23,7 @@ let numZombieStepSize = gridSize / 2;
 let maxZombieDelay = 300; // in ms
 let minZombieDelay = 90; // in ms
 
-let minPitCapacity = 1;
+let minPitCapacity = 2; // You can't have a meeting on your own
 let maxPitCapacity = 4;
 
 /*
