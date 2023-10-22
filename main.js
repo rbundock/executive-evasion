@@ -295,7 +295,10 @@ const Game = (function() {
 let zombieTimeoutId = null;
 const game = Game.getInstance();
 initializeFloorTiles();
+ModalGameOverScreen.initGameOverScreen();
 ModalIntroScreen.loadIntroScreen();
+
+//ModalGameOverScreen.clearLeaderboardWithConfirmation();
 
 function checkCollisions() {
     for (let pit of pits) {
