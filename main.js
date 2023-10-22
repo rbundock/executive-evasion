@@ -120,7 +120,6 @@ const Game = (function() {
             console.log("Gamepad: " + gamepad.axes[0]);
         }
     
-    
         // RESTART
         if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
             playSound(restart);
