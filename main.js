@@ -112,6 +112,9 @@ const Game = (function() {
     let levelStartTime;
     let lastGameTime;
 
+    let flagGamepadHorizontalAccept = true;
+    let flagGamepadVerticalAccept = true;
+
     function gameLoop() {
         // ... (rest of your game loop code)
         canvas.style.cursor = 'none';
@@ -218,6 +221,43 @@ const Game = (function() {
         zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
     }
 
+    function pollGamepad() {
+    
+        console.log("Checking gamepad");
+
+        if (gamepad) {
+            
+            if (gamepad.axes[0] === 0) {
+                flagGamepadHorizontalAccept = true;
+            }
+            if (gamepad.axes[1] === 0) {
+                flagGamepadVerticalAccept = true;
+            }
+
+            // For joystick: axes[0] is the horizontal axis, axes[1] is the vertical axis
+            if (gamepad.axes[0] > 0.5 && flagGamepadHorizontalAccept) {
+                player.move('right');
+                flagGamepadHorizontalAccept = false; 
+            } else if (gamepad.axes[0] < -0.5 && flagGamepadHorizontalAccept) {
+                player.move('left');
+                flagGamepadHorizontalAccept = false; 
+            }
+
+            if (gamepad.axes[1] > 0.5 && flagGamepadVerticalAccept) {
+                player.move('down');
+                flagGamepadVerticalAccept = false; 
+            } else if (gamepad.axes[1] < -0.5 && flagGamepadVerticalAccept) {
+                player.move('up');
+                flagGamepadVerticalAccept = false; 
+            }
+        
+        }
+
+        if (gameLoopRunning) {
+            requestAnimationFrame(pollGamepad);
+        }
+    }
+
     function handleKeyDown(e) {
         // If the game loop is not running don't try to move the player
         if (!gameLoopRunning) {
@@ -286,6 +326,7 @@ const Game = (function() {
 
                             setupKeyListeners();
                             animateZombies();
+                            requestAnimationFrame(pollGamepad);
                             requestAnimationFrame(gameLoop);
                         }
                     },
