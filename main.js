@@ -224,6 +224,7 @@ const Game = (function() {
     function pollGamepad() {
     
         const gamepad = navigator.getGamepads()[0];
+        const AXIS_THRESHOLD = 0.1;
 
         console.log("Checking gamepad");
 
@@ -231,10 +232,10 @@ const Game = (function() {
             
             console.log(gamepad.axes[0]);
 
-            if (gamepad.axes[0] === 0) {
+            if (Math.abs(gamepad.axes[0]) < AXIS_THRESHOLD) {
                 flagGamepadHorizontalAccept = true;
             }
-            if (gamepad.axes[1] === 0) {
+            if (Math.abs(gamepad.axes[1]) < AXIS_THRESHOLD) {
                 flagGamepadVerticalAccept = true;
             }
 
