@@ -223,6 +223,8 @@ const Game = (function() {
 
     function pollGamepad() {
     
+        const gamepad = navigator.getGamepads()[0];
+
         console.log("Checking gamepad");
 
         if (gamepad) {
