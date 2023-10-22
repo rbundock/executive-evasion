@@ -83,15 +83,15 @@ class ModalGameOverScreen {
 
          // Attach event listeners to dropdowns
          document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
-            dropdown.addEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler.bind(this));
+            dropdown.addEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
         });
 
         // Attach event listener to the "Submit" button for left and right arrow navigation
         const submitButton = document.getElementById('submitInitials');
-        submitButton.addEventListener('keydown', ModalGameOverScreen.submitKeyHandler.bind(this));
+        submitButton.addEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
         
         // Handle initials submission
-        submitButton.addEventListener('click', ModalGameOverScreen.submitClickHandler.bind(this));
+        submitButton.addEventListener('click', ModalGameOverScreen.submitClickHandler);
 
         ModalGameOverScreen.renderLeaderboard();
         document.getElementById('initial1').focus();
