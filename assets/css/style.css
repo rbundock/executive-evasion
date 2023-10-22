@@ -539,3 +539,46 @@ footer .social-icons a:hover {
 }
 
 /*# sourceMappingURL=style.min.css.map */
+
+
+
+#initialsEntry {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+#submitInitials {
+    padding: 10px 20px;
+    font-size: 1.5em;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.initial-dropdown {
+    appearance: none; /* Removes the default browser styling */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; /* For Firefox */
+    border: none; /* Removes the border */
+    background: transparent; /* Makes the background transparent */
+    outline: none; /* Removes the focus outline */
+    padding: 0; /* Removes padding */
+    margin: 0 5px; /* Optional: Adds a little spacing between dropdowns */
+    font-size: 3em; /* Optional: Adjusts the font size */
+    color: white; /* Optional: Sets the text color */
+    cursor: pointer; /* Changes the cursor to a hand pointer on hover */
+}
+
+/* Optional: Style for hover state */
+.initial-dropdown:hover {
+    color: #ddd; /* Changes the text color slightly on hover */
+}
+
+.initial-dropdown:focus {
+    border: 2px solid white; /* Adds a white border */
+    outline: none; /* Removes the default browser focus outline */
+    padding: 3px; /* Optional: Adds a little padding to give space inside the border */
+}

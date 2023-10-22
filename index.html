@@ -45,12 +45,18 @@
         <section class="software-specialist">
             <div class="container">
                 <div class="software-specialist__about">
-                    <h1>Game Over</h1>  
+                    <h1 class="software-specialist__heading">Game <span>Over</span></h1>  
                     <p id="finalScore">Your Final Score: </p>
-                    <button id="restartButton">Restart</button>
-                    <div id="qrcode"></div>
+                    <div id="leaderboard"></div>
+                    <div id="initialsEntry">
+                        <select id="initial1" class="initial-dropdown" tabindex="1"></select>
+                        <select id="initial2" class="initial-dropdown" tabindex="2"></select>
+                        <select id="initial3" class="initial-dropdown" tabindex="3"></select>
+                        <button id="submitInitials" tabindex="4">Submit</button>
+                    </div>
                 </div>
-        </div>
+            </div>
+        </section>
     </div>
 
     <script src="game/audio.js"></script>

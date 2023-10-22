@@ -16,19 +16,37 @@ function drawLevel() {
     }
 }
 
-function drawFloorTiles() {
-    const tileSize = tileImage.width; // Assuming a square tile; adjust as needed
-  
-    for (let x = 0; x < canvas.width; x += tileSize) {
-      for (let y = 0; y < canvas.height; y += tileSize) {
-        //if (Math.random() < 0.99) {
-            ctx.drawImage(tileImage, x, y, tileSize, tileSize);
-         //} else {
-         //   ctx.drawImage(tileHCImage, x, y, tileSize, tileSize);
-         //}
-      }
+let tileMatrix;  // This will store the type of each tile
+
+function initializeFloorTiles() {
+    tileMatrix = [];
+
+    for (let x = 0; x < canvas.width; x += gridSize) {
+        let tileRow = [];
+        for (let y = 0; y < canvas.height; y += gridSize) {
+            // Instead of randomizing during drawing, we randomize during initialization
+            if (Math.random() < 0.99) {
+                tileRow.push('regular');
+            } else {
+                tileRow.push('HC');
+            }
+        }
+        tileMatrix.push(tileRow);
     }
-  }
+}
+
+function drawFloorTiles() {
+    for (let x = 0; x < tileMatrix.length; x++) {
+        for (let y = 0; y < tileMatrix[x].length; y++) {
+            if (tileMatrix[x][y] === 'regular') {
+                ctx.drawImage(tileImage, x * gridSize, y * gridSize, gridSize, gridSize);
+            } else {
+                ctx.drawImage(tileHCImage, x * gridSize, y * gridSize, gridSize, gridSize);
+            }
+        }
+    }
+}
+
 
 // Utility function to generate random coordinates within given boundaries
 function getRandomCoordinate(canvasSize, borderSize, objectSize) {

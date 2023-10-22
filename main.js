@@ -9,6 +9,8 @@ const safeBorderSize = gridSize * 3;
 const spawnDistanceTreasure = gridSize * 6;
 const numPitsPerLevel = 5;
 
+const numLeaderBoardPositions = 15;
+
 const debugMode = false;
 
 const gamepad = navigator.getGamepads()[0];
@@ -39,7 +41,7 @@ GRAPHICS
 - https://limezu.itch.io/modernoffice
 
 AUDIO
-- Zombie stepßß
+- Zombie step
 - https://www.youtube.com/watch?v=oy_usKHTXOY
 
 *//////
@@ -85,7 +87,7 @@ console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.hei
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
+    initializeFloorTiles(); // Rebuild tiles
     console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.height/gridSize));
 });
 
@@ -209,7 +211,7 @@ const Game = (function() {
         window.addEventListener('keydown', (e) => {
         
             // If the game loop is not running don't try to move the player
-            if (!game.isGameLoopRunning) {
+            if (!gameLoopRunning) {
                 return;
             }
         
@@ -244,7 +246,7 @@ const Game = (function() {
             if (!instance) {
                 instance = {
                     isGameLoopRunning: function() {
-                        return this.gameLoopRunning;
+                        return gameLoopRunning;
                     },
                     start: function() {
                         if (!gameLoopRunning) {
@@ -279,6 +281,7 @@ const Game = (function() {
 
 let zombieTimeoutId = null;
 const game = Game.getInstance();
+initializeFloorTiles();
 ModalIntroScreen.loadIntroScreen();
 
 function checkCollisions() {
