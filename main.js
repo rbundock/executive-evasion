@@ -94,6 +94,16 @@ window.addEventListener('resize', () => {
     console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.height/gridSize));
 });
 
+window.addEventListener("gamepadconnected", (event) => {
+    console.log("A gamepad connected:");
+    console.log(event.gamepad);
+  });
+  
+  window.addEventListener("gamepaddisconnected", (event) => {
+    console.log("A gamepad disconnected:");
+    console.log(event.gamepad);
+  });
+
 const Game = (function() {
 
     // Private variables and methods
@@ -209,38 +219,46 @@ const Game = (function() {
         zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
     }
 
+    function handleKeyDown(e) {
+        // If the game loop is not running don't try to move the player
+        if (!gameLoopRunning) {
+            return;
+        }
+    
+        if (!keys[e.code]) {
+            keys[e.code] = true;
+    
+            switch(e.code) {
+                case 'ArrowLeft':
+                    player.move('left');
+                    break;
+                case 'ArrowRight':
+                    player.move('right');
+                    break;
+                case 'ArrowUp':
+                    player.move('up');
+                    break;
+                case 'ArrowDown':
+                    player.move('down');
+                    break;
+            }
+        }
+    }
+    
+    function handleKeyUp(e) {
+        keys[e.code] = false;
+    }
+
     function setupKeyListeners() {
-        
-        window.addEventListener('keydown', (e) => {
-        
-            // If the game loop is not running don't try to move the player
-            if (!gameLoopRunning) {
-                return;
-            }
-        
-            if (!keys[e.code]) {
-                keys[e.code] = true;
-        
-                switch(e.code) {
-                    case 'ArrowLeft':
-                        player.move('left');
-                        break;
-                    case 'ArrowRight':
-                        player.move('right');
-                        break;
-                    case 'ArrowUp':
-                        player.move('up');
-                        break;
-                    case 'ArrowDown':
-                        player.move('down');
-                        break;
-                }
-            }
-        });
-        
-        window.addEventListener('keyup', (e) => {
-            keys[e.code] = false;
-        });
+        console.log("setupKeyListeners");
+    
+        // Remove existing listeners first
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+    
+        // Add the listeners
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
     }
 
     // Public methods exposed by the singleton
