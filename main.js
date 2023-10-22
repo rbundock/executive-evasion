@@ -15,7 +15,7 @@ const gamepad = navigator.getGamepads()[0];
 
 let autoPlayEnabled = false; // This is the flag
 
-let level = 1;
+let level = 1; // Start at 1
 let score = 0;
 
 let numStartingZombies = 6;
@@ -89,182 +89,197 @@ window.addEventListener('resize', () => {
     console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.height/gridSize));
 });
 
-let gameLoopRunning = false;
-let levelStartTime;
-let zombieTimeoutId = null;
+const Game = (function() {
 
-ModalIntroScreen.loadIntroScreen();
+    // Private variables and methods
+    let instance;
+    let gameLoopRunning = false;
+    let levelStartTime;
 
-function gameLoop() {
+    function gameLoop() {
+        // ... (rest of your game loop code)
+        canvas.style.cursor = 'none';
 
-    if (!gameLoopRunning) {
-        gameLoopRunning = true;
-        levelStartTime = Date.now();
-    }
-    canvas.style.cursor = 'none';
-
-    if (gamepad) {
-        console.log("Gamepad: " + gamepad.axes[0]);
-    }
-
-
-    // RESTART
-    if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
-        playSound(restart);
-        level++;  // Increase the level
-        // zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
-        console.log("Last level time: " + (Date.now() - levelStartTime) / 1000);
-        resetLevel();
-    }
-
-    // DRAW ----
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+        if (gamepad) {
+            console.log("Gamepad: " + gamepad.axes[0]);
+        }
     
-    // Draw the floor    
-    drawFloorTiles();
-
-    if (debugMode) {
-        ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
-        ctx.fillStyle = 'green';
-        ctx.fillRect(safeBorderSize/2, safeBorderSize/2, canvas.width - safeBorderSize, canvas.height - safeBorderSize);
-        ctx.globalAlpha = 1;  // Reset
-    }
-
-    for (let treasure of treasures) {
-        treasure.draw(ctx);
-    }
-
-    for (let pit of pits) {
-        pit.draw(ctx);
-    }
-
-    for (let zombie of zombies) {
-        zombie.draw(ctx);
-    }
     
-
-    player.draw(ctx);
-	drawScore();
-    drawLevel();
-    /// 
-
-
-    if (checkCollisions()) {
-
-        gameLoopRunning = false;
+        // RESTART
+        if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
+            playSound(restart);
+            level++;  // Increase the level
+            // zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
+            console.log("Last level time: " + (Date.now() - levelStartTime) / 1000);
+            game.reset();
+        }
+    
+        // DRAW ----
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         
-        console.log("Total game time: " + (Date.now() - levelStartTime) / 1000);
-        playSound(gameover);
+        // Draw the floor    
+        drawFloorTiles();
+    
+        if (debugMode) {
+            ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(safeBorderSize/2, safeBorderSize/2, canvas.width - safeBorderSize, canvas.height - safeBorderSize);
+            ctx.globalAlpha = 1;  // Reset
+        }
+    
+        for (let treasure of treasures) {
+            treasure.draw(ctx);
+        }
+    
+        for (let pit of pits) {
+            pit.draw(ctx);
+        }
+    
+        for (let zombie of zombies) {
+            zombie.draw(ctx);
+        }
+        
+    
+        player.draw(ctx);
+        drawScore();
+        drawLevel();
+        /// 
+    
+    
+        if (checkCollisions()) {
+    
+            game.stop();
 
-        ModalGameOverScreen.loadGameOverScreen();
+            console.log("Total game time: " + (Date.now() - levelStartTime) / 1000);
+            playSound(gameover);
+    
+            ModalGameOverScreen.loadGameOverScreen();
 
-        return;  // End the game loop by not calling requestAnimationFrame
-    }
-
-    // If the player has closed a pit, then spawn treasure to help them out
-    if (pits.length < numPitsPerLevel) {
-        if (shouldSpawnTreasure() || debugMode) {
-            // Only spawn one
-            if (treasures.length === 0) {
-                const newTreasure = new Treasure();
-                treasures.push(newTreasure);
-                treasure_spawn.play();
+            return;  // End the game loop by not calling requestAnimationFrame
+        }
+    
+        // If the player has closed a pit, then spawn treasure to help them out
+        if (pits.length < numPitsPerLevel) {
+            if (shouldSpawnTreasure() || debugMode) {
+                // Only spawn one
+                if (treasures.length === 0) {
+                    const newTreasure = new Treasure();
+                    treasures.push(newTreasure);
+                    treasure_spawn.play();
+                }
             }
         }
-    }
-
-    requestAnimationFrame(gameLoop);
-}
-
-window.addEventListener('keydown', (e) => {
     
-    // If the game loop is not running don't try to move the player
-    if (!gameLoopRunning) {
-        return;
+        requestAnimationFrame(gameLoop);
     }
 
-    if (!keys[e.code]) {
-        keys[e.code] = true;
+    function animateZombies() {
 
-        switch(e.code) {
-            case 'ArrowLeft':
-                player.move('left');
-                break;
-            case 'ArrowRight':
-                player.move('right');
-                break;
-            case 'ArrowUp':
-                player.move('up');
-                break;
-            case 'ArrowDown':
-                player.move('down');
-                break;
+        // If the game loop is not running, don't try to move the zombies
+        if (!gameLoopRunning) {
+            if (zombieTimeoutId) {
+                clearTimeout(zombieTimeoutId);
+                zombieTimeoutId = null;
+            }
+            return;
         }
-    }
-});
-
-window.addEventListener('keyup', (e) => {
-    keys[e.code] = false;
-});
-
-function startGame() {
-
-    ModalIntroScreen.unloadGameOverScreen();
-
-    // Reset Game
-    player = new Player(); // Initialize player with random safe location
-    resetLevel();
-
-    //playSound(restart);
-    gameLoop(); // Start the game loop
-    animateZombies();
-    if (autoPlayEnabled) {
-        playAI(player, zombies, pit);
-    }
-}
-
-function animateZombies() {
-
-    // If the game loop is not running, don't try to move the zombies
-    if (!gameLoopRunning) {
+    
+        // Percentage of Zombies left
+        let zombiesLeftPercentage = zombies.length / numStartingZombies;
+    
+        // Animate
+        zombies.forEach(zombie => {
+            zombie.moveTowards(player);
+        });
+    
+        //playSound(zombie_step);
+    
+        console.log("Zombie Delay: " + (minZombieDelay + (maxZombieDelay * zombiesLeftPercentage)))
+    
+        // Clear any existing timeout before setting a new one
         if (zombieTimeoutId) {
             clearTimeout(zombieTimeoutId);
-            zombieTimeoutId = null;
         }
-        return;
+        
+        zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
     }
 
-    // Percentage of Zombies left
-    let zombiesLeftPercentage = zombies.length / numStartingZombies;
-
-    // Animate
-    zombies.forEach(zombie => {
-        zombie.moveTowards(player);
-    });
-
-    //playSound(zombie_step);
-
-    console.log("Zombie Delay: " + (minZombieDelay + (maxZombieDelay * zombiesLeftPercentage)))
-
-    // Clear any existing timeout before setting a new one
-    if (zombieTimeoutId) {
-        clearTimeout(zombieTimeoutId);
+    function setupKeyListeners() {
+        
+        window.addEventListener('keydown', (e) => {
+        
+            // If the game loop is not running don't try to move the player
+            if (!game.isGameLoopRunning) {
+                return;
+            }
+        
+            if (!keys[e.code]) {
+                keys[e.code] = true;
+        
+                switch(e.code) {
+                    case 'ArrowLeft':
+                        player.move('left');
+                        break;
+                    case 'ArrowRight':
+                        player.move('right');
+                        break;
+                    case 'ArrowUp':
+                        player.move('up');
+                        break;
+                    case 'ArrowDown':
+                        player.move('down');
+                        break;
+                }
+            }
+        });
+        
+        window.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
     }
-    
-    zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
-}
 
+    // Public methods exposed by the singleton
+    return {
+        getInstance: function() {
+            if (!instance) {
+                instance = {
+                    isGameLoopRunning: function() {
+                        return this.gameLoopRunning;
+                    },
+                    start: function() {
+                        if (!gameLoopRunning) {
+                            player = new Player(); // Initialize player with random safe location
+                            gameLoopRunning = true;
+                            levelStartTime = Date.now();
+                            setupKeyListeners();
+                            animateZombies();
+                            requestAnimationFrame(gameLoop);
+                        }
+                    },
+                    stop: function() {
+                        gameLoopRunning = false;
+                    },
+                    reset: function() {
 
-function resetLevel() {
+                        level = 1;
+                        score = 0;                    
 
-    // TOOD: Make sure Zombies/Pits don't spawn on/near player
-    setupPits(numPitsPerLevel); 
-    setupZombies();
-    setupTreasure();
+                        setupPits(numPitsPerLevel); 
+                        setupZombies();
+                        setupTreasure();
 
-    //("ZOMBIE SPEED: " + zombieSpeed);
+                        game.start();
+                    }
+                };
+            }
+            return instance;
+        }
+    };
+})();
 
-}
+let zombieTimeoutId = null;
+const game = Game.getInstance();
+ModalIntroScreen.loadIntroScreen();
 
 function checkCollisions() {
     for (let pit of pits) {

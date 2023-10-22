@@ -14,23 +14,12 @@ class ModalGameOverScreen {
     }
 
     static unloadGameOverScreen() {
-        // Reset the game state
-        level = 1;
-        score = 0;
-        
-        resetLevel();
-        
-        playSound(restart);
-
+ 
         // Hide the game over modal
         document.getElementById('gameOverModal').style.display = 'none';
 
-        // Start the game loop again
-        gameLoop();
-        animateZombies();
-        if (autoPlayEnabled) {
-            playAI(player, zombies, pit);
-        }
+        game.reset();
+
     }
 
 }
