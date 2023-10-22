@@ -25,10 +25,14 @@ function initializeFloorTiles() {
         let tileRow = [];
         for (let y = 0; y < canvas.height; y += gridSize) {
             // Instead of randomizing during drawing, we randomize during initialization
-            if (Math.random() < 0.99) {
+            let rand = Math.random();
+
+            if (rand < 0.97) {
                 tileRow.push('regular');
-            } else {
+            } else if (rand < 0.99) {
                 tileRow.push('HC');
+            } else {
+                tileRow.push('craft');
             }
         }
         tileMatrix.push(tileRow);
@@ -38,11 +42,18 @@ function initializeFloorTiles() {
 function drawFloorTiles() {
     for (let x = 0; x < tileMatrix.length; x++) {
         for (let y = 0; y < tileMatrix[x].length; y++) {
-            if (tileMatrix[x][y] === 'regular') {
-                ctx.drawImage(tileImage, x * gridSize, y * gridSize, gridSize, gridSize);
-            } else {
-                ctx.drawImage(tileHCImage, x * gridSize, y * gridSize, gridSize, gridSize);
+            switch (tileMatrix[x][y]) {
+                case 'regular': 
+                    ctx.drawImage(tileImage, x * gridSize, y * gridSize, gridSize, gridSize);
+                    break;
+                case 'HC': 
+                    ctx.drawImage(tileHCImage, x * gridSize, y * gridSize, gridSize, gridSize);
+                    break;
+                case 'craft': 
+                    ctx.drawImage(tileCraftImage, x * gridSize, y * gridSize, gridSize, gridSize);
+                    break;
             }
+
         }
     }
 }

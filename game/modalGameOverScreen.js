@@ -110,7 +110,14 @@ class ModalGameOverScreen {
 
     static saveScore(initials, score) {
         const scores = JSON.parse(localStorage.getItem('gameScores')) || [];
-        scores.push({ initials, score });
+
+        const scoreEntry = {
+            initials: initials,
+            score: score,
+            timestamp: new Date().toISOString()  // Stores the current date and time as a string in ISO format
+        };
+
+        scores.push(scoreEntry);
         localStorage.setItem('gameScores', JSON.stringify(scores));
     }
 

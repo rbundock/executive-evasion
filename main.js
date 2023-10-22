@@ -76,6 +76,9 @@ tileImage.src = 'img/floor_tile.png';
 let tileHCImage = new Image();
 tileHCImage.src = 'img/floor_tile_hc.png';
 
+let tileCraftImage = new Image();
+tileCraftImage.src = 'img/floor_tile_craft.png';
+
 let treasureImage = new Image();
 treasureImage.src = 'img/watercooler.png';
 
