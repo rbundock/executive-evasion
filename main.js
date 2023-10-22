@@ -100,6 +100,7 @@ const Game = (function() {
     let instance;
     let gameLoopRunning = false;
     let levelStartTime;
+    let lastGameTime;
 
     function gameLoop() {
         // ... (rest of your game loop code)
@@ -116,7 +117,7 @@ const Game = (function() {
             level++;  // Increase the level
             // zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
             console.log("Last level time: " + (Date.now() - levelStartTime) / 1000);
-            game.reset();
+            game.resetLevel();
         }
     
         // DRAW ----
@@ -150,12 +151,11 @@ const Game = (function() {
         drawLevel();
         /// 
     
-    
         if (checkCollisions()) {
     
             game.stop();
 
-            console.log("Total game time: " + (Date.now() - levelStartTime) / 1000);
+            console.log("Total game time: " + lastGameTime);
             playSound(gameover);
     
             ModalGameOverScreen.loadGameOverScreen();
@@ -248,32 +248,42 @@ const Game = (function() {
         getInstance: function() {
             if (!instance) {
                 instance = {
+                    lastGameTime: function () {
+                        return lastGameTime;
+                    },
                     isGameLoopRunning: function() {
                         return gameLoopRunning;
                     },
                     start: function() {
+                        console.log("Game START called");
                         if (!gameLoopRunning) {
                             player = new Player(); // Initialize player with random safe location
+                            level = 1;
+                            score = 0;
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
+
+                            setupPits(numPitsPerLevel); 
+                            setupZombies();
+                            setupTreasure();
+
                             setupKeyListeners();
                             animateZombies();
                             requestAnimationFrame(gameLoop);
                         }
                     },
                     stop: function() {
+                        console.log("Game STOP called");
                         gameLoopRunning = false;
+                        lastGameTime = (Date.now() - levelStartTime) / 1000;
                     },
-                    reset: function() {
-
-                        level = 1;
-                        score = 0;                    
-
+                    resetLevel: function() {
+                        console.log("Level RESET called");
+            
                         setupPits(numPitsPerLevel); 
                         setupZombies();
                         setupTreasure();
 
-                        game.start();
                     }
                 };
             }

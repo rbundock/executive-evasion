@@ -25,11 +25,9 @@ function initializeFloorTiles() {
         let tileRow = [];
         for (let y = 0; y < canvas.height; y += gridSize) {
             // Instead of randomizing during drawing, we randomize during initialization
-            let rand = Math.random();
-
-            if (rand < 0.97) {
+            if (Math.random() < 0.985) {
                 tileRow.push('regular');
-            } else if (rand < 0.99) {
+            } else if (Math.random() < 0.90) {
                 tileRow.push('HC');
             } else {
                 tileRow.push('craft');

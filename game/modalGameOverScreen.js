@@ -83,7 +83,13 @@ class ModalGameOverScreen {
 
     static getSortedScores() {
         const scores = JSON.parse(localStorage.getItem('gameScores')) || [];
-        const sortedScores = scores.sort((a, b) => b.score - a.score);
+        const sortedScores = scores.sort((a, b) => {
+            if (a.score !== b.score) {
+                return b.score - a.score;  // Primary sort by score
+            } else {
+                return a.timeTaken - b.timeTaken;  // Secondary sort by time taken (assuming smaller is better)
+            }
+        });
 
         return sortedScores.slice(0, numLeaderBoardPositions);
     }
@@ -114,8 +120,11 @@ class ModalGameOverScreen {
         const scoreEntry = {
             initials: initials,
             score: score,
+            timeTaken: game.lastGameTime(),
             timestamp: new Date().toISOString()  // Stores the current date and time as a string in ISO format
         };
+
+        console.log("Score saved " + scoreEntry);
 
         scores.push(scoreEntry);
         localStorage.setItem('gameScores', JSON.stringify(scores));
@@ -126,7 +135,7 @@ class ModalGameOverScreen {
         // Hide the game over modal
         document.getElementById('gameOverModal').style.display = 'none';
 
-        game.reset();
+        game.start();
 
     }
 

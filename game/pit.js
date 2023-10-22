@@ -35,9 +35,16 @@ class Pit {
 
 function setupPits(totalRequired) {
     pits = [];  // Clear any existing pits
+    let tries = 0;
 
-    while (pits.length < totalRequired) {
-        spawnPit(totalRequired);
+    while (pits.length < totalRequired && tries < 100) {
+        //console.log("spawnPit("+pits.length+")");
+        spawnPit(1);
+        tries++;
+    }
+
+    if (tries === 100 ) {
+        console.log("HALTED over 100 tries");
     }
 }
 
@@ -54,7 +61,7 @@ function spawnPit(totalRequired) {
             let distance = Math.sqrt(Math.pow(pit.x - x, 2) + Math.pow(pit.y - y, 2));
             if (distance < (pit.width*2)) {  // Twice the pit width, adjust as needed
                 overlapping = true;
-                console.log("overlapping pit!")
+                console.log("overlapping pit! Attempts: " + attempts)
             }
         }
 
