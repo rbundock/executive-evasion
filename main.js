@@ -229,6 +229,8 @@ const Game = (function() {
 
         if (gamepad) {
             
+            console.log(gamepad.axes[0]);
+
             if (gamepad.axes[0] === 0) {
                 flagGamepadHorizontalAccept = true;
             }
