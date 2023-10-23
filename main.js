@@ -61,14 +61,29 @@ let keys = {
     ArrowDown: false
 };
 
-let playerImage = new Image();
-playerImage.src = 'img/roxi_s.png';  
+let playerImageUp = new Image();
+playerImageUp.src = 'img/roxi_up.png';  
+let playerImageDown = new Image();
+playerImageDown.src = 'img/roxi_down.png';  
+let playerImageLeft = new Image();
+playerImageLeft.src = 'img/roxi_left.png';  
+let playerImageRight = new Image();
+playerImageRight.src = 'img/roxi_right.png';  
 
 let pitImage = new Image();
 pitImage.src = 'img/meeting_space.png'; 
 
-let zombieImage = new Image();
-zombieImage.src = 'img/ceo_1.png'; 
+let zombieImageUp = new Image();
+zombieImageUp.src = 'img/ceo_1_up.png'; 
+
+let zombieImageDown = new Image();
+zombieImageDown.src = 'img/ceo_1_down.png'; 
+
+let zombieImageLeft = new Image();
+zombieImageLeft.src = 'img/ceo_1_left.png';
+
+let zombieImageRight = new Image();
+zombieImageRight.src = 'img/ceo_1_right.png';
 
 let tileImage = new Image();
 tileImage.src = 'img/floor_tile.png';

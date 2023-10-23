@@ -10,6 +10,7 @@ class Zombie {
         this.width = gridSize;
         this.height = gridSize;
         this.type = Zombie.RECRUITER;
+        this.direction = "down";
     }
 
     moveTowards(player) {
@@ -39,6 +40,7 @@ class Zombie {
         let potentialX = this.x;
         let potentialY = this.y;
 
+        this.direction = direction;
         switch(direction) {
             case 'left':
                 potentialX = Math.max(0, this.x - numZombieStepSize);
@@ -86,7 +88,21 @@ class Zombie {
 
         switch(this.type) {
         case Zombie.RECRUITER:
-            ctx.drawImage(zombieImage, this.x, this.y - 48, 48, 96);
+            
+            switch (this.direction) {
+                case "left":
+                    ctx.drawImage(zombieImageLeft, this.x, this.y - 48, 48, 96);
+                    break;
+                case "right":
+                    ctx.drawImage(zombieImageRight, this.x, this.y - 48, 48, 96);
+                    break;
+                case "up":
+                    ctx.drawImage(zombieImageUp, this.x, this.y - 48, 48, 96);
+                    break;
+                case "down":
+                    ctx.drawImage(zombieImageDown, this.x, this.y - 48, 48, 96);
+                    break;
+            }
             break;
         case Zombie.VC_EXEC:
             ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);

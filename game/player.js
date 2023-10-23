@@ -18,10 +18,12 @@ class Player {
         this.y = y;
         this.width = gridSize;
         this.height = gridSize;
+        this.direction = "down";
     }
     
     move(direction) {
         playSound(step);
+        this.direction = direction;
         switch(direction) {
             case 'left':
                 this.x = Math.max(0, this.x - stepSize);
@@ -46,9 +48,22 @@ class Player {
         }
         
         // Make sure the image is loaded before drawing
-        if (playerImage.complete) {
-            ctx.drawImage(playerImage, this.x, this.y - 48, 48, 96);
+        switch (this.direction) {
+            case "left":
+                ctx.drawImage(playerImageLeft, this.x, this.y - 48, 48, 96);
+                break;
+            case "right":
+                ctx.drawImage(playerImageRight, this.x, this.y - 48, 48, 96);
+                break;
+            case "up":
+                ctx.drawImage(playerImageUp, this.x, this.y - 48, 48, 96);
+                break;
+            case "down":
+                ctx.drawImage(playerImageDown, this.x, this.y - 48, 48, 96);
+                break;
         }
+
+
     }
 }
 
