@@ -1,6 +1,7 @@
 class Zombie {
     static RECRUITER = 'RECRUITER';
     static CFO = 'CFO';
+    static CEO = 'CEO';
     static VC_EXEC = 'VC_EXEC';
 
     constructor(x, y, type = Zombie.RECRUITER) {
