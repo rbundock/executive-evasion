@@ -56,7 +56,6 @@ function drawFloorTiles() {
     }
 }
 
-
 // Utility function to generate random coordinates within given boundaries
 function getRandomCoordinate(canvasSize, borderSize, objectSize) {
     const min = borderSize/2; 

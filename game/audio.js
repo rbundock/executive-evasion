@@ -6,6 +6,8 @@ const treasure_spawn = new Audio('sounds/treasure-spawn.mp3');
 const zombie_step = new Audio('');
 
 function playSound(audioElement) {
-    let sound = audioElement.cloneNode(true);
-    sound.play();
+    if (!silentMode){
+        let sound = audioElement.cloneNode(true);
+        sound.play();
+    }
 }

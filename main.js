@@ -12,6 +12,7 @@ const numPitsPerLevel = 5;
 const numLeaderBoardPositions = 15;
 
 const debugMode = false;
+const silentMode = false;
 
 const gamepad = navigator.getGamepads()[0];
 
@@ -75,15 +76,17 @@ pitImage.src = 'img/meeting_space.png';
 
 let zombieImageUp = new Image();
 zombieImageUp.src = 'img/ceo_1_up.png'; 
-
 let zombieImageDown = new Image();
 zombieImageDown.src = 'img/ceo_1_down.png'; 
-
 let zombieImageLeft = new Image();
 zombieImageLeft.src = 'img/ceo_1_left.png';
-
 let zombieImageRight = new Image();
 zombieImageRight.src = 'img/ceo_1_right.png';
+
+let chairGreyUpImage = new Image();
+chairGreyUpImage.src = 'img/chair_grey_up.png';
+let chairGreyDownImage = new Image();
+chairGreyDownImage.src = 'img/chair_grey_down.png';
 
 let tileImage = new Image();
 tileImage.src = 'img/floor_tile.png';
@@ -119,6 +122,9 @@ window.addEventListener("gamepadconnected", (event) => {
     console.log(event.gamepad);
   });
 
+
+let gamespace = new Gamespace(canvas.width, canvas.height, gridSize);
+
 const Game = (function() {
 
     // Private variables and methods
@@ -133,10 +139,6 @@ const Game = (function() {
     function gameLoop() {
         // ... (rest of your game loop code)
         canvas.style.cursor = 'none';
-
-        if (gamepad) {
-            console.log("Gamepad: " + gamepad.axes[0]);
-        }
     
         // RESTART
         if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
@@ -172,6 +174,9 @@ const Game = (function() {
             zombie.draw(ctx);
         }
         
+        //gamespace.addChair(2, 2, Gamespace.CHAIR_GREY_UP);
+        //gamespace.addChair(4, 4, Gamespace.CHAIR_GREY_DOWN);
+        //gamespace.draw(ctx);
     
         player.draw(ctx);
         drawScore();
@@ -197,7 +202,7 @@ const Game = (function() {
                 if (treasures.length === 0) {
                     const newTreasure = new Treasure();
                     treasures.push(newTreasure);
-                    treasure_spawn.play();
+                    playSound(treasure_spawn);
                 }
             }
         }
@@ -335,6 +340,7 @@ const Game = (function() {
                         console.log("Game START called");
                         if (!gameLoopRunning) {
                             player = new Player(); // Initialize player with random safe location
+                            initializeFloorTiles();
                             level = 1;
                             score = 0;
                             gameLoopRunning = true;
@@ -372,7 +378,6 @@ const Game = (function() {
 
 let zombieTimeoutId = null;
 const game = Game.getInstance();
-initializeFloorTiles();
 ModalGameOverScreen.initGameOverScreen();
 ModalIntroScreen.loadIntroScreen();
 
