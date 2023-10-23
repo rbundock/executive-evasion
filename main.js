@@ -62,13 +62,13 @@ let keys = {
 };
 
 let playerImage = new Image();
-playerImage.src = 'img/cto_1.png';  
+playerImage.src = 'img/roxi_s.png';  
 
 let pitImage = new Image();
 pitImage.src = 'img/meeting_space.png'; 
 
 let zombieImage = new Image();
-zombieImage.src = 'img/recruiter.png'; 
+zombieImage.src = 'img/ceo_1.png'; 
 
 let tileImage = new Image();
 tileImage.src = 'img/floor_tile.png';

@@ -47,7 +47,7 @@ class Player {
         
         // Make sure the image is loaded before drawing
         if (playerImage.complete) {
-            ctx.drawImage(playerImage, this.x - 30, this.y - 52, 100, 100);
+            ctx.drawImage(playerImage, this.x, this.y - 48, 48, 96);
         }
     }
 }
