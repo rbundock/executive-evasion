@@ -12,7 +12,7 @@ const numPitsPerLevel = 5;
 const numLeaderBoardPositions = 15;
 
 const debugMode = false;
-const silentMode = false;
+const silentMode = true;
 
 const gamepad = navigator.getGamepads()[0];
 
@@ -176,7 +176,7 @@ const Game = (function() {
         
         //gamespace.addChair(2, 2, Gamespace.CHAIR_GREY_UP);
         //gamespace.addChair(4, 4, Gamespace.CHAIR_GREY_DOWN);
-        //gamespace.draw(ctx);
+        gamespace.draw(ctx);
     
         player.draw(ctx);
         drawScore();
@@ -429,6 +429,7 @@ function checkCollisions() {
                         pits = pits.filter(p => p.capacity > 0);
                     }
                     //spawnZombie(player.x, player.y);  // Create another zombie
+                    gamespace.removeObject(parseInt(zombie.x/gridSize), parseInt(zombie.y/gridSize), zombie);
                     break;
                 }
             

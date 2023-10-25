@@ -19,34 +19,40 @@ class Player {
         this.width = gridSize;
         this.height = gridSize;
         this.direction = "down";
+        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+
     }
     
     move(direction) {
         playSound(step);
         this.direction = direction;
+
+        gamespace.removeObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+
         switch(direction) {
             case 'left':
-                this.x = Math.max(0, this.x - stepSize);
+                this.x = Math.max(0, this.x - gridSize);
                 break;
             case 'right':
-                this.x = Math.min(canvas.width - stepSize, this.x + stepSize);
+                this.x = parseInt(Math.min(canvas.width - gridSize, this.x + gridSize));
                 break;
             case 'up':
-                this.y = Math.max(0, this.y - stepSize);
+                this.y = parseInt(Math.max(0, this.y - gridSize));
                 break;
             case 'down':
-                this.y = Math.min(canvas.height - stepSize, this.y + stepSize);
+                this.y = parseInt(Math.min(canvas.height - gridSize, this.y + gridSize));
                 break;
         }
+
+        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
     }
 
     draw(ctx) {
         
-        if (debugMode){
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(this.x, this.y, gridSize, gridSize);
-        }
+
         
+        return;
+
         // Make sure the image is loaded before drawing
         switch (this.direction) {
             case "left":
