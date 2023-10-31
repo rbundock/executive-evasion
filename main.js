@@ -241,48 +241,6 @@ const Game = (function() {
         zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
     }
 
-    function pollGamepad() {
-    
-        const gamepad = navigator.getGamepads()[0];
-        const AXIS_THRESHOLD = 0.1;
-
-        console.log("Checking gamepad");
-
-        if (gamepad) {
-            
-            console.log(gamepad.axes[0]);
-
-            if (Math.abs(gamepad.axes[0]) < AXIS_THRESHOLD) {
-                flagGamepadHorizontalAccept = true;
-            }
-            if (Math.abs(gamepad.axes[1]) < AXIS_THRESHOLD) {
-                flagGamepadVerticalAccept = true;
-            }
-
-            // For joystick: axes[0] is the horizontal axis, axes[1] is the vertical axis
-            if (gamepad.axes[0] > 0.5 && flagGamepadHorizontalAccept) {
-                player.move('right');
-                flagGamepadHorizontalAccept = false; 
-            } else if (gamepad.axes[0] < -0.5 && flagGamepadHorizontalAccept) {
-                player.move('left');
-                flagGamepadHorizontalAccept = false; 
-            }
-
-            if (gamepad.axes[1] > 0.5 && flagGamepadVerticalAccept) {
-                player.move('down');
-                flagGamepadVerticalAccept = false; 
-            } else if (gamepad.axes[1] < -0.5 && flagGamepadVerticalAccept) {
-                player.move('up');
-                flagGamepadVerticalAccept = false; 
-            }
-        
-        }
-
-        if (gameLoopRunning) {
-            requestAnimationFrame(pollGamepad);
-        }
-    }
-
     function handleKeyDown(e) {
         // If the game loop is not running don't try to move the player
         if (!gameLoopRunning) {
@@ -352,7 +310,7 @@ const Game = (function() {
 
                             setupKeyListeners();
                             animateZombies();
-                            requestAnimationFrame(pollGamepad);
+                            //requestAnimationFrame(pollGamepad);
                             requestAnimationFrame(gameLoop);
                         }
                     },
@@ -381,7 +339,86 @@ const game = Game.getInstance();
 ModalGameOverScreen.initGameOverScreen();
 ModalIntroScreen.loadIntroScreen();
 
+// Start listening for the joystick
+initJoystick();
+
 //ModalGameOverScreen.clearLeaderboardWithConfirmation();
+
+function initJoystick() {
+
+    window.addEventListener('gamepadconnected', (event) => {
+        console.log('Gamepad connected:', event.gamepad);
+        const gamepadLoop = setInterval(() => {
+            const gamepad = navigator.getGamepads()[event.gamepad.index];
+
+            // Check for joystick and button input
+            // Axis information is usually on gamepad.axes, button info on gamepad.buttons
+            const AXIS_THRESHOLD = 0.1;
+
+            console.log("Checking gamepad");
+    
+            if (gamepad) {
+                
+                if (Math.abs(gamepad.axes[0]) < AXIS_THRESHOLD) {
+                    flagGamepadHorizontalAccept = true;
+                }
+                if (Math.abs(gamepad.axes[1]) < AXIS_THRESHOLD) {
+                    flagGamepadVerticalAccept = true;
+                }
+    
+                // For joystick: axes[0] is the horizontal axis, axes[1] is the vertical axis
+                if (gamepad.axes[0] > 0.5 && flagGamepadHorizontalAccept) {
+                    
+                    console.log("RIGHT");
+
+                    //player.move('right');
+
+                    flagGamepadHorizontalAccept = false; 
+                } else if (gamepad.axes[0] < -0.5 && flagGamepadHorizontalAccept) {
+                                            
+                    console.log("LEFT");
+
+                    //player.move('left');
+                    flagGamepadHorizontalAccept = false; 
+                }
+    
+                if (gamepad.axes[1] > 0.5 && flagGamepadVerticalAccept) {
+                                            
+                    console.log("DOWN");
+
+                    //player.move('down');
+                    flagGamepadVerticalAccept = false; 
+                } else if (gamepad.axes[1] < -0.5 && flagGamepadVerticalAccept) {
+                                            
+                    console.log("UP");
+
+                    //player.move('up');
+                    flagGamepadVerticalAccept = false; 
+                }
+            
+            }
+    
+
+            // Check for fire button (usually button 0)
+            if (gamepad.buttons[0].pressed) {
+                                        
+                console.log("FIRE");
+
+                //if (currentDropdownIndex < dropdowns.length - 1) {
+                    // Move to next dropdown
+                //    currentDropdownIndex++;
+                //} else {
+                    // Submit the form or whatever the final action is
+                    // Your submit function here
+                //    ModalGameOverScreen.submitClickHandler();
+                //    clearInterval(gamepadLoop); // Stop the gamepad loop once submitted
+                //}
+            }
+
+
+        }, 100); // Run every 100ms
+    });
+}
 
 function checkCollisions() {
     for (let pit of pits) {
@@ -443,7 +480,6 @@ function checkCollisions() {
     
     return false;  // No collision with player
 }
-
 
 function cyclePressAnyKey() {
     const h1Element = document.querySelector('.cycle-colour');
