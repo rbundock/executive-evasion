@@ -346,6 +346,12 @@ initJoystick();
 
 function initJoystick() {
 
+    // Variable to hold the current dropdown index
+    let currentDropdownIndex = 0;
+
+    // List of dropdown elements
+    const dropdowns = document.querySelectorAll('.initial-dropdown');
+
     window.addEventListener('gamepadconnected', (event) => {
         console.log('Gamepad connected:', event.gamepad);
         const gamepadLoop = setInterval(() => {
@@ -375,7 +381,6 @@ function initJoystick() {
                         player.move('right');
                     } else {
                         // Game screens?
-
                     }
 
                     flagGamepadHorizontalAccept = false;
@@ -386,7 +391,6 @@ function initJoystick() {
                         player.move('left');
                     } else {
                         // Game screens?
-
                     }
 
                     flagGamepadHorizontalAccept = false;
@@ -399,7 +403,10 @@ function initJoystick() {
                         player.move('down');
                     } else {
                         // Game screens?
-
+                        const selectedIndex = dropdowns[currentDropdownIndex].selectedIndex;
+                        if (selectedIndex < 25) { // Assuming 26 letters in the dropdown
+                            dropdowns[currentDropdownIndex].selectedIndex = selectedIndex + 1;
+                        }
                     }
 
 
@@ -411,32 +418,34 @@ function initJoystick() {
                         player.move('up');
                     } else {
                         // Game screens?
-                        
+                        const selectedIndex = dropdowns[currentDropdownIndex].selectedIndex;
+                        if (selectedIndex > 0) {
+                            dropdowns[currentDropdownIndex].selectedIndex = selectedIndex - 1;
+                        }
                     }
                     flagGamepadVerticalAccept = false;
                 }
 
             }
 
-
             // Check for fire button (usually button 0)
             if (gamepad.buttons[0].pressed) {
 
                 console.log("FIRE");
-
-                // Game screens?
-
-                //if (currentDropdownIndex < dropdowns.length - 1) {
-                // Move to next dropdown
-                //    currentDropdownIndex++;
-                //} else {
-                // Submit the form or whatever the final action is
-                // Your submit function here
-                //    ModalGameOverScreen.submitClickHandler();
-                //    clearInterval(gamepadLoop); // Stop the gamepad loop once submitted
-                //}
+                if (game.isGameLoopRunning()) {
+                    // Do nothing
+                } else {
+                    // Game screens?
+                    if (currentDropdownIndex < dropdowns.length - 1) {
+                        // Move to next dropdown
+                        currentDropdownIndex++;
+                    } else {
+                        // Submit the form or whatever the final action is
+                        // Your submit function here
+                        ModalGameOverScreen.submitClickHandler();
+                    }
+                }
             }
-
 
         }, 100); // Run every 100ms
     });
