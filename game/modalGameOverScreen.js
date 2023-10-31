@@ -95,6 +95,9 @@ class ModalGameOverScreen {
 
         ModalGameOverScreen.renderLeaderboard();
         document.getElementById('initial1').focus();
+
+        // Initialize joystick support
+        this.initJoystick();
     }
 
     static getSortedScores() {
@@ -137,6 +140,52 @@ class ModalGameOverScreen {
             const scoreEntry = document.createElement('p');
             scoreEntry.textContent = `${index + 1}. ${entry.initials}: ${entry.score}`;
             leaderboardContainer.appendChild(scoreEntry);
+        });
+    }
+
+    static initJoystick() {
+        // Variable to hold the current dropdown index
+        let currentDropdownIndex = 0;
+
+        // List of dropdown elements
+        const dropdowns = document.querySelectorAll('.initial-dropdown');
+
+        window.addEventListener('gamepadconnected', (event) => {
+            console.log('Gamepad connected:', event.gamepad);
+
+            // Start the gamepad loop
+            const gamepadLoop = setInterval(() => {
+                // Get the state of the connected gamepad
+                const gamepad = navigator.getGamepads()[event.gamepad.index];
+
+                // Check for joystick and button input
+                // Axis information is usually on gamepad.axes, button info on gamepad.buttons
+                if (gamepad.axes[1] < -0.5) { // Move up
+                    const selectedIndex = dropdowns[currentDropdownIndex].selectedIndex;
+                    if (selectedIndex > 0) {
+                        dropdowns[currentDropdownIndex].selectedIndex = selectedIndex - 1;
+                    }
+                } else if (gamepad.axes[1] > 0.5) { // Move down
+                    const selectedIndex = dropdowns[currentDropdownIndex].selectedIndex;
+                    if (selectedIndex < 25) { // Assuming 26 letters in the dropdown
+                        dropdowns[currentDropdownIndex].selectedIndex = selectedIndex + 1;
+                    }
+                }
+
+                // Check for fire button (usually button 0)
+                if (gamepad.buttons[0].pressed) {
+                    if (currentDropdownIndex < dropdowns.length - 1) {
+                        // Move to next dropdown
+                        currentDropdownIndex++;
+                    } else {
+                        // Submit the form or whatever the final action is
+                        // Your submit function here
+                        ModalGameOverScreen.submitClickHandler();
+                        clearInterval(gamepadLoop); // Stop the gamepad loop once submitted
+                    }
+                }
+
+            }, 100); // Run every 100ms
         });
     }
 
