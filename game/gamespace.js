@@ -78,6 +78,18 @@ class Gamespace {
                         break;
                 }
 
+                // Overdraw area to look nice
+                if (y == (this.height-1)){
+                    // Draw extra tile
+                    ctx.drawImage(tileImage, x * gridSize, y * gridSize + gridSize, gridSize, gridSize);
+                }
+
+                if (x == (this.width-1)){
+                    // Draw extra tile
+                    ctx.drawImage(tileImage, x * gridSize + gridSize, y * gridSize, gridSize, gridSize);
+                    ctx.drawImage(tileImage, x * gridSize + gridSize, y * gridSize + gridSize, gridSize, gridSize);
+                }
+
                 // Draw stuff
                 switch (true) {
                     case (this.gamespace[y][x] instanceof Player):
@@ -149,6 +161,13 @@ class Gamespace {
                 }
     
             }
+        }
+
+        if (debugMode) {
+            ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(safeBorderSize / 2, safeBorderSize / 2, canvas.width - safeBorderSize, canvas.height - safeBorderSize);
+            ctx.globalAlpha = 1;  // Reset
         }
     }
 }

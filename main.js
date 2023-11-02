@@ -158,13 +158,6 @@ const Game = (function () {
 
         gamespace.resetGamespace();
 
-        if (debugMode) {
-            ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
-            ctx.fillStyle = 'green';
-            ctx.fillRect(safeBorderSize / 2, safeBorderSize / 2, canvas.width - safeBorderSize, canvas.height - safeBorderSize);
-            ctx.globalAlpha = 1;  // Reset
-        }
-
         player.draw();
 
         for (let treasure of treasures) {
