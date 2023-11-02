@@ -11,23 +11,43 @@ class Gamespace {
         // Calculate number of rows based on canvasHeight and gridSize
         let rows = parseInt(canvasHeight / gridSize);
 
-        for (let x = 0; x < rows; x++) {
+        for (let y = 0; y < rows; y++) {
             let gamespaceRow = new Array(cols).fill(null); // Fill with null or any default value
+            this.gamespace.push(gamespaceRow);
+        }
+
+        this.width = this.gamespace[0].length;
+        this.height = this.gamespace.length;
+    }
+
+    resetGamespace () {
+        this.gamespace = [];
+
+        for (let y = 0; y < this.width; y++) {
+            let gamespaceRow = new Array(this.width).fill(null); // Fill with null or any default value
             this.gamespace.push(gamespaceRow);
         }
     }
 
     removeObject(gx, gy, object) {
+        console.log(x + " :x: " + this.width);
+        console.log(y + " :y: " + this.height);
         if (gx >= 0 && gx < this.gamespace.length && gy >= 0 && gy < this.gamespace[0].length) {
-            this.gamespace[gx][gy] = null;
+            this.gamespace[gy][gx] = null;
         } else {
             console.error("Invalid grid position: (" + gx + ", " + gy + ")");
         }
     }
 
     addObject(x, y, object) {
-        if (x >= 0 && x < this.gamespace.length && y >= 0 && y < this.gamespace[0].length) {
-            this.gamespace[x][y] = object;
+        console.log(x + " :x: " + this.width);
+        console.log(y + " :y: " + this.height);
+        if (x >= 0 && x < this.width) {  // Check x against number of columns
+            if (y >= 0 && y < this.height) {  // Check y against number of rows
+                this.gamespace[y][x] = object;  
+            } else {
+                console.error("Invalid grid position: (" + x + ", " + y + ")");
+            }
         } else {
             console.error("Invalid grid position: (" + x + ", " + y + ")");
         }
@@ -43,19 +63,31 @@ class Gamespace {
 
     draw(ctx) {
         // Draw the gamespace, back to front
-        for (let x = 0; x < this.gamespace.length; x++) {
-            for (let y = 0; y < this.gamespace[x].length; y++) {
-                
+        for (let y = 0; y < this.height; y++) {
+            for (let x = 0; x < this.width; x++) {
+
+                switch (tileMatrix[y][x]) {
+                    case 'regular': 
+                        ctx.drawImage(tileImage, x * gridSize, y * gridSize, gridSize, gridSize);
+                        break;
+                    case 'HC': 
+                        ctx.drawImage(tileHCImage, x * gridSize, y * gridSize, gridSize, gridSize);
+                        break;
+                    case 'craft': 
+                        ctx.drawImage(tileCraftImage, x * gridSize, y * gridSize, gridSize, gridSize);
+                        break;
+                }
+
                 // Draw stuff
                 switch (true) {
-                    case (this.gamespace[x][y] instanceof Player):
+                    case (this.gamespace[y][x] instanceof Player):
 
                         if (debugMode){
                             ctx.fillStyle = 'blue';
                             ctx.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
                         }
 
-                        switch (this.gamespace[x][y].direction) {
+                        switch (this.gamespace[y][x].direction) {
                             case "left":
                                 ctx.drawImage(playerImageLeft, x * gridSize, y * gridSize - 48, 48, 96);
                                 break;
@@ -73,17 +105,17 @@ class Gamespace {
                         //ctx.drawImage(chairGreyUpImage, x * gridSize, y * gridSize, gridSize, gridSize*2);
                         break;
                     
-                    case (this.gamespace[x][y] instanceof Zombie):
+                    case (this.gamespace[y][x] instanceof Zombie):
 
                         if (debugMode) {
                             ctx.fillStyle = 'green';
                             ctx.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
                         }
                 
-                        switch(this.gamespace[x][y].type) {
+                        switch(this.gamespace[y][x].type) {
                         case Zombie.RECRUITER:
                             
-                            switch (this.gamespace[x][y].direction) {
+                            switch (this.gamespace[y][x].direction) {
                                 case "left":
                                     ctx.drawImage(zombieImageLeft, x * gridSize, y * gridSize - 48, 48, 96);
                                     break;
@@ -108,7 +140,7 @@ class Gamespace {
                     
                         break;
                      
-                    case (this.gamespace[x][y] instanceof Treasure):
+                    case (this.gamespace[y][x] instanceof Treasure):
 
                         break;
 

@@ -41,7 +41,7 @@ class Zombie {
         let potentialY = this.y;
 
         this.direction = direction;
-        gamespace.removeObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+        //gamespace.removeObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
 
         switch(direction) {
             case 'left':
@@ -78,13 +78,13 @@ class Zombie {
         if (!collision || alreadyColliding) {
             this.x = potentialX;
             this.y = potentialY; 
-            gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+
         }
     }
 
-    draw(ctx) {
-
-
+    draw() {
+        
+        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
         return; 
 
         if (debugMode) {

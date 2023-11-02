@@ -27,29 +27,29 @@ class Player {
         playSound(step);
         this.direction = direction;
 
-        gamespace.removeObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+        //gamespace.removeObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
 
         switch(direction) {
             case 'left':
                 this.x = Math.max(0, this.x - gridSize);
                 break;
             case 'right':
-                this.x = parseInt(Math.min(canvas.width - gridSize, this.x + gridSize));
+                this.x = parseInt(Math.min((gamespace.width * gridSize) - gridSize, this.x + gridSize));
                 break;
             case 'up':
                 this.y = parseInt(Math.max(0, this.y - gridSize));
                 break;
             case 'down':
-                this.y = parseInt(Math.min(canvas.height - gridSize, this.y + gridSize));
+                this.y = parseInt(Math.min((gamespace.height * gridSize) - gridSize, this.y + gridSize));
                 break;
         }
 
-        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
     }
 
-    draw(ctx) {
+    draw() {
         
 
+        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
         
         return;
 

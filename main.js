@@ -12,7 +12,7 @@ const numPitsPerLevel = 5;
 const numLeaderBoardPositions = 15;
 
 const debugMode = false;
-const silentMode = true;
+const silentMode = false;
 
 const gamepad = navigator.getGamepads()[0];
 
@@ -104,12 +104,16 @@ treasureImage.src = 'img/watercooler.png';
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
+console.log("Grid width:" + parseInt(canvas.width / gridSize));
+console.log("Grid height:" + parseInt(canvas.height / gridSize));
 
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     initializeFloorTiles(); // Rebuild tiles
     console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
+    console.log("Grid width:" + parseInt(canvas.width / gridSize));
+    console.log("Grid height:" + parseInt(canvas.height / gridSize));
 });
 
 window.addEventListener("gamepadconnected", (event) => {
@@ -152,8 +156,7 @@ const Game = (function () {
         // DRAW ----
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-        // Draw the floor    
-        drawFloorTiles();
+        gamespace.resetGamespace();
 
         if (debugMode) {
             ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
@@ -162,23 +165,25 @@ const Game = (function () {
             ctx.globalAlpha = 1;  // Reset
         }
 
+        player.draw();
+
         for (let treasure of treasures) {
-            treasure.draw(ctx);
+            //gamespace.addObject();
+            //treasure.draw(ctx);
         }
 
         for (let pit of pits) {
-            pit.draw(ctx);
+            //pit.draw(ctx);
         }
 
         for (let zombie of zombies) {
-            zombie.draw(ctx);
+            zombie.draw();
         }
 
         //gamespace.addChair(2, 2, Gamespace.CHAIR_GREY_UP);
         //gamespace.addChair(4, 4, Gamespace.CHAIR_GREY_DOWN);
         gamespace.draw(ctx);
-
-        player.draw(ctx);
+        
         drawScore();
         drawLevel();
         /// 
@@ -304,9 +309,9 @@ const Game = (function () {
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
 
-                            setupPits(numPitsPerLevel);
+                            //setupPits(numPitsPerLevel);
                             setupZombies();
-                            setupTreasure();
+                            //setupTreasure();
 
                             setupKeyListeners();
                             animateZombies();
@@ -322,9 +327,9 @@ const Game = (function () {
                     resetLevel: function () {
                         console.log("Level RESET called");
 
-                        setupPits(numPitsPerLevel);
+                        //setupPits(numPitsPerLevel);
                         setupZombies();
-                        setupTreasure();
+                        //setupTreasure();
 
                     }
                 };
@@ -497,7 +502,7 @@ function checkCollisions() {
                         pits = pits.filter(p => p.capacity > 0);
                     }
                     //spawnZombie(player.x, player.y);  // Create another zombie
-                    gamespace.removeObject(parseInt(zombie.x / gridSize), parseInt(zombie.y / gridSize), zombie);
+                    //gamespace.removeObject(parseInt(zombie.x / gridSize), parseInt(zombie.y / gridSize), zombie);
                     break;
                 }
 
