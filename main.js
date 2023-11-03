@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 const gridSize = 48;
 const stepSize = 24;
-const pitSize = gridSize * 5;
+const pitSize = gridSize;
 const minSpawnDistanceFromPlayer = gridSize * 6;
 const safeBorderSize = gridSize * 3;
 const spawnDistanceTreasure = gridSize * 6;
@@ -161,12 +161,11 @@ const Game = (function () {
         player.draw();
 
         for (let treasure of treasures) {
-            //gamespace.addObject();
-            //treasure.draw(ctx);
+            treasure.draw();
         }
 
         for (let pit of pits) {
-            //pit.draw(ctx);
+            pit.draw();
         }
 
         for (let zombie of zombies) {
@@ -302,7 +301,7 @@ const Game = (function () {
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
 
-                            //setupPits(numPitsPerLevel);
+                            setupPits(numPitsPerLevel);
                             setupZombies();
                             //setupTreasure();
 

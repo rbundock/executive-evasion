@@ -21,6 +21,10 @@ class Treasure {
     }
 
     draw(ctx) {
+
+      gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+      return;
+
       if (debugMode) {
           ctx.fillStyle = 'red';
           ctx.fillRect(this.x, this.y, gridSize, gridSize);
