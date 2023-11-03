@@ -41,7 +41,6 @@ class Zombie {
         let potentialY = this.y;
 
         this.direction = direction;
-        //gamespace.removeObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
 
         switch(direction) {
             case 'left':
@@ -73,6 +72,19 @@ class Zombie {
                     }
                 }
             } 
+
+            for (let pit of pits) {
+                //if (isColliding(this, pit)) {
+                    // break the deadlock when two zombies are ontop of each other
+                //    alreadyColliding = true;
+                //}
+                // Only avoid full pits. 
+                if (pit.capacity == 0) {
+                    if (isColliding({ x: potentialX, y: potentialY, width: this.width, height: this.height }, pit)) {
+                        collision = true;
+                    }
+                }
+            }
         }
 
         if (!collision || alreadyColliding) {

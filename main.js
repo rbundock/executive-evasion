@@ -491,7 +491,7 @@ function checkCollisions() {
 
                     if (pit.capacity === 0) {
                         // Remove pit !
-                        pits = pits.filter(p => p.capacity > 0);
+                        //pits = pits.filter(p => p.capacity > 0);
                     }
                     //spawnZombie(player.x, player.y);  // Create another zombie
                     //gamespace.removeObject(parseInt(zombie.x / gridSize), parseInt(zombie.y / gridSize), zombie);

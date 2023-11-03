@@ -163,6 +163,11 @@ class Gamespace {
 
                         ctx.drawImage(chairGreyDownImage, x * gridSize, y * gridSize - 48, 48, 96);
 
+                        // Add occupant in the seat
+                        if (this.gamespace[y][x].capacity == 0) {
+                            ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 48, 48, 96);
+                        }
+
                         break;
 
                     case (this.gamespace[y][x] instanceof Treasure):
