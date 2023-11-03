@@ -210,7 +210,7 @@ class Gamespace {
                     if (object.y > (0 - object.height)) {
                         // Calculate the y-offset using a sine function to create acceleration
                         // The sine function oscillates between -1 and 1, we shift it to oscillate between 0 and 1 instead
-                        let acceleration = Math.sin(object.animateFrame) * 15 + 15;
+                        let acceleration = Math.sin(object.animateFrame) * 20 + 15;
 
                         // Update the position of the object using the acceleration
                         // You can adjust the factor '0.5' to control the speed of the acceleration
@@ -223,7 +223,7 @@ class Gamespace {
 
                                 // Add occupant in the seat
                                 if (object.capacity == 0) {
-                                    ctx.drawImage(zombieImageDown, object.x, object.y - 4, 48, 96);
+                                    ctx.drawImage(zombieImageDown, object.x, object.y - 48, 48, 96);
                                 }
                                 break;
                             case (Pit.DIRECTION_UP):
@@ -232,7 +232,7 @@ class Gamespace {
                                     ctx.drawImage(zombieImageDown, object.x, object.y - 58, 48, 96);
                                 }
 
-                                ctx.drawImage(chairGreyUpImage, object.x, object.y - 4, 48, 96);
+                                ctx.drawImage(chairGreyUpImage, object.x, object.y - 48, 48, 96);
                                 break;
                         }
 
