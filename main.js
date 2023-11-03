@@ -71,8 +71,8 @@ playerImageLeft.src = 'img/roxi/roxi_left.png';
 let playerImageRight = new Image();
 playerImageRight.src = 'img/roxi/roxi_right.png';
 
-let pitImage = new Image();
-pitImage.src = 'img/meeting_space.png';
+//let pitImage = new Image();
+//pitImage.src = 'img/meeting_space.png';
 
 let zombieImageUp = new Image();
 zombieImageUp.src = 'img/ceo_1/ceo_1_up.png';

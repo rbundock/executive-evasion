@@ -153,7 +153,7 @@ class Gamespace {
                         break;
 
                     case (this.gamespace[y][x] instanceof Pit):
-                        
+
                         if (debugMode) {
                             ctx.globalAlpha = 0.1;
                             ctx.fillStyle = 'black';
@@ -161,12 +161,27 @@ class Gamespace {
                             ctx.globalAlpha = 1;
                         }
 
-                        ctx.drawImage(chairGreyDownImage, x * gridSize, y * gridSize - 48, 48, 96);
+                        switch (this.gamespace[y][x].direction) {
 
-                        // Add occupant in the seat
-                        if (this.gamespace[y][x].capacity == 0) {
-                            ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 48, 48, 96);
+                            case (Pit.DIRECTION_DOWN):
+                                ctx.drawImage(chairGreyDownImage, x * gridSize, y * gridSize - 48, 48, 96);
+
+                                // Add occupant in the seat
+                                if (this.gamespace[y][x].capacity == 0) {
+                                    ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 48, 48, 96);
+                                }
+                                break;
+                            case (Pit.DIRECTION_UP):
+                                // Add occupant in the seat
+                                if (this.gamespace[y][x].capacity == 0) {
+                                    ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 58, 48, 96);
+                                }
+
+                                ctx.drawImage(chairGreyUpImage, x * gridSize, y * gridSize - 48, 48, 96);
+                                break;
                         }
+
+
 
                         break;
 
