@@ -60,7 +60,7 @@ class Zombie {
         // If other zombies exist, check we aren't stepping on their toes. 
         let collision = false;
         let alreadyColliding = false;
-        if (zombies.length> 1) {
+        //if (zombies.length> 1) {
             for (let otherZombie of zombies) {
                 if (otherZombie !== this) {
                     if (isColliding(this, otherZombie)) {
@@ -85,7 +85,7 @@ class Zombie {
                     }
                 }
             }
-        }
+        //}
 
         if (!collision || alreadyColliding) {
             this.x = potentialX;

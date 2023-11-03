@@ -1,9 +1,15 @@
 class Pit {
-    constructor(x, y, width, height) {
+    static DIRECTION_UP = 'UP';
+    static DIRECTION_DOWN = 'DOWN';
+    static DIRECTION_LEFT = 'LEFT';
+    static DIRECTION_RIGHT = 'RIGHT';
+
+    constructor(x, y, width, height, direction) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.direction = direction;
         this.occupant = null;
         this.capacity = 1;  //Math.floor(Math.random() * (maxPitCapacity - minPitCapacity + 1)) + minPitCapacity;
     }
@@ -55,6 +61,7 @@ function setupPits(totalRequired) {
 function spawnPit(totalRequired) {
     let attempts = 0;  // Variable to track the number of attempts to place a pit
 
+    // Try to cluster
     while (attempts < 1000) {  // Create pits, with a limit on attempts to prevent an infinite loop
         let x = getRandomCoordinate(canvas.width, safeBorderSize, pitSize);  // Random X position, ensuring pit fits within canvas
         let y = getRandomCoordinate(canvas.height, safeBorderSize, pitSize);  // Random Y position, ensuring pit fits within canvas
@@ -63,7 +70,7 @@ function spawnPit(totalRequired) {
         let overlapping = false;
         for (let pit of pits) {
             let distance = Math.sqrt(Math.pow(pit.x - x, 2) + Math.pow(pit.y - y, 2));
-            if (distance < (pit.width*2)) {  // Twice the pit width, adjust as needed
+            if (distance < (pit.width*4)) {  // Twice the pit width, adjust as needed
                 overlapping = true;
                 console.log("overlapping pit! Attempts: " + attempts)
             }
@@ -72,7 +79,10 @@ function spawnPit(totalRequired) {
         if (!overlapping) {
             // Just check we aren't spawning on the player if this is a new level
             if (!isColliding({ x, y, width: pitSize, height: pitSize }, player)) {
-                pits.push(new Pit(x, y, pitSize, pitSize));   // No overlap, so add the pit
+                pits.push(new Pit(x, y, pitSize, pitSize, Pit.DIRECTION_DOWN));   // No overlap, so add the pit
+                pits.push(new Pit(x + pitSize, y, pitSize, pitSize, Pit.DIRECTION_DOWN)); 
+                pits.push(new Pit(x, y + (pitSize * 2), pitSize, pitSize, Pit.DIRECTION_UP)); 
+                pits.push(new Pit(x + pitSize, y + (pitSize * 2), pitSize, pitSize, Pit.DIRECTION_UP)); 
                 return;
             }
         }
