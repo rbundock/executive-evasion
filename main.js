@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 const gridSize = 48;
 const stepSize = 24;
-const pitSize = gridSize * 5;
+const pitSize = gridSize;
 const minSpawnDistanceFromPlayer = gridSize * 6;
 const safeBorderSize = gridSize * 3;
 const spawnDistanceTreasure = gridSize * 6;
@@ -52,8 +52,8 @@ AUDIO
 // Initilise 
 let player;
 let zombies = [];
-let pits = [];      
-let treasures = [];    
+let pits = [];
+let treasures = [];
 
 let keys = {
     ArrowLeft: false,
@@ -63,25 +63,25 @@ let keys = {
 };
 
 let playerImageUp = new Image();
-playerImageUp.src = 'img/roxi_up.png';  
+playerImageUp.src = 'img/roxi/roxi_up.png';
 let playerImageDown = new Image();
-playerImageDown.src = 'img/roxi_down.png';  
+playerImageDown.src = 'img/roxi/roxi_down.png';
 let playerImageLeft = new Image();
-playerImageLeft.src = 'img/roxi_left.png';  
+playerImageLeft.src = 'img/roxi/roxi_left.png';
 let playerImageRight = new Image();
-playerImageRight.src = 'img/roxi_right.png';  
+playerImageRight.src = 'img/roxi/roxi_right.png';
 
 let pitImage = new Image();
-pitImage.src = 'img/meeting_space.png'; 
+pitImage.src = 'img/meeting_space.png';
 
 let zombieImageUp = new Image();
-zombieImageUp.src = 'img/ceo_1_up.png'; 
+zombieImageUp.src = 'img/ceo_1/ceo_1_up.png';
 let zombieImageDown = new Image();
-zombieImageDown.src = 'img/ceo_1_down.png'; 
+zombieImageDown.src = 'img/ceo_1/ceo_1_down.png';
 let zombieImageLeft = new Image();
-zombieImageLeft.src = 'img/ceo_1_left.png';
+zombieImageLeft.src = 'img/ceo_1/ceo_1_left.png';
 let zombieImageRight = new Image();
-zombieImageRight.src = 'img/ceo_1_right.png';
+zombieImageRight.src = 'img/ceo_1/ceo_1_right.png';
 
 let chairGreyUpImage = new Image();
 chairGreyUpImage.src = 'img/chair_grey_up.png';
@@ -103,29 +103,33 @@ treasureImage.src = 'img/watercooler.png';
 // Set the canvas size
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.height/gridSize));
+console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
+console.log("Grid width:" + parseInt(canvas.width / gridSize));
+console.log("Grid height:" + parseInt(canvas.height / gridSize));
 
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     initializeFloorTiles(); // Rebuild tiles
-    console.log("Grid area:" + parseInt(canvas.width/gridSize) * parseInt(canvas.height/gridSize));
+    console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
+    console.log("Grid width:" + parseInt(canvas.width / gridSize));
+    console.log("Grid height:" + parseInt(canvas.height / gridSize));
 });
 
 window.addEventListener("gamepadconnected", (event) => {
     console.log("A gamepad connected:");
     console.log(event.gamepad);
-  });
-  
-  window.addEventListener("gamepaddisconnected", (event) => {
+});
+
+window.addEventListener("gamepaddisconnected", (event) => {
     console.log("A gamepad disconnected:");
     console.log(event.gamepad);
-  });
+});
 
 
 let gamespace = new Gamespace(canvas.width, canvas.height, gridSize);
 
-const Game = (function() {
+const Game = (function () {
 
     // Private variables and methods
     let instance;
@@ -139,7 +143,7 @@ const Game = (function() {
     function gameLoop() {
         // ... (rest of your game loop code)
         canvas.style.cursor = 'none';
-    
+
         // RESTART
         if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
             playSound(restart);
@@ -148,53 +152,46 @@ const Game = (function() {
             console.log("Last level time: " + (Date.now() - levelStartTime) / 1000);
             game.resetLevel();
         }
-    
+
         // DRAW ----
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        
-        // Draw the floor    
-        drawFloorTiles();
-    
-        if (debugMode) {
-            ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
-            ctx.fillStyle = 'green';
-            ctx.fillRect(safeBorderSize/2, safeBorderSize/2, canvas.width - safeBorderSize, canvas.height - safeBorderSize);
-            ctx.globalAlpha = 1;  // Reset
-        }
-    
+
+        gamespace.resetGamespace();
+
+        player.draw();
+
         for (let treasure of treasures) {
-            treasure.draw(ctx);
+            treasure.draw();
         }
-    
+
         for (let pit of pits) {
-            pit.draw(ctx);
+            pit.draw();
         }
-    
+
         for (let zombie of zombies) {
-            zombie.draw(ctx);
+            zombie.draw();
         }
-        
+
         //gamespace.addChair(2, 2, Gamespace.CHAIR_GREY_UP);
         //gamespace.addChair(4, 4, Gamespace.CHAIR_GREY_DOWN);
-        //gamespace.draw(ctx);
-    
-        player.draw(ctx);
+        gamespace.draw(ctx);
+        
         drawScore();
         drawLevel();
         /// 
-    
+
         if (checkCollisions()) {
-    
+
             game.stop();
 
             console.log("Total game time: " + lastGameTime);
             playSound(gameover);
-    
+
             ModalGameOverScreen.loadGameOverScreen();
 
             return;  // End the game loop by not calling requestAnimationFrame
         }
-    
+
         // If the player has closed a pit, then spawn treasure to help them out
         if (pits.length < numPitsPerLevel) {
             if (shouldSpawnTreasure() || debugMode) {
@@ -206,7 +203,7 @@ const Game = (function() {
                 }
             }
         }
-    
+
         requestAnimationFrame(gameLoop);
     }
 
@@ -220,67 +217,25 @@ const Game = (function() {
             }
             return;
         }
-    
+
         // Percentage of Zombies left
         let zombiesLeftPercentage = zombies.length / numStartingZombies;
-    
+
         // Animate
         zombies.forEach(zombie => {
             zombie.moveTowards(player);
         });
-    
+
         //playSound(zombie_step);
-    
+
         console.log("Zombie Delay: " + (minZombieDelay + (maxZombieDelay * zombiesLeftPercentage)))
-    
+
         // Clear any existing timeout before setting a new one
         if (zombieTimeoutId) {
             clearTimeout(zombieTimeoutId);
         }
-        
+
         zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
-    }
-
-    function pollGamepad() {
-    
-        const gamepad = navigator.getGamepads()[0];
-        const AXIS_THRESHOLD = 0.1;
-
-        console.log("Checking gamepad");
-
-        if (gamepad) {
-            
-            console.log(gamepad.axes[0]);
-
-            if (Math.abs(gamepad.axes[0]) < AXIS_THRESHOLD) {
-                flagGamepadHorizontalAccept = true;
-            }
-            if (Math.abs(gamepad.axes[1]) < AXIS_THRESHOLD) {
-                flagGamepadVerticalAccept = true;
-            }
-
-            // For joystick: axes[0] is the horizontal axis, axes[1] is the vertical axis
-            if (gamepad.axes[0] > 0.5 && flagGamepadHorizontalAccept) {
-                player.move('right');
-                flagGamepadHorizontalAccept = false; 
-            } else if (gamepad.axes[0] < -0.5 && flagGamepadHorizontalAccept) {
-                player.move('left');
-                flagGamepadHorizontalAccept = false; 
-            }
-
-            if (gamepad.axes[1] > 0.5 && flagGamepadVerticalAccept) {
-                player.move('down');
-                flagGamepadVerticalAccept = false; 
-            } else if (gamepad.axes[1] < -0.5 && flagGamepadVerticalAccept) {
-                player.move('up');
-                flagGamepadVerticalAccept = false; 
-            }
-        
-        }
-
-        if (gameLoopRunning) {
-            requestAnimationFrame(pollGamepad);
-        }
     }
 
     function handleKeyDown(e) {
@@ -288,11 +243,11 @@ const Game = (function() {
         if (!gameLoopRunning) {
             return;
         }
-    
+
         if (!keys[e.code]) {
             keys[e.code] = true;
-    
-            switch(e.code) {
+
+            switch (e.code) {
                 case 'ArrowLeft':
                     player.move('left');
                     break;
@@ -308,18 +263,18 @@ const Game = (function() {
             }
         }
     }
-    
+
     function handleKeyUp(e) {
         keys[e.code] = false;
     }
 
     function setupKeyListeners() {
         console.log("setupKeyListeners");
-    
+
         // Remove existing listeners first
         window.removeEventListener('keydown', handleKeyDown);
         window.removeEventListener('keyup', handleKeyUp);
-    
+
         // Add the listeners
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
@@ -327,16 +282,16 @@ const Game = (function() {
 
     // Public methods exposed by the singleton
     return {
-        getInstance: function() {
+        getInstance: function () {
             if (!instance) {
                 instance = {
                     lastGameTime: function () {
                         return lastGameTime;
                     },
-                    isGameLoopRunning: function() {
+                    isGameLoopRunning: function () {
                         return gameLoopRunning;
                     },
-                    start: function() {
+                    start: function () {
                         console.log("Game START called");
                         if (!gameLoopRunning) {
                             player = new Player(); // Initialize player with random safe location
@@ -346,26 +301,26 @@ const Game = (function() {
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
 
-                            setupPits(numPitsPerLevel); 
                             setupZombies();
+                            setupPits(zombies.length);
                             setupTreasure();
 
                             setupKeyListeners();
                             animateZombies();
-                            requestAnimationFrame(pollGamepad);
+                            //requestAnimationFrame(pollGamepad);
                             requestAnimationFrame(gameLoop);
                         }
                     },
-                    stop: function() {
+                    stop: function () {
                         console.log("Game STOP called");
                         gameLoopRunning = false;
                         lastGameTime = (Date.now() - levelStartTime) / 1000;
                     },
-                    resetLevel: function() {
+                    resetLevel: function () {
                         console.log("Level RESET called");
-            
-                        setupPits(numPitsPerLevel); 
+
                         setupZombies();
+                        setupPits(zombies.length);
                         setupTreasure();
 
                     }
@@ -381,7 +336,117 @@ const game = Game.getInstance();
 ModalGameOverScreen.initGameOverScreen();
 ModalIntroScreen.loadIntroScreen();
 
+// Start listening for the joystick
+initJoystick();
+
 //ModalGameOverScreen.clearLeaderboardWithConfirmation();
+
+function initJoystick() {
+
+    // Variable to hold the current dropdown index
+    let currentDropdownIndex = 0;
+
+    // List of dropdown elements
+    const dropdowns = document.querySelectorAll('.initial-dropdown');
+
+    window.addEventListener('gamepadconnected', (event) => {
+        console.log('Gamepad connected:', event.gamepad);
+        const gamepadLoop = setInterval(() => {
+            const gamepad = navigator.getGamepads()[event.gamepad.index];
+
+            // Check for joystick and button input
+            // Axis information is usually on gamepad.axes, button info on gamepad.buttons
+            const AXIS_THRESHOLD = 0.1;
+
+            console.log("Checking gamepad");
+
+            if (gamepad) {
+
+                if (Math.abs(gamepad.axes[0]) < AXIS_THRESHOLD) {
+                    flagGamepadHorizontalAccept = true;
+                }
+                if (Math.abs(gamepad.axes[1]) < AXIS_THRESHOLD) {
+                    flagGamepadVerticalAccept = true;
+                }
+
+                // For joystick: axes[0] is the horizontal axis, axes[1] is the vertical axis
+                if (gamepad.axes[0] > 0.5 && flagGamepadHorizontalAccept) {
+
+                    console.log("RIGHT");
+
+                    if (game.isGameLoopRunning()) {
+                        player.move('right');
+                    } else {
+                        // Game screens?
+                    }
+
+                    flagGamepadHorizontalAccept = false;
+                } else if (gamepad.axes[0] < -0.5 && flagGamepadHorizontalAccept) {
+
+                    console.log("LEFT");
+                    if (game.isGameLoopRunning()) {
+                        player.move('left');
+                    } else {
+                        // Game screens?
+                    }
+
+                    flagGamepadHorizontalAccept = false;
+                }
+
+                if (gamepad.axes[1] > 0.5 && flagGamepadVerticalAccept) {
+
+                    console.log("DOWN");
+                    if (game.isGameLoopRunning()) {
+                        player.move('down');
+                    } else {
+                        // Game screens?
+                        const selectedIndex = dropdowns[currentDropdownIndex].selectedIndex;
+                        if (selectedIndex < 25) { // Assuming 26 letters in the dropdown
+                            dropdowns[currentDropdownIndex].selectedIndex = selectedIndex + 1;
+                        }
+                    }
+
+
+                    flagGamepadVerticalAccept = false;
+                } else if (gamepad.axes[1] < -0.5 && flagGamepadVerticalAccept) {
+
+                    console.log("UP");
+                    if (game.isGameLoopRunning()) {
+                        player.move('up');
+                    } else {
+                        // Game screens?
+                        const selectedIndex = dropdowns[currentDropdownIndex].selectedIndex;
+                        if (selectedIndex > 0) {
+                            dropdowns[currentDropdownIndex].selectedIndex = selectedIndex - 1;
+                        }
+                    }
+                    flagGamepadVerticalAccept = false;
+                }
+
+            }
+
+            // Check for fire button (usually button 0)
+            if (gamepad.buttons[0].pressed) {
+
+                console.log("FIRE");
+                if (game.isGameLoopRunning()) {
+                    // Do nothing
+                } else {
+                    // Game screens?
+                    if (currentDropdownIndex < dropdowns.length - 1) {
+                        // Move to next dropdown
+                        currentDropdownIndex++;
+                    } else {
+                        // Submit the form or whatever the final action is
+                        // Your submit function here
+                        ModalGameOverScreen.submitClickHandler();
+                    }
+                }
+            }
+
+        }, 100); // Run every 100ms
+    });
+}
 
 function checkCollisions() {
     for (let pit of pits) {
@@ -390,13 +455,13 @@ function checkCollisions() {
         }
     }
 
-    
+
     for (let zombie of zombies) {
         if (isColliding(zombie, player)) {
             return true;  // Collision with zombie detected
         }
     }
-    
+
 
     let newTreasures = [];
     for (let treasure of treasures) {
@@ -424,14 +489,15 @@ function checkCollisions() {
                     playSound(fallen);
                     pit.incBodies();
 
-                    if (pit.capacity === 0){
+                    if (pit.capacity === 0) {
                         // Remove pit !
-                        pits = pits.filter(p => p.capacity > 0);
+                        //pits = pits.filter(p => p.capacity > 0);
                     }
                     //spawnZombie(player.x, player.y);  // Create another zombie
+                    //gamespace.removeObject(parseInt(zombie.x / gridSize), parseInt(zombie.y / gridSize), zombie);
                     break;
                 }
-            
+
             }
         }
         if (!inPit) {
@@ -439,10 +505,9 @@ function checkCollisions() {
         }
     }
     zombies = newZombies;
-    
+
     return false;  // No collision with player
 }
-
 
 function cyclePressAnyKey() {
     const h1Element = document.querySelector('.cycle-colour');
@@ -456,7 +521,7 @@ function cyclePressAnyKey() {
         return start + t * (end - start);
     }
 
-    setInterval(function() {
+    setInterval(function () {
         const r = Math.round(lerp(startColor.r, endColor.r, t));
         const g = Math.round(lerp(startColor.g, endColor.g, t));
         const b = Math.round(lerp(startColor.b, endColor.b, t));
@@ -469,5 +534,5 @@ function cyclePressAnyKey() {
         if (t >= 1 || t <= 0) {
             step = -step;
         }
-    }, 10); 
+    }, 10);
 }

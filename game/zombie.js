@@ -41,6 +41,7 @@ class Zombie {
         let potentialY = this.y;
 
         this.direction = direction;
+
         switch(direction) {
             case 'left':
                 potentialX = Math.max(0, this.x - numZombieStepSize);
@@ -71,15 +72,32 @@ class Zombie {
                     }
                 }
             } 
+
+            for (let pit of pits) {
+                //if (isColliding(this, pit)) {
+                    // break the deadlock when two zombies are ontop of each other
+                //    alreadyColliding = true;
+                //}
+                // Only avoid full pits. 
+                if (pit.capacity == 0) {
+                    if (isColliding({ x: potentialX, y: potentialY, width: this.width, height: this.height }, pit)) {
+                        collision = true;
+                    }
+                }
+            }
         }
 
         if (!collision || alreadyColliding) {
             this.x = potentialX;
             this.y = potentialY; 
+
         }
     }
 
-    draw(ctx) {
+    draw() {
+        
+        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+        return; 
 
         if (debugMode) {
             ctx.fillStyle = 'green';
@@ -141,7 +159,9 @@ function spawnZombie() {
     }
 
     // Create and return the new Zombie object
-    zombies.push(new Zombie(x, y));
+    let newZ = new Zombie(x, y)
+    zombies.push(newZ);
+    gamespace.addObject(parseInt(x/gridSize), parseInt(y/gridSize), newZ);
 }
 
 function setupZombies() {
@@ -157,7 +177,10 @@ function setupZombies() {
             (player && !isValidZombieSpawnPoint(x, y, minSpawnDistanceFromPlayer))  // Skip the check if player is undefined
         );  
         // Repeat until a position not overlapping a pit and far enough from the player is found
-        zombies.push(new Zombie(x, y));
+        let newZ = new Zombie(x, y)
+        zombies.push(newZ);
+        gamespace.addObject(parseInt(x/gridSize), parseInt(y/gridSize), newZ);
+
     }
 }
 

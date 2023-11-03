@@ -10,8 +10,8 @@ function drawLevel() {
     ctx.fillText('Day: ' + level, 10, 60);  // Positioning it below the score
 
     if (debugMode) {
-        let gridX = parseInt(canvas.width / 20);
-        let gridY = parseInt(canvas.height / 20);
+        let gridX = parseInt(canvas.width / gridSize);
+        let gridY = parseInt(canvas.height / gridSize);
         ctx.fillText('Grid X: ' + gridX + " Y:" + gridY, 10, 90);  // Positioning it below the score
     }
 }
@@ -21,9 +21,9 @@ let tileMatrix;  // This will store the type of each tile
 function initializeFloorTiles() {
     tileMatrix = [];
 
-    for (let x = 0; x < canvas.width; x += gridSize) {
+    for (let y = 0; y < gamespace.height; y++) {
         let tileRow = [];
-        for (let y = 0; y < canvas.height; y += gridSize) {
+        for (let x = 0; x < gamespace.width; x++) {
             // Instead of randomizing during drawing, we randomize during initialization
             if (Math.random() < 0.985) {
                 tileRow.push('regular');
@@ -37,6 +37,7 @@ function initializeFloorTiles() {
     }
 }
 
+/*
 function drawFloorTiles() {
     for (let x = 0; x < tileMatrix.length; x++) {
         for (let y = 0; y < tileMatrix[x].length; y++) {
@@ -55,6 +56,7 @@ function drawFloorTiles() {
         }
     }
 }
+*/
 
 // Utility function to generate random coordinates within given boundaries
 function getRandomCoordinate(canvasSize, borderSize, objectSize) {

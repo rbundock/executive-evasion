@@ -4,10 +4,14 @@ class Pit {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.capacity = Math.floor(Math.random() * (maxPitCapacity - minPitCapacity + 1)) + minPitCapacity;
+        this.occupant = null;
+        this.capacity = 1;  //Math.floor(Math.random() * (maxPitCapacity - minPitCapacity + 1)) + minPitCapacity;
     }
 
-    draw(ctx) {
+    draw() {
+
+        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+        return;
 
         if (!debugMode) {
             ctx.globalAlpha = 0.1;
