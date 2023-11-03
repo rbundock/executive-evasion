@@ -153,33 +153,6 @@ const Game = (function () {
             game.resetLevel();
         }
 
-        // DRAW ----
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-        gamespace.resetGamespace();
-
-        player.draw();
-
-        for (let treasure of treasures) {
-            treasure.draw();
-        }
-
-        for (let pit of pits) {
-            pit.draw();
-        }
-
-        for (let zombie of zombies) {
-            zombie.draw();
-        }
-
-        //gamespace.addChair(2, 2, Gamespace.CHAIR_GREY_UP);
-        //gamespace.addChair(4, 4, Gamespace.CHAIR_GREY_DOWN);
-        gamespace.draw(ctx);
-        
-        drawScore();
-        drawLevel();
-        /// 
-
         if (checkCollisions()) {
 
             game.stop();
@@ -203,6 +176,30 @@ const Game = (function () {
                 }
             }
         }
+
+        // DRAW ----
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        gamespace.resetGamespace();
+
+        player.draw();
+
+        for (let treasure of treasures) {
+            treasure.draw();
+        }
+
+        for (let pit of pits) {
+            pit.draw();
+        }
+
+        for (let zombie of zombies) {
+            zombie.draw();
+        }
+
+        gamespace.draw(ctx);
+        
+        drawScore();
+        drawLevel();
 
         requestAnimationFrame(gameLoop);
     }
