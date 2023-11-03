@@ -26,8 +26,8 @@ let numZombieStepSize = gridSize / 2;
 let maxZombieDelay = 300; // in ms
 let minZombieDelay = 90; // in ms
 
-let minPitCapacity = 2; // You can't have a meeting on your own
-let maxPitCapacity = 4;
+//let minPitCapacity = 2; // You can't have a meeting on your own
+//let maxPitCapacity = 4;
 
 /*
 
@@ -48,6 +48,7 @@ AUDIO
 *//////
 
 
+//canvas.requestFullscreen();
 
 // Initilise 
 let player;
@@ -101,8 +102,14 @@ let treasureImage = new Image();
 treasureImage.src = 'img/watercooler.png';
 
 // Set the canvas size
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = window.innerWidth; // 1920
+canvas.height = window.innerHeight; // 1080
+
+let gridArea = parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize);
+
+// 1 zombies per 10 squares
+numStartingZombies = gridArea / 50;
+
 console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
 console.log("Grid width:" + parseInt(canvas.width / gridSize));
 console.log("Grid height:" + parseInt(canvas.height / gridSize));
@@ -225,14 +232,16 @@ const Game = (function () {
 
         //playSound(zombie_step);
 
-        console.log("Zombie Delay: " + (minZombieDelay + (maxZombieDelay * zombiesLeftPercentage)))
-
         // Clear any existing timeout before setting a new one
         if (zombieTimeoutId) {
             clearTimeout(zombieTimeoutId);
         }
 
-        zombieTimeoutId = setTimeout(animateZombies, minZombieDelay + (maxZombieDelay * zombiesLeftPercentage));
+        // Calc delay
+        let zombieDelay = (minZombieDelay + ((maxZombieDelay - minZombieDelay) * zombiesLeftPercentage));
+        console.log("Zombie Delay: " + zombieDelay);
+
+        zombieTimeoutId = setTimeout(animateZombies, zombieDelay);
     }
 
     function handleKeyDown(e) {
@@ -293,6 +302,7 @@ const Game = (function () {
                         if (!gameLoopRunning) {
                             player = new Player(); // Initialize player with random safe location
                             initializeFloorTiles();
+                            gamespace.objects = [];
                             level = 1;
                             score = 0;
                             gameLoopRunning = true;
@@ -315,6 +325,7 @@ const Game = (function () {
                     },
                     resetLevel: function () {
                         console.log("Level RESET called");
+                        gamespace.objects = [];
 
                         setupZombies();
                         setupPits(zombies.length);
@@ -446,19 +457,18 @@ function initJoystick() {
 }
 
 function checkCollisions() {
+
     for (let pit of pits) {
         if (isColliding(pit, player)) {
-            return true;  // Collision with zombie detected
+            return true;  // Collision with pit detected
         }
     }
-
 
     for (let zombie of zombies) {
         if (isColliding(zombie, player)) {
             return true;  // Collision with zombie detected
         }
     }
-
 
     let newTreasures = [];
     for (let treasure of treasures) {
@@ -488,7 +498,8 @@ function checkCollisions() {
 
                     if (pit.capacity === 0) {
                         // Remove pit !
-                        //pits = pits.filter(p => p.capacity > 0);
+                        gamespace.objects.push(pit);
+                        pits = pits.filter(p => p.capacity > 0);
                     }
                     //spawnZombie(player.x, player.y);  // Create another zombie
                     //gamespace.removeObject(parseInt(zombie.x / gridSize), parseInt(zombie.y / gridSize), zombie);

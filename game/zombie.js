@@ -92,6 +92,8 @@ class Zombie {
             this.y = potentialY; 
 
         }
+
+        console.log("Zombie move");
     }
 
     draw() {

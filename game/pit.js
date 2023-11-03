@@ -12,6 +12,7 @@ class Pit {
         this.direction = direction;
         this.occupant = null;
         this.capacity = 1;  //Math.floor(Math.random() * (maxPitCapacity - minPitCapacity + 1)) + minPitCapacity;
+        this.animateFrame = 0;
     }
 
     draw() {
@@ -72,13 +73,13 @@ function spawnPit(totalRequired) {
             let distance = Math.sqrt(Math.pow(pit.x - x, 2) + Math.pow(pit.y - y, 2));
             if (distance < (pit.width*4)) {  // Twice the pit width, adjust as needed
                 overlapping = true;
-                console.log("overlapping pit! Attempts: " + attempts)
+                console.error("overlapping pit! Attempts: " + attempts);
             }
         }
 
         if (!overlapping) {
             // Just check we aren't spawning on the player if this is a new level
-            if (!isColliding({ x, y, width: pitSize, height: pitSize }, player)) {
+            if (!isColliding({ x, y, width: pitSize * 2, height: pitSize * 3 }, player)) {
                 pits.push(new Pit(x, y, pitSize, pitSize, Pit.DIRECTION_DOWN));   // No overlap, so add the pit
                 pits.push(new Pit(x + pitSize, y, pitSize, pitSize, Pit.DIRECTION_DOWN)); 
                 pits.push(new Pit(x, y + (pitSize * 2), pitSize, pitSize, Pit.DIRECTION_UP)); 
@@ -91,6 +92,36 @@ function spawnPit(totalRequired) {
     }
 }
 
+function animateOut(x, y, direction) {
+    // Base condition to stop the recursion
+    if (y <= 0) return;
+
+    // Clear the previous image to avoid smearing, if necessary.
+    // ctx.clearRect(x, y, width, height); // specify the correct x, y, width, height to clear
+
+    // Draw the images based on the direction
+    switch (direction) {
+        case Pit.DIRECTION_DOWN:
+            ctx.drawImage(chairGreyDownImage, x, y - 48, 48, 96);
+            // Add occupant in the seat
+            // if (this.gamespace[y][x].capacity == 0) {
+            //     ctx.drawImage(zombieImageDown, x, y, 48, 96);
+            // }
+            break;
+        case Pit.DIRECTION_UP:
+            ctx.drawImage(chairGreyUpImage, x, y - 48, 48, 96);
+            // Add occupant in the seat
+            // if (this.gamespace[y][x].capacity == 0) {
+            //     ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 58, 48, 96);
+            // }
+            break;
+    }
+
+    // Use requestAnimationFrame to call animateOut again, with the updated position
+    //requestAnimationFrame(function() {
+    //    animateOut(x, y - 1, direction); // Move the image up by 1 pixel each frame
+    //});
+}
 
 /*
 function isValidPitSpawnPoint(x, y, minDistance) {

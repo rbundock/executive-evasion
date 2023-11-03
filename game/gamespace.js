@@ -18,6 +18,7 @@ class Gamespace {
 
         this.width = this.gamespace[0].length;
         this.height = this.gamespace.length;
+        this.objects = [];
     }
 
     resetGamespace() {
@@ -197,6 +198,56 @@ class Gamespace {
 
             }
         }
+
+        // Draw any objects leaving/joning the gamespace
+        let remainingObjects = []; // This will store objects that shouldn't be removed
+
+        for (let object of this.objects) {
+            // animate
+            switch (true) {
+
+                case (object instanceof Pit):
+                    if (object.y > (0 - object.height)) {
+                        // Calculate the y-offset using a sine function to create acceleration
+                        // The sine function oscillates between -1 and 1, we shift it to oscillate between 0 and 1 instead
+                        let acceleration = Math.sin(object.animateFrame) * 15 + 15;
+
+                        // Update the position of the object using the acceleration
+                        // You can adjust the factor '0.5' to control the speed of the acceleration
+                        object.y -= acceleration;
+
+                        switch (object.direction) {
+
+                            case (Pit.DIRECTION_DOWN):
+                                ctx.drawImage(chairGreyDownImage, object.x, object.y - 48, 48, 96);
+
+                                // Add occupant in the seat
+                                if (object.capacity == 0) {
+                                    ctx.drawImage(zombieImageDown, object.x, object.y - 4, 48, 96);
+                                }
+                                break;
+                            case (Pit.DIRECTION_UP):
+                                // Add occupant in the seat
+                                if (object.capacity == 0) {
+                                    ctx.drawImage(zombieImageDown, object.x, object.y - 58, 48, 96);
+                                }
+
+                                ctx.drawImage(chairGreyUpImage, object.x, object.y - 4, 48, 96);
+                                break;
+                        }
+
+                        // Increment time for the next frame
+                        object.animateFrame += 0.1; // Adjust this value to control the rate of acceleration
+
+                        remainingObjects.push(object); // Keep the object for the next frame
+                    }
+                    break;
+
+            }
+        }
+
+        // Replace the old objects array with the new one, excluding objects that moved past the point
+        this.objects = remainingObjects;
 
         if (debugMode) {
             ctx.globalAlpha = 0.5;  // Set transparency level (0 to 1)
