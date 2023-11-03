@@ -20,7 +20,7 @@ class Treasure {
         this.height = gridSize;
     }
 
-    draw(ctx) {
+    draw() {
 
       gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
       return;
