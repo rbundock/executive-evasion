@@ -24,7 +24,7 @@ class Gamespace {
     resetGamespace() {
         this.gamespace = [];
 
-        for (let y = 0; y < this.width; y++) {
+        for (let y = 0; y < this.height; y++) {
             let gamespaceRow = new Array(this.width).fill(null); // Fill with null or any default value
             this.gamespace.push(gamespaceRow);
         }
@@ -130,16 +130,16 @@ class Gamespace {
 
                                 switch (this.gamespace[y][x].direction) {
                                     case "left":
-                                        ctx.drawImage(zombieImageLeft, x * gridSize, y * gridSize - 48, 48, 96);
+                                        ctx.drawImage(zombie_RECRUITER_Left, x * gridSize, y * gridSize - 48, 48, 96);
                                         break;
                                     case "right":
-                                        ctx.drawImage(zombieImageRight, x * gridSize, y * gridSize - 48, 48, 96);
+                                        ctx.drawImage(zombie_RECRUITER_Right, x * gridSize, y * gridSize - 48, 48, 96);
                                         break;
                                     case "up":
-                                        ctx.drawImage(zombieImageUp, x * gridSize, y * gridSize - 48, 48, 96);
+                                        ctx.drawImage(zombie_RECRUITER_Up, x * gridSize, y * gridSize - 48, 48, 96);
                                         break;
                                     case "down":
-                                        ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 48, 48, 96);
+                                        ctx.drawImage(zombie_RECRUITER_Down, x * gridSize, y * gridSize - 48, 48, 96);
                                         break;
                                 }
                                 break;
@@ -147,7 +147,20 @@ class Gamespace {
                                 ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
                                 break;
                             case Zombie.CFO:
-                                ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
+                                switch (this.gamespace[y][x].direction) {
+                                    case "left":
+                                        ctx.drawImage(zombie_CFO_Left, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "right":
+                                        ctx.drawImage(zombie_CFO_Right, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "up":
+                                        ctx.drawImage(zombie_CFO_Up, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "down":
+                                        ctx.drawImage(zombie_CFO_Down, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                }
                                 break;
                         }
 
@@ -169,15 +182,28 @@ class Gamespace {
 
                                 // Add occupant in the seat
                                 if (this.gamespace[y][x].capacity == 0) {
-                                    ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 48, 48, 96);
+                                    switch (this.gamespace[y][x].occupant.type) {
+                                        case Zombie.RECRUITER:
+                                            ctx.drawImage(zombie_RECRUITER_Down, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
+                                        case Zombie.CFO:
+                                            ctx.drawImage(zombie_CFO_Down, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
+                                    }
                                 }
                                 break;
                             case (Pit.DIRECTION_UP):
                                 // Add occupant in the seat
                                 if (this.gamespace[y][x].capacity == 0) {
-                                    ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 58, 48, 96);
+                                    switch (this.gamespace[y][x].occupant.type) {
+                                        case Zombie.RECRUITER:
+                                            ctx.drawImage(zombie_RECRUITER_Up, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
+                                        case Zombie.CFO:
+                                            ctx.drawImage(zombie_CFO_Up, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
+                                    }
                                 }
-
                                 ctx.drawImage(chairGreyUpImage, x * gridSize, y * gridSize - 48, 48, 96);
                                 break;
                         }
@@ -222,14 +248,24 @@ class Gamespace {
                                 ctx.drawImage(chairGreyDownImage, object.x, object.y - 48, 48, 96);
 
                                 // Add occupant in the seat
-                                if (object.capacity == 0) {
-                                    ctx.drawImage(zombieImageDown, object.x, object.y - 48, 48, 96);
+                                switch (object.occupant.type) {
+                                    case Zombie.RECRUITER:
+                                        ctx.drawImage(zombie_RECRUITER_Down, object.x, object.y - 48, 48, 96);
+                                        break;
+                                    case Zombie.CFO:
+                                        ctx.drawImage(zombie_CFO_Down, object.x, object.y - 48, 48, 96);
+                                        break;
                                 }
                                 break;
                             case (Pit.DIRECTION_UP):
                                 // Add occupant in the seat
-                                if (object.capacity == 0) {
-                                    ctx.drawImage(zombieImageDown, object.x, object.y - 58, 48, 96);
+                                switch (object.occupant.type) {
+                                    case Zombie.RECRUITER:
+                                        ctx.drawImage(zombie_RECRUITER_Up, object.x, object.y - 48, 48, 96);
+                                        break;
+                                    case Zombie.CFO:
+                                        ctx.drawImage(zombie_CFO_Up, object.x, object.y - 48, 48, 96);
+                                        break;
                                 }
 
                                 ctx.drawImage(chairGreyUpImage, object.x, object.y - 48, 48, 96);

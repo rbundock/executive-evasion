@@ -92,6 +92,12 @@ function generateQRCode(data) {
     });
 }
 
+function newImage(src) {
+    var image = new Image();
+    image.src = src;
+    return image;
+}
+
 async function sendScoreAndGenerateQR(score) {
 
     // TODO

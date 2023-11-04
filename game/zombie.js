@@ -4,12 +4,14 @@ class Zombie {
     static CEO = 'CEO';
     static VC_EXEC = 'VC_EXEC';
 
-    constructor(x, y, type = Zombie.RECRUITER) {
+    constructor(x, y) {
+        const types = [Zombie.RECRUITER, Zombie.CFO]; //, Zombie.CEO, Zombie.VC_EXEC];
+
         this.x = x;
         this.y = y;
         this.width = gridSize;
         this.height = gridSize;
-        this.type = Zombie.RECRUITER;
+        this.type = types[Math.floor(Math.random() * types.length)];
         this.direction = "down";
     }
 
@@ -101,36 +103,6 @@ class Zombie {
         gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
         return; 
 
-        if (debugMode) {
-            ctx.fillStyle = 'green';
-            ctx.fillRect(this.x, this.y, gridSize, gridSize);
-        }
-
-        switch(this.type) {
-        case Zombie.RECRUITER:
-            
-            switch (this.direction) {
-                case "left":
-                    ctx.drawImage(zombieImageLeft, this.x, this.y - 48, 48, 96);
-                    break;
-                case "right":
-                    ctx.drawImage(zombieImageRight, this.x, this.y - 48, 48, 96);
-                    break;
-                case "up":
-                    ctx.drawImage(zombieImageUp, this.x, this.y - 48, 48, 96);
-                    break;
-                case "down":
-                    ctx.drawImage(zombieImageDown, this.x, this.y - 48, 48, 96);
-                    break;
-            }
-            break;
-        case Zombie.VC_EXEC:
-            ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
-            break;
-        case Zombie.CFO:
-            ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
-            break;
-        }
     }
 }
 
