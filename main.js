@@ -2,7 +2,6 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 const gridSize = 48;
-const stepSize = 24;
 const pitSize = gridSize;
 const minSpawnDistanceFromPlayer = gridSize * 6;
 const safeBorderSize = gridSize * 3;
@@ -26,8 +25,9 @@ let score = 0;
 
 let numTotalZombies; // reset each level
 let numZombiesFallen; // Number lost each level
-let numPoplulationPerGridArea = 150;
-let numZombieStepSize = gridSize / 2;
+let numPoplulationPerGridArea = 100;
+let numZombieStepSize = gridSize;
+let zombieDelay; 
 let maxZombieDelay = 300; // in ms
 let minZombieDelay = 90; // in ms
 
@@ -239,8 +239,8 @@ const Game = (function () {
         }
 
         // Calc delay
-        let zombieDelay = (minZombieDelay + ((maxZombieDelay - minZombieDelay) * zombiesLeftPercentage));
-        console.log("Zombie Delay: " + zombieDelay);
+        zombieDelay = (minZombieDelay + ((maxZombieDelay - minZombieDelay) * zombiesLeftPercentage));
+        //console.log("Zombie Delay: " + zombieDelay);
 
         zombieTimeoutId = setTimeout(animateZombies, zombieDelay);
     }
@@ -483,6 +483,8 @@ function checkCollisions() {
 
     for (let zombie of zombies) {
         if (isColliding(zombie, player)) {
+            console.log("Player hit Zombie at gx:" + zombie.gridX + " gy:" + zombie.gridY);
+            //debugger;
             return true;  // Collision with zombie detected
         }
     }
@@ -493,6 +495,7 @@ function checkCollisions() {
             // Collision detected, add 10 points to the score
             score += 10;
             spawnPit(1);
+            playSound(power_up);
         } else {
             newTreasures.push(treasure);
         }
