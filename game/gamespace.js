@@ -214,6 +214,9 @@ class Gamespace {
             // animate
             switch (true) {
 
+                // FIX: Add in animation to highlight start position
+                // Beam of light
+
                 case (object instanceof Pit):
                     if (object.y > (0 - object.height)) {
                         // Calculate the y-offset using a sine function to create acceleration

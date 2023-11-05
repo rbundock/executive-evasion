@@ -19,12 +19,12 @@ class Zombie {
         //this.gridY = parseInt(y/gridSize);
     }
 
-    gridX() {
-        return parseInt(this.x/gridSize);
+    get gridX() {
+        return parseInt(this.x / gridSize);
     }
 
-    gridY() {
-        return parseInt(this.y/gridSize);
+    get gridY() {
+        return parseInt(this.y / gridSize);
     }
 
     moveTowards(player) {
@@ -107,7 +107,7 @@ class Zombie {
 
         }
 
-        console.log("Zombie move");
+        //console.log("Zombie move");
     }
 
     draw() {
@@ -125,46 +125,68 @@ function spawnZombie() {
 
     // Randomly choose one of the four edges (top, right, bottom, left)
     const edge = Math.floor(Math.random() * 4);
+    let attempt = true;
 
-    while (attempts < 100) {
+    while (attempts < 100 && attempt) {
+
         switch (edge) {
             case 0: // Top edge
-                x = Math.random() * canvas.width;
+                x = parseInt(Math.random() * gamespace.width);
                 y = 0;
+
+                if (Math.abs(player.gridX - x) > 3) {
+                    attempt = false;
+                }
                 break;
             case 1: // Right edge
-                x = canvas.width;
-                y = Math.random() * canvas.height;
+                x = gamespace.width - 1;
+                y = parseInt(Math.random() * gamespace.height);
+
+
+                if (Math.abs(player.gridY - y) > 3) {
+                    attempt = false;
+                }
                 break;
             case 2: // Bottom edge
-                x = Math.random() * canvas.width;
-                y = canvas.height;
+                x = parseInt(Math.random() * gamespace.width);
+                y = gamespace.height - 1;
+
+                if (Math.abs(player.gridX - x) > 3) {
+                    attempt = false;
+                }
                 break;
             case 3: // Left edge
                 x = 0;
-                y = Math.random() * canvas.height;
+                y = parseInt(Math.random() * gamespace.height);
+
+                if (Math.abs(player.gridY - y) > 3) {
+                    attempt = false;
+                }
                 break;
         }
 
-        // check
-        if (!isColliding({ x: x, y: y, width: this.width, height: this.height }, player, 10)) {
-            // Create and return the new Zombie object
-            let newZ = new Zombie(x, y)
-            zombies.push(newZ);
-            gamespace.addObject(parseInt(x / gridSize), parseInt(y / gridSize), newZ);
-
-            console.log("Spanwed zombie: x: " + parseInt(x / gridSize) + " y:" + parseInt(y / gridSize));
-            return;
-        }
+        //console.log("No spawn");
         attempts++;
     }
+
+    // FIX THIS: Collision with a buffer area
+    //if (Math.abs(player.gridX - x) > 3 && Math.abs(player.gridY - y) > 3) {
+    // Create and return the new Zombie object
+    let newZ = new Zombie(x * gridSize, y * gridSize)
+    zombies.push(newZ);
+    gamespace.addObject(parseInt(x), parseInt(y), newZ);
+
+    console.log("Spanwed zombie: x: " + x + " y:" + y);
+    console.log("Player at: x: " + player.gridX + " y:" + player.gridY);
+    //return;
+    //}
 }
 
-function setupZombies() {
+function setupZombies(numZombiesToSetup) {
     zombies = [];  // Clear any existing zombies
-    numTotalZombies = numStartingZombies + (level * 2);
-    numZombiesFallen = 0;
-    for (let i = 0; i < numStartingZombies + (level * 2); i++) {  // Spawn 6 zombies plus additional zombies based on the level
+    numZombiesFallen = 0; // Reset 
+
+    for (let i = 0; i < numZombiesToSetup; i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
             x = getRandomCoordinate(canvas.width, safeBorderSize, gridSize);

@@ -13,7 +13,7 @@ const numGamepadPollRate = 16.7;    // ms
 const numLeaderBoardPositions = 15;
 
 const debugMode = false;
-const silentMode = false;
+const silentMode = true;
 const setGamespace = true;
 
 //const gamepad = navigator.getGamepads()[0];
@@ -24,12 +24,12 @@ let level = 1; // Start at 1
 let score = 0;
 
 let numTotalZombies; // reset each level
-let numZombiesFallen; // Number lost each level
-let numPoplulationPerGridArea = 100;
+let numZombiesFallen = 0; // Number lost each level
+let numPoplulationPerGridArea = 30;
 let numZombieStepSize = gridSize;
-let zombieDelay; 
-let maxZombieDelay = 300; // in ms
-let minZombieDelay = 90; // in ms
+let zombieDelay;
+let maxZombieDelay = 400; // in ms
+let minZombieDelay = 150; // in ms
 
 //let minPitCapacity = 2; // You can't have a meeting on your own
 //let maxPitCapacity = 4;
@@ -120,7 +120,7 @@ canvas.height = window.innerHeight; // 1080
 let gridArea = parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize);
 
 // 1 zombies per 10 squares
-let numStartingZombies = gridArea / numPoplulationPerGridArea;
+numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea);
 
 console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
 console.log("Grid width:" + parseInt(canvas.width / gridSize));
@@ -223,9 +223,6 @@ const Game = (function () {
             return;
         }
 
-        // Percentage of Zombies left
-        let zombiesLeftPercentage = zombies.length / numStartingZombies;
-
         // Animate
         zombies.forEach(zombie => {
             zombie.moveTowards(player);
@@ -239,7 +236,11 @@ const Game = (function () {
         }
 
         // Calc delay
-        zombieDelay = (minZombieDelay + ((maxZombieDelay - minZombieDelay) * zombiesLeftPercentage));
+        if (numZombiesFallen == 0) {
+            zombieDelay = maxZombieDelay;
+        } else {
+            zombieDelay = parseInt(maxZombieDelay - ((maxZombieDelay - minZombieDelay) * (numZombiesFallen / numTotalZombies)));
+        }
         //console.log("Zombie Delay: " + zombieDelay);
 
         zombieTimeoutId = setTimeout(animateZombies, zombieDelay);
@@ -309,8 +310,8 @@ const Game = (function () {
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
 
-                            setupZombies();
-                            setupPits(zombies.length);
+                            setupZombies(numTotalZombies / 3); // start a 3rd
+                            setupPits(numTotalZombies); // four chairs per pit
                             setupTreasure();
 
                             setupKeyListeners();
@@ -328,8 +329,8 @@ const Game = (function () {
                         console.log("Level RESET called");
                         gamespace.objects = [];
 
-                        setupZombies();
-                        setupPits(zombies.length);
+                        setupZombies(numTotalZombies / 3);
+                        setupPits(numTotalZombies); // four chairs per pit
                         setupTreasure();
 
                     }
@@ -441,7 +442,7 @@ function initJoystick() {
                     return;
                 }
 
-                latchFirePressed =true;
+                latchFirePressed = true;
 
                 console.log("FIRE");
                 if (game.isGameLoopRunning()) {
@@ -484,6 +485,7 @@ function checkCollisions() {
     for (let zombie of zombies) {
         if (isColliding(zombie, player)) {
             console.log("Player hit Zombie at gx:" + zombie.gridX + " gy:" + zombie.gridY);
+            console.log("Player at:" + player.gridX + " gy:" + player.gridY);
             //debugger;
             return true;  // Collision with zombie detected
         }
@@ -524,7 +526,7 @@ function checkCollisions() {
                     }
                     numZombiesFallen++;
                     // Spawn another if we have some left in the day    
-                    if ((zombies.length + numZombiesFallen) < 34) {
+                    if ((zombies.length + numZombiesFallen) < numTotalZombies) {
                         spawnZombie(player.x, player.y);  // Create another zombie
                     }
 

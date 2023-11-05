@@ -25,6 +25,14 @@ class Player {
         gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
     }
     
+    get gridX() {
+        return parseInt(this.x/gridSize);
+    }
+
+    get gridY() {
+        return parseInt(this.y/gridSize);
+    }
+
     move(direction) {
         playSound(step);
         this.direction = direction;

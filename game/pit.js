@@ -41,7 +41,7 @@ class Pit {
     incBodies() {
         // Increase the count of zombies in pit
         this.capacity--;
-        console.log("Pit has: " + this.capacity);
+        //console.log("Pit has: " + this.capacity);
     }
 
 }
