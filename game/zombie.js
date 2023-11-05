@@ -15,6 +15,16 @@ class Zombie {
         this.direction = "down";
         this.path = [];
         this.pathStep = 0;
+        //this.gridX = parseInt(x/gridSize);
+        //this.gridY = parseInt(y/gridSize);
+    }
+
+    gridX() {
+        return parseInt(this.x/gridSize);
+    }
+
+    gridY() {
+        return parseInt(this.y/gridSize);
     }
 
     moveTowards(player) {
@@ -111,33 +121,43 @@ class Zombie {
 function spawnZombie() {
 
     let x, y;
+    let attempts = 0;
 
     // Randomly choose one of the four edges (top, right, bottom, left)
     const edge = Math.floor(Math.random() * 4);
 
-    switch (edge) {
-        case 0: // Top edge
-            x = Math.random() * canvas.width;
-            y = 0;
-            break;
-        case 1: // Right edge
-            x = canvas.width;
-            y = Math.random() * canvas.height;
-            break;
-        case 2: // Bottom edge
-            x = Math.random() * canvas.width;
-            y = canvas.height;
-            break;
-        case 3: // Left edge
-            x = 0;
-            y = Math.random() * canvas.height;
-            break;
-    }
+    while (attempts < 100) {
+        switch (edge) {
+            case 0: // Top edge
+                x = Math.random() * canvas.width;
+                y = 0;
+                break;
+            case 1: // Right edge
+                x = canvas.width;
+                y = Math.random() * canvas.height;
+                break;
+            case 2: // Bottom edge
+                x = Math.random() * canvas.width;
+                y = canvas.height;
+                break;
+            case 3: // Left edge
+                x = 0;
+                y = Math.random() * canvas.height;
+                break;
+        }
 
-    // Create and return the new Zombie object
-    let newZ = new Zombie(x, y)
-    zombies.push(newZ);
-    gamespace.addObject(parseInt(x / gridSize), parseInt(y / gridSize), newZ);
+        // check
+        if (!isColliding({ x: x, y: y, width: this.width, height: this.height }, player, 10)) {
+            // Create and return the new Zombie object
+            let newZ = new Zombie(x, y)
+            zombies.push(newZ);
+            gamespace.addObject(parseInt(x / gridSize), parseInt(y / gridSize), newZ);
+
+            console.log("Spanwed zombie: x: " + parseInt(x / gridSize) + " y:" + parseInt(y / gridSize));
+            return;
+        }
+        attempts++;
+    }
 }
 
 function setupZombies() {

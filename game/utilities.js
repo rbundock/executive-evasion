@@ -9,6 +9,9 @@ function drawLevel() {
     ctx.font = '24px Barlow';
     ctx.fillText('Day: ' + level, 10, 60);  // Positioning it below the score
 
+    ctx.fillText('Zombies: ' + numTotalZombies + '/' + numZombiesFallen, 10, 90);
+    ctx.fillText('Zombies Speed: ' + zombieDelay, 10, 120);
+
     if (debugMode) {
         let gridX = parseInt(canvas.width / gridSize);
         let gridY = parseInt(canvas.height / gridSize);
@@ -46,12 +49,36 @@ function getRandomCoordinate(canvasSize, borderSize, objectSize) {
 }
 
 // Utility function to check collision between two objects
-function isColliding(rect1, rect2) {
+function isColliding(rect1, rect2, distance = 1) {
+    if (distance == 10) {
+        console.log(isCollidingGrid(rect1, rect2, distance));
+    }
+    return isCollidingGrid(rect1, rect2, distance);
     return (
         rect2.x < rect1.x + rect1.width &&
         rect2.x + rect2.width > rect1.x &&
         rect2.y < rect1.y + rect1.height &&
         rect2.y + rect2.height > rect1.y
+    );
+}
+
+function isCollidingGrid(rect1, rect2, distance = 1) {
+
+    r1gridX = parseInt(rect1.x / gridSize);
+    r1gridY = parseInt(rect1.y / gridSize);
+    r2gridX = parseInt(rect2.x / gridSize);
+    r2gridY = parseInt(rect2.y / gridSize);
+    
+    if (distance == 10) {
+        console.log("r1 x: " + r1gridX + " y: " + r1gridY + " distance: " + distance);
+        console.log("r2 x: " + r2gridX + " y: " + r2gridY + " distance: " + distance);  
+    }
+
+    return (
+        r2gridX < r1gridX + distance &&
+        r2gridX + distance > r1gridX &&
+        r2gridY < r1gridY + distance &&
+        r2gridY + distance > r1gridY
     );
 }
 

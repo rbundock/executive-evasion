@@ -19,8 +19,10 @@ class Player {
         this.width = gridSize;
         this.height = gridSize;
         this.direction = "down";
-        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+        //this.gridX = parseInt(x/gridSize);
+        //this.gridY = parseInt(y/gridSize);
 
+        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
     }
     
     move(direction) {
@@ -45,29 +47,8 @@ class Player {
     }
 
     draw() {
-        
-
         gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
-        
         return;
-
-        // Make sure the image is loaded before drawing
-        switch (this.direction) {
-            case "left":
-                ctx.drawImage(playerImageLeft, this.x, this.y - 48, 48, 96);
-                break;
-            case "right":
-                ctx.drawImage(playerImageRight, this.x, this.y - 48, 48, 96);
-                break;
-            case "up":
-                ctx.drawImage(playerImageUp, this.x, this.y - 48, 48, 96);
-                break;
-            case "down":
-                ctx.drawImage(playerImageDown, this.x, this.y - 48, 48, 96);
-                break;
-        }
-
-
     }
 }
 

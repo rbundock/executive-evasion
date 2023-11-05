@@ -13,6 +13,8 @@ class Pit {
         this.occupant = null;
         this.capacity = 1;  //Math.floor(Math.random() * (maxPitCapacity - minPitCapacity + 1)) + minPitCapacity;
         this.animateFrame = 0;
+        //this.gridX = parseInt(x/gridSize);
+        //this.gridY = parseInt(y/gridSize);
     }
 
     draw() {

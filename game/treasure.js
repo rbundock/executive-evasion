@@ -18,6 +18,8 @@ class Treasure {
         this.y = y;
         this.width = gridSize;
         this.height = gridSize;
+        //this.gridX = parseInt(x/gridSize);
+        //this.gridY = parseInt(y/gridSize);
     }
 
     draw() {
