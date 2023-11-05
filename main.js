@@ -375,19 +375,9 @@ function initJoystick() {
                         player.move('right');
                     } else {
                         // Game screens?
-                        // Create a new KeyboardEvent
-                        var event = new KeyboardEvent('keydown', {
-                            key: 'ArrowRight',      // The key property represents the key that was pressed
-                            code: 'ArrowRight',     // The code property represents the physical key on the keyboard
-                            keyCode: 39,         // The keyCode property is deprecated, but you might want to include it for compatibility with older browsers
-                            which: 39,           // The which property is also deprecated, but included for old browser versions
-                            shiftKey: false,     // Indicates if the shift key was pressed
-                            ctrlKey: false,      // Indicates if the ctrl key was pressed
-                            altKey: false        // Indicates if the alt key was pressed
-                        });
-
-                        // Dispatch it to the desired element
-                        document.dispatchEvent(event);
+                        if (document.getElementById('gameOverModal').style.display === 'flex') {
+                            ModalGameOverScreen.handleArrowNavigation("ArrowRight");
+                        }
                     }
 
                     flagGamepadHorizontalAccept = false;
@@ -398,19 +388,9 @@ function initJoystick() {
                         player.move('left');
                     } else {
                         // Game screens?
-                        // Create a new KeyboardEvent
-                        var event = new KeyboardEvent('keydown', {
-                            key: 'ArrowLeft',      // The key property represents the key that was pressed
-                            code: 'ArrowLeft',     // The code property represents the physical key on the keyboard
-                            keyCode: 37,         // The keyCode property is deprecated, but you might want to include it for compatibility with older browsers
-                            which: 37,           // The which property is also deprecated, but included for old browser versions
-                            shiftKey: false,     // Indicates if the shift key was pressed
-                            ctrlKey: false,      // Indicates if the ctrl key was pressed
-                            altKey: false        // Indicates if the alt key was pressed
-                        });
-
-                        // Dispatch it to the desired element
-                        document.dispatchEvent(event);
+                        if (document.getElementById('gameOverModal').style.display === 'flex') {
+                            ModalGameOverScreen.handleArrowNavigation("ArrowLeft");
+                        }
                     }
 
                     flagGamepadHorizontalAccept = false;
@@ -423,21 +403,10 @@ function initJoystick() {
                         player.move('down');
                     } else {
                         // Game screens?
-                        // Create a new KeyboardEvent
-                        var event = new KeyboardEvent('keydown', {
-                            key: 'ArrowUp',      // The key property represents the key that was pressed
-                            code: 'ArrowUp',     // The code property represents the physical key on the keyboard
-                            keyCode: 38,         // The keyCode property is deprecated, but you might want to include it for compatibility with older browsers
-                            which: 38,           // The which property is also deprecated, but included for old browser versions
-                            shiftKey: false,     // Indicates if the shift key was pressed
-                            ctrlKey: false,      // Indicates if the ctrl key was pressed
-                            altKey: false        // Indicates if the alt key was pressed
-                        });
-
-                        // Dispatch it to the desired element
-                        document.dispatchEvent(event);
+                        if (document.getElementById('gameOverModal').style.display === 'flex') {
+                            ModalGameOverScreen.dropdownKeyHandler("ArrowDown");
+                        }
                     }
-
 
                     flagGamepadVerticalAccept = false;
                 } else if (gamepad.axes[1] < -0.5 && flagGamepadVerticalAccept) {
@@ -447,19 +416,9 @@ function initJoystick() {
                         player.move('up');
                     } else {
                         // Game screens?
-                        // Create a new KeyboardEvent
-                        var event = new KeyboardEvent('keydown', {
-                            key: 'ArrowDown',      // The key property represents the key that was pressed
-                            code: 'ArrowDown',     // The code property represents the physical key on the keyboard
-                            keyCode: 40,         // The keyCode property is deprecated, but you might want to include it for compatibility with older browsers
-                            which: 40,           // The which property is also deprecated, but included for old browser versions
-                            shiftKey: false,     // Indicates if the shift key was pressed
-                            ctrlKey: false,      // Indicates if the ctrl key was pressed
-                            altKey: false        // Indicates if the alt key was pressed
-                        });
-
-                        // Dispatch it to the desired element
-                        document.dispatchEvent(event);
+                        if (document.getElementById('gameOverModal').style.display === 'flex') {
+                            ModalGameOverScreen.dropdownKeyHandler("ArrowUp");
+                        }
                     }
                     flagGamepadVerticalAccept = false;
                 }
@@ -468,6 +427,13 @@ function initJoystick() {
 
             // Check for fire button (usually button 0)
             if (gamepad.buttons[0].pressed) {
+
+                // latch
+                if (latchFirePressed) {
+                    return;
+                }
+
+                latchFirePressed =true;
 
                 console.log("FIRE");
                 if (game.isGameLoopRunning()) {
@@ -482,34 +448,17 @@ function initJoystick() {
                         var isInFocus = (document.activeElement.id === 'submitInitials');
                         if (isInFocus) {
                             // Submit the form or whatever the final action is
-                            // Create a new MouseEvent for 'click'
-                            var event = new MouseEvent('click', {
-                                bubbles: true,
-                                cancelable: true,
-                                view: window
-                            });
-
-                            // Dispatch it to the document
-                            window.dispatchEvent(event);
+                            ModalGameOverScreen.submitClickHandler();
                         } else {
                             // Move right
-                            var event = new KeyboardEvent('keydown', {
-                                key: 'ArrowRight',      // The key property represents the key that was pressed
-                                code: 'ArrowRight',     // The code property represents the physical key on the keyboard
-                                keyCode: 39,         // The keyCode property is deprecated, but you might want to include it for compatibility with older browsers
-                                which: 39,           // The which property is also deprecated, but included for old browser versions
-                                shiftKey: false,     // Indicates if the shift key was pressed
-                                ctrlKey: false,      // Indicates if the ctrl key was pressed
-                                altKey: false        // Indicates if the alt key was pressed
-                            });
-
-                            // Dispatch it to the desired element
-                            window.dispatchEvent(event);
+                            ModalGameOverScreen.handleArrowNavigation("ArrowRight");
                         }
 
                     }
 
                 }
+            } else {
+                latchFirePressed = false;
             }
 
         }, numGamepadPollRate); // Run every poll rate

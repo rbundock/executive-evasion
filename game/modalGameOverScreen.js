@@ -1,7 +1,6 @@
 class ModalGameOverScreen {
 
     static initGameOverScreen() {
-
         // Populate dropdowns with the alphabet
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
         document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
@@ -12,26 +11,19 @@ class ModalGameOverScreen {
                 dropdown.appendChild(option);
             });
         });
-
     }
 
-    static dropdownKeyHandler(event) {
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-            event.preventDefault();
-            
-            if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-                const change = (event.key === 'ArrowUp') ? -1 : 1;
-                let newIndex = event.target.selectedIndex + change;
+    static dropdownKeyHandler(eventCode) {
 
-                // Handle looping for up and down arrows
-                if (newIndex < 0) newIndex = event.target.options.length - 1;
-                else if (newIndex >= event.target.options.length) newIndex = 0;
+        const change = (eventCode === 'ArrowUp') ? -1 : 1;
+        let newIndex = document.activeElement.selectedIndex + change;
 
-                event.target.selectedIndex = newIndex;
-            } else {
-                ModalGameOverScreen.handleArrowNavigation(event.target, event);
-            }
-        }
+        // Handle looping for up and down arrows
+        if (newIndex < 0) newIndex = document.activeElement.options.length - 1;
+        else if (newIndex >= document.activeElement.options.length) newIndex = 0;
+
+        document.activeElement.selectedIndex = newIndex;
+
     }
 
     static submitKeyHandler(event) {
@@ -45,24 +37,24 @@ class ModalGameOverScreen {
         const initials = `${document.getElementById('initial1').value}${document.getElementById('initial2').value}${document.getElementById('initial3').value}`;
 
         // remove event listeners to dropdowns
-        document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
-            dropdown.removeEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
-        });
-        document.getElementById('submitInitials').removeEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
-        document.getElementById('submitInitials').removeEventListener('click', ModalGameOverScreen.submitClickHandler);
+        //document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
+        //    dropdown.removeEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
+        ///});
+        //document.getElementById('submitInitials').removeEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
+        //document.getElementById('submitInitials').removeEventListener('click', ModalGameOverScreen.submitClickHandler);
 
         ModalGameOverScreen.saveScore(initials, score);
-        ModalGameOverScreen.unloadGameOverScreen(); 
+        ModalGameOverScreen.unloadGameOverScreen();
     }
 
-    static handleArrowNavigation(element, event) {
+    static handleArrowNavigation(eventCode) {
         const focusableElements = Array.from(document.querySelectorAll('.initial-dropdown, #submitInitials'));
-        const focusableIndex = focusableElements.indexOf(element);
+        const focusableIndex = focusableElements.indexOf(document.activeElement);
         let nextIndex;
 
-        if (event.key === 'ArrowLeft') {
+        if (eventCode === 'ArrowLeft') {
             nextIndex = focusableIndex - 1;
-        } else if (event.key === 'ArrowRight') {
+        } else if (eventCode === 'ArrowRight') {
             nextIndex = focusableIndex + 1;
         }
 
@@ -81,20 +73,50 @@ class ModalGameOverScreen {
 
         canvas.style.cursor = 'auto';
 
-         // Attach event listeners to dropdowns
-         document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
-            dropdown.addEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
-        });
+        window.addEventListener('keydown', ModalGameOverScreen.startKeyListener);
+
+
+        // Attach event listeners to dropdowns
+        // document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
+        //     dropdown.addEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
+        // });
 
         // Attach event listener to the "Submit" button for left and right arrow navigation
-        const submitButton = document.getElementById('submitInitials');
-        submitButton.addEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
-        
+        // const submitButton = document.getElementById('submitInitials');
+        //  submitButton.addEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
+
         // Handle initials submission
-        submitButton.addEventListener('click', ModalGameOverScreen.submitClickHandler);
+        //  submitButton.addEventListener('click', ModalGameOverScreen.submitClickHandler);
 
         ModalGameOverScreen.renderLeaderboard();
         document.getElementById('initial1').focus();
+    }
+
+    static startKeyListener(event) {
+
+        // dispatch
+        switch (event.code) {
+
+            case "ArrowLeft":
+            case "ArrowRight":
+                ModalGameOverScreen.handleArrowNavigation(event.code);
+                break;
+
+            case "ArrowUp":
+            case "ArrowDown":
+                if (document.activeElement.className === "initial-dropdown") {
+                    event.preventDefault()
+                    ModalGameOverScreen.dropdownKeyHandler(event.code);
+                }
+                break;
+
+            case "Space":
+            case "Enter":
+                ModalGameOverScreen.submitClickHandler();
+                break;
+
+        }
+
     }
 
     static getSortedScores() {
@@ -119,19 +141,19 @@ class ModalGameOverScreen {
             localStorage.removeItem('gameScores');
         }
     }
-    
+
     static renderLeaderboard() {
         const leaderboardContainer = document.getElementById('leaderboard');
         const sortedScores = ModalGameOverScreen.getSortedScores();
-    
+
         // Clear previous leaderboard entries
         leaderboardContainer.innerHTML = '';
-    
+
         // Create a header for the leaderboard
         const header = document.createElement('h2');
         header.textContent = 'Leaderboard';
         leaderboardContainer.appendChild(header);
-    
+
         // Display scores
         sortedScores.forEach((entry, index) => {
             const scoreEntry = document.createElement('p');
@@ -157,16 +179,18 @@ class ModalGameOverScreen {
     }
 
     static unloadGameOverScreen() {
- 
+
         // Remove keydown event listener from dropdowns
-        document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
-            dropdown.removeEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
-        });
+        //document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
+        //    dropdown.removeEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
+        //});
 
         // Remove keydown and click event listeners from the submit button
-        const submitButton = document.getElementById('submitInitials');
-        submitButton.removeEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
-        submitButton.removeEventListener('click', ModalGameOverScreen.submitClickHandler);
+        //const submitButton = document.getElementById('submitInitials');
+        //submitButton.removeEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
+        // submitButton.removeEventListener('click', ModalGameOverScreen.submitClickHandler);
+
+        window.removeEventListener('keydown', ModalGameOverScreen.startKeyListener);
 
         // Hide the game over modal
         document.getElementById('gameOverModal').style.display = 'none';
