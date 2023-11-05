@@ -349,7 +349,7 @@ function initJoystick() {
     window.addEventListener('gamepadconnected', (event) => {
         console.log('Gamepad connected:', event.gamepad);
         const gamepadLoop = setInterval(() => {
-            const gamepad = navigator.getGamepads()[event.gamepad.index];
+            const gamepad = navigator.getGamepads()[0];
 
             // Check for joystick and button input
             // Axis information is usually on gamepad.axes, button info on gamepad.buttons
@@ -474,33 +474,41 @@ function initJoystick() {
                     // Do nothing
                 } else {
                     // Game screens?
-                    var isInFocus = (document.activeElement.id === 'submitInitials');
-                    if (isInFocus) {
-                        // Submit the form or whatever the final action is
-                        // Create a new MouseEvent for 'click'
-                        var event = new MouseEvent('click', {
-                            bubbles: true,
-                            cancelable: true,
-                            view: window
-                        });
-                        
-                        // Dispatch it to the document
-                        document.dispatchEvent(event);
-                    } else {
-                        // Move right
-                        var event = new KeyboardEvent('keydown', {
-                            key: 'ArrowRight',      // The key property represents the key that was pressed
-                            code: 'ArrowRight',     // The code property represents the physical key on the keyboard
-                            keyCode: 39,         // The keyCode property is deprecated, but you might want to include it for compatibility with older browsers
-                            which: 39,           // The which property is also deprecated, but included for old browser versions
-                            shiftKey: false,     // Indicates if the shift key was pressed
-                            ctrlKey: false,      // Indicates if the ctrl key was pressed
-                            altKey: false        // Indicates if the alt key was pressed
-                        });
-
-                        // Dispatch it to the desired element
-                        document.dispatchEvent(event);
+                    if (document.getElementById('startModal').style.display === 'flex') {
+                        ModalIntroScreen.startGame();
                     }
+
+                    if (document.getElementById('gameOverModal').style.display === 'flex') {
+                        var isInFocus = (document.activeElement.id === 'submitInitials');
+                        if (isInFocus) {
+                            // Submit the form or whatever the final action is
+                            // Create a new MouseEvent for 'click'
+                            var event = new MouseEvent('click', {
+                                bubbles: true,
+                                cancelable: true,
+                                view: window
+                            });
+
+                            // Dispatch it to the document
+                            window.dispatchEvent(event);
+                        } else {
+                            // Move right
+                            var event = new KeyboardEvent('keydown', {
+                                key: 'ArrowRight',      // The key property represents the key that was pressed
+                                code: 'ArrowRight',     // The code property represents the physical key on the keyboard
+                                keyCode: 39,         // The keyCode property is deprecated, but you might want to include it for compatibility with older browsers
+                                which: 39,           // The which property is also deprecated, but included for old browser versions
+                                shiftKey: false,     // Indicates if the shift key was pressed
+                                ctrlKey: false,      // Indicates if the ctrl key was pressed
+                                altKey: false        // Indicates if the alt key was pressed
+                            });
+
+                            // Dispatch it to the desired element
+                            window.dispatchEvent(event);
+                        }
+
+                    }
+
                 }
             }
 
