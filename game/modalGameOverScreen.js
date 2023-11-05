@@ -139,6 +139,18 @@ class ModalGameOverScreen {
     static clearLeaderboardWithConfirmation() {
         if (window.confirm("Are you sure you want to clear the leaderboard? This action cannot be undone.")) {
             localStorage.removeItem('gameScores');
+
+            // Setup leader board
+            ModalGameOverScreen.saveScore("HCH", 150);
+            ModalGameOverScreen.saveScore("EML", 123);
+            ModalGameOverScreen.saveScore("BDY", 102);
+            ModalGameOverScreen.saveScore("RIC", 87);
+            ModalGameOverScreen.saveScore("NIG", 45);
+            ModalGameOverScreen.saveScore("JBR", 83);
+            ModalGameOverScreen.saveScore("KRL", 12);
+            ModalGameOverScreen.saveScore("JOT", 69);
+            ModalGameOverScreen.saveScore("COH", 34);
+
         }
     }
 

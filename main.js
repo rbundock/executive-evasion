@@ -346,6 +346,8 @@ initJoystick();
 
 function initJoystick() {
 
+    let latchFirePressed = false;
+
     window.addEventListener('gamepadconnected', (event) => {
         console.log('Gamepad connected:', event.gamepad);
         const gamepadLoop = setInterval(() => {
