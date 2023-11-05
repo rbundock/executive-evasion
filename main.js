@@ -16,7 +16,7 @@ const numLeaderBoardPositions = 15;
 const debugMode = false;
 const silentMode = false;
 
-const gamepad = navigator.getGamepads()[0];
+//const gamepad = navigator.getGamepads()[0];
 
 let autoPlayEnabled = false; // This is the flag
 
@@ -128,17 +128,6 @@ window.addEventListener('resize', () => {
     console.log("Grid width:" + parseInt(canvas.width / gridSize));
     console.log("Grid height:" + parseInt(canvas.height / gridSize));
 });
-
-window.addEventListener("gamepadconnected", (event) => {
-    console.log("A gamepad connected:");
-    console.log(event.gamepad);
-});
-
-window.addEventListener("gamepaddisconnected", (event) => {
-    console.log("A gamepad disconnected:");
-    console.log(event.gamepad);
-});
-
 
 let gamespace = new Gamespace(canvas.width, canvas.height, gridSize);
 
@@ -320,7 +309,7 @@ const Game = (function () {
 
                             setupKeyListeners();
                             animateZombies();
-                            //requestAnimationFrame(pollGamepad);
+
                             requestAnimationFrame(gameLoop);
                         }
                     },
@@ -356,7 +345,7 @@ initJoystick();
 //ModalGameOverScreen.clearLeaderboardWithConfirmation();
 
 function initJoystick() {
-    
+
     window.addEventListener('gamepadconnected', (event) => {
         console.log('Gamepad connected:', event.gamepad);
         const gamepadLoop = setInterval(() => {
