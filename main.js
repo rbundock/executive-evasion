@@ -15,6 +15,7 @@ const numLeaderBoardPositions = 15;
 
 const debugMode = false;
 const silentMode = false;
+const setGamespace = true;
 
 //const gamepad = navigator.getGamepads()[0];
 
@@ -107,6 +108,11 @@ tileCraftImage.src = 'img/floor_tile_craft.png';
 let treasureImage = new Image();
 treasureImage.src = 'img/watercooler.png';
 
+if (setGamespace) {
+    window.innerWidth = 1920;
+    window.innerHeight = 1080;
+}
+
 // Set the canvas size
 canvas.width = window.innerWidth; // 1920
 canvas.height = window.innerHeight; // 1080
@@ -174,7 +180,7 @@ const Game = (function () {
                 if (treasures.length === 0) {
                     const newTreasure = new Treasure();
                     treasures.push(newTreasure);
-                    playSound(treasure_spawn);
+                    playSound(treasure_spawn, 0.4);
                 }
             }
         }

@@ -30,16 +30,6 @@ class Gamespace {
         }
     }
 
-    removeObject(gx, gy, object) {
-        //console.log(x + " :x: " + this.width);
-        //console.log(y + " :y: " + this.height);
-        if (gx >= 0 && gx < this.gamespace.length && gy >= 0 && gy < this.gamespace[0].length) {
-            this.gamespace[gy][gx] = null;
-        } else {
-            console.error("Invalid grid position: (" + gx + ", " + gy + ")");
-        }
-    }
-
     addObject(x, y, object) {
         //console.log(x + " :x: " + this.width);
         //console.log(y + " :y: " + this.height);
@@ -47,18 +37,10 @@ class Gamespace {
             if (y >= 0 && y < this.height) {  // Check y against number of rows
                 this.gamespace[y][x] = object;
             } else {
-                console.error("Invalid grid position: (" + x + ", " + y + ")");
+                //console.error("Invalid grid position: (" + x + ", " + y + ")");
             }
         } else {
-            console.error("Invalid grid position: (" + x + ", " + y + ")");
-        }
-    }
-
-    addChair(x, y, type) {
-        if (x >= 0 && x < this.gamespace.length && y >= 0 && y < this.gamespace[0].length) {
-            this.gamespace[x][y] = type;
-        } else {
-            console.error("Invalid grid position: (" + x + ", " + y + ")");
+            //console.error("Invalid grid position: (" + x + ", " + y + ")");
         }
     }
 

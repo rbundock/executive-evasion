@@ -27,8 +27,6 @@ class Player {
         playSound(step);
         this.direction = direction;
 
-        //gamespace.removeObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
-
         switch(direction) {
             case 'left':
                 this.x = Math.max(0, this.x - gridSize);

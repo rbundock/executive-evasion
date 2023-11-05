@@ -37,27 +37,6 @@ function initializeFloorTiles() {
     }
 }
 
-/*
-function drawFloorTiles() {
-    for (let x = 0; x < tileMatrix.length; x++) {
-        for (let y = 0; y < tileMatrix[x].length; y++) {
-            switch (tileMatrix[x][y]) {
-                case 'regular': 
-                    ctx.drawImage(tileImage, x * gridSize, y * gridSize, gridSize, gridSize);
-                    break;
-                case 'HC': 
-                    ctx.drawImage(tileHCImage, x * gridSize, y * gridSize, gridSize, gridSize);
-                    break;
-                case 'craft': 
-                    ctx.drawImage(tileCraftImage, x * gridSize, y * gridSize, gridSize, gridSize);
-                    break;
-            }
-
-        }
-    }
-}
-*/
-
 // Utility function to generate random coordinates within given boundaries
 function getRandomCoordinate(canvasSize, borderSize, objectSize) {
     const min = borderSize/2; 
