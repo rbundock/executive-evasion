@@ -553,9 +553,15 @@ footer .social-icons a:hover {
     padding: 10px 20px;
     font-size: 1.5em;
     background-color: black;
+    outline: none;
     color: white;
     border: none;
     cursor: pointer;
+}
+
+#submitInitials:focus {
+    color: #000; /* Changes the text color slightly on hover */
+    background: #fff; /* Makes the background transparent */
 }
 
 .initial-dropdown {
@@ -574,11 +580,13 @@ footer .social-icons a:hover {
 
 /* Optional: Style for hover state */
 .initial-dropdown:hover {
-    color: #ddd; /* Changes the text color slightly on hover */
+    color: #000; /* Changes the text color slightly on hover */
+    background: #fff; /* Makes the background transparent */
+    outline: none; /* Removes the default browser focus outline */
 }
 
 .initial-dropdown:focus {
-    border: 2px solid white; /* Adds a white border */
     outline: none; /* Removes the default browser focus outline */
-    padding: 3px; /* Optional: Adds a little padding to give space inside the border */
+    color: #000; /* Changes the text color slightly on hover */
+    background: #fff; /* Makes the background transparent */
 }

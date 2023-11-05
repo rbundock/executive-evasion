@@ -23,7 +23,9 @@ let autoPlayEnabled = false; // This is the flag
 let level = 1; // Start at 1
 let score = 0;
 
-let numStartingZombies = 6;
+let numTotalZombies; // reset each level
+let numZombiesFallen; // Number lost each level
+let numPoplulationPerGridArea = 150;
 let numZombieStepSize = gridSize / 2;
 let maxZombieDelay = 300; // in ms
 let minZombieDelay = 90; // in ms
@@ -112,7 +114,7 @@ canvas.height = window.innerHeight; // 1080
 let gridArea = parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize);
 
 // 1 zombies per 10 squares
-numStartingZombies = gridArea / 50;
+let numStartingZombies = gridArea / numPoplulationPerGridArea;
 
 console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
 console.log("Grid width:" + parseInt(canvas.width / gridSize));
@@ -208,7 +210,7 @@ const Game = (function () {
         }
 
         gamespace.draw(ctx);
-        
+
         drawScore();
         drawLevel();
 
@@ -456,7 +458,7 @@ function initJoystick() {
                 }
             }
 
-        }, numGamepadPollRate); // Run every 100ms
+        }, numGamepadPollRate); // Run every poll rate
     });
 }
 
@@ -506,8 +508,12 @@ function checkCollisions() {
                         gamespace.objects.push(pit);
                         pits = pits.filter(p => p.capacity > 0);
                     }
-                    //spawnZombie(player.x, player.y);  // Create another zombie
-                    //gamespace.removeObject(parseInt(zombie.x / gridSize), parseInt(zombie.y / gridSize), zombie);
+                    numZombiesFallen++;
+                    // Spawn another if we have some left in the day    
+                    if ((zombies.length + numZombiesFallen) < 34) {
+                        spawnZombie(player.x, player.y);  // Create another zombie
+                    }
+
                     break;
                 }
 
