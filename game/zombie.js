@@ -165,7 +165,9 @@ function spawnZombie() {
                 break;
         }
 
-        //console.log("No spawn");
+        if (!attempt){ 
+            console.log("No spawn");
+        }
         attempts++;
     }
 

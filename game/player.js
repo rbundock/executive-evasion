@@ -21,8 +21,9 @@ class Player {
         this.direction = "down";
         //this.gridX = parseInt(x/gridSize);
         //this.gridY = parseInt(y/gridSize);
-
-        gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
+        this.animateFrame = 0;
+        
+        //gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
     }
     
     get gridX() {

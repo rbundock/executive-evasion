@@ -216,6 +216,23 @@ class Gamespace {
 
                 // FIX: Add in animation to highlight start position
                 // Beam of light
+                case (object instanceof Player):
+
+                    if (object.animateFrame < 100) {
+                        // Create a beam
+                        ctx.globalAlpha = 0.5;
+                        ctx.fillStyle = '#DAFF02'; // Set the fill color to red
+                        let beamWidth = (gridSize / object.animateFrame) * gridSize;
+                        ctx.fillRect((object.x + (gridSize/2)) - (beamWidth/2), 0, beamWidth, object.y + gridSize);
+                        ctx.globalAlpha = 1;
+
+                        remainingObjects.push(object); // Keep the object for the next frame
+                        object.animateFrame++;
+                    } else {
+                        object.animateFrame = 0; // Reset
+                    }
+
+                    break;
 
                 case (object instanceof Pit):
                     if (object.y > (0 - object.height)) {

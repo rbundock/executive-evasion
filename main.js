@@ -317,6 +317,8 @@ const Game = (function () {
                             setupKeyListeners();
                             animateZombies();
 
+                            gamespace.objects.push(player); // Intro animation 
+
                             requestAnimationFrame(gameLoop);
                         }
                     },
@@ -333,6 +335,7 @@ const Game = (function () {
                         setupPits(numTotalZombies); // four chairs per pit
                         setupTreasure();
 
+                        gamespace.objects.push(player); // Intro animation
                     }
                 };
             }
