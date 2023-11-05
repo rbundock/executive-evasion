@@ -165,7 +165,7 @@ function spawnZombie() {
                 break;
         }
 
-        if (!attempt){ 
+        if (!attempt) {
             console.log("No spawn");
         }
         attempts++;
@@ -187,7 +187,8 @@ function spawnZombie() {
 function setupZombies(numZombiesToSetup) {
     zombies = [];  // Clear any existing zombies
     numZombiesFallen = 0; // Reset 
-
+    stepZombie = 0; // reset
+    stepRepeat = 1000; 
     for (let i = 0; i < numZombiesToSetup; i++) {  // Spawn 6 zombies plus additional zombies based on the level
         let x, y;
         do {
@@ -209,4 +210,38 @@ function setupZombies(numZombiesToSetup) {
 function isValidZombieSpawnPoint(x, y, minDistance) {
     const distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
     return distance >= minDistance;
+}
+
+let stepZombie = 0;
+let stepRepeat = 1000;
+
+function playStepSound() {
+
+    if (game.isGameLoopRunning()) {
+
+        switch (stepZombie) {
+            case 0:
+                playSound(zombie_step_0);
+                break;
+            case 1:
+                playSound(zombie_step_1);
+                break;
+            case 2:
+                playSound(zombie_step_2);
+                break;
+            case 3:
+                playSound(zombie_step_3);
+                break;
+               
+
+        }
+
+        stepZombie++;
+        if (stepZombie > 3) {
+            stepZombie = 0;
+        }
+
+        setTimeout(playStepSound, stepRepeat);
+    }
+
 }

@@ -28,7 +28,7 @@ let numZombiesFallen = 0; // Number lost each level
 let numPoplulationPerGridArea = 30;
 let numZombieStepSize = gridSize;
 let zombieDelay;
-let maxZombieDelay = 400; // in ms
+let maxZombieDelay = 1000; // in ms
 let minZombieDelay = 150; // in ms
 
 //let minPitCapacity = 2; // You can't have a meeting on your own
@@ -228,7 +228,7 @@ const Game = (function () {
             zombie.moveTowards(player);
         });
 
-        //playSound(zombie_step);
+        //playSound(zombie_step_0);
 
         // Clear any existing timeout before setting a new one
         if (zombieTimeoutId) {
@@ -242,6 +242,19 @@ const Game = (function () {
             zombieDelay = parseInt(maxZombieDelay - ((maxZombieDelay - minZombieDelay) * (numZombiesFallen / numTotalZombies)));
         }
         //console.log("Zombie Delay: " + zombieDelay);
+
+        // Calc step repeat
+        switch (true) {
+            case (zombieDelay > 750):
+                stepRepeat = 1000;
+                break;
+            case (zombieDelay > 500 && zombieDelay < 749):
+                stepRepeat = 500;
+                break;
+            case (zombieDelay < 250):
+                stepRepeat = 250;
+                break;
+        }
 
         zombieTimeoutId = setTimeout(animateZombies, zombieDelay);
     }
@@ -316,6 +329,7 @@ const Game = (function () {
 
                             setupKeyListeners();
                             animateZombies();
+                            playStepSound();
 
                             gamespace.objects.push(player); // Intro animation 
 
