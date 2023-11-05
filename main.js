@@ -13,7 +13,7 @@ const numGamepadPollRate = 16.7;    // ms
 const numLeaderBoardPositions = 15;
 
 const debugMode = false;
-const silentMode = true;
+const silentMode = false;
 const setGamespace = true;
 
 //const gamepad = navigator.getGamepads()[0];
