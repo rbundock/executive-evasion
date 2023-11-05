@@ -9,6 +9,8 @@ const safeBorderSize = gridSize * 3;
 const spawnDistanceTreasure = gridSize * 6;
 const numPitsPerLevel = 5;
 
+const numGamepadPollRate = 16.7;    // ms
+
 const numLeaderBoardPositions = 15;
 
 const debugMode = false;
@@ -454,7 +456,7 @@ function initJoystick() {
                 }
             }
 
-        }, 100); // Run every 100ms
+        }, numGamepadPollRate); // Run every 100ms
     });
 }
 
