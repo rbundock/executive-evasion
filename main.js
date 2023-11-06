@@ -341,7 +341,7 @@ const Game = (function () {
                         numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea) + (level * 2);
 
                         setupZombies(numTotalZombies / 3);
-                        setupPits(numTotalZombies); // four chairs per pit
+                        setupPits(numTotalZombies - (level * 3)); // four chairs per pit
                         setupTreasure();
 
                         gamespace.objects.push(player); // Intro animation

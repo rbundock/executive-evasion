@@ -9,7 +9,7 @@ function drawLevel() {
     ctx.font = '24px Barlow';
     ctx.fillText('Day: ' + level, 10, 60);  // Positioning it below the score
 
-    ctx.fillText('Zombies: ' + numTotalZombies + '/' + numZombiesFallen, 10, 90);
+    ctx.fillText('Executives: ' + numTotalZombies + '/' + numZombiesFallen, 10, 90);
 
     if (debugMode) {
         ctx.fillText('Zombies Speed: ' + zombieDelay, 10, 120);
