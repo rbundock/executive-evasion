@@ -113,9 +113,6 @@ canvas.height = window.innerHeight; // 1080
 
 let gridArea = parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize);
 
-// 1 zombies per 10 squares
-numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea);
-
 console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
 console.log("Grid width:" + parseInt(canvas.width / gridSize));
 console.log("Grid height:" + parseInt(canvas.height / gridSize));
@@ -316,6 +313,7 @@ const Game = (function () {
                             score = 0;
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
+                            numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea) + (level * 2);
 
                             setupZombies(numTotalZombies / 3); // start a 3rd
                             setupPits(numTotalZombies); // four chairs per pit
