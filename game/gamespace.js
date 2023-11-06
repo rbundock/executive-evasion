@@ -126,7 +126,20 @@ class Gamespace {
                                 }
                                 break;
                             case Zombie.VC_EXEC:
-                                ctx.drawImage(zombieImage, this.x - 15, this.y - 68, 45, 88);
+                                switch (this.gamespace[y][x].direction) {
+                                    case "left":
+                                        ctx.drawImage(zombie_VC_EXEC_Left, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "right":
+                                        ctx.drawImage(zombie_VC_EXEC_Right, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "up":
+                                        ctx.drawImage(zombie_VC_EXEC_Up, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "down":
+                                        ctx.drawImage(zombie_VC_EXEC_Down, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                }
                                 break;
                             case Zombie.CFO:
                                 switch (this.gamespace[y][x].direction) {
@@ -141,6 +154,22 @@ class Gamespace {
                                         break;
                                     case "down":
                                         ctx.drawImage(zombie_CFO_Down, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                }
+                                break;
+                            case Zombie.CEO:
+                                switch (this.gamespace[y][x].direction) {
+                                    case "left":
+                                        ctx.drawImage(zombie_CEO_Left, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "right":
+                                        ctx.drawImage(zombie_CEO_Right, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "up":
+                                        ctx.drawImage(zombie_CEO_Up, x * gridSize, y * gridSize - 48, 48, 96);
+                                        break;
+                                    case "down":
+                                        ctx.drawImage(zombie_CEO_Down, x * gridSize, y * gridSize - 48, 48, 96);
                                         break;
                                 }
                                 break;
@@ -171,6 +200,12 @@ class Gamespace {
                                         case Zombie.CFO:
                                             ctx.drawImage(zombie_CFO_Down, x * gridSize, y * gridSize - 48, 48, 96);
                                             break;
+                                        case Zombie.CEO:
+                                            ctx.drawImage(zombie_CEO_Down, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
+                                        case Zombie.VC_EXEC:
+                                            ctx.drawImage(zombie_VC_EXEC_Down, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
                                     }
                                 }
                                 break;
@@ -184,14 +219,17 @@ class Gamespace {
                                         case Zombie.CFO:
                                             ctx.drawImage(zombie_CFO_Up, x * gridSize, y * gridSize - 48, 48, 96);
                                             break;
+                                        case Zombie.CEO:
+                                            ctx.drawImage(zombie_CEO_Up, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
+                                        case Zombie.VC_EXEC:
+                                            ctx.drawImage(zombie_VC_EXEC_Up, x * gridSize, y * gridSize - 48, 48, 96);
+                                            break;
                                     }
                                 }
                                 ctx.drawImage(chairGreyUpImage, x * gridSize, y * gridSize - 48, 48, 96);
                                 break;
                         }
-
-
-
                         break;
 
                     case (this.gamespace[y][x] instanceof Treasure):
@@ -223,7 +261,7 @@ class Gamespace {
                         ctx.globalAlpha = 0.5;
                         ctx.fillStyle = '#DAFF02'; // Set the fill color to red
                         let beamWidth = (gridSize / object.animateFrame) * gridSize;
-                        ctx.fillRect((object.x + (gridSize/2)) - (beamWidth/2), 0, beamWidth, object.y + gridSize);
+                        ctx.fillRect((object.x + (gridSize / 2)) - (beamWidth / 2), 0, beamWidth, object.y + gridSize);
                         ctx.globalAlpha = 1;
 
                         remainingObjects.push(object); // Keep the object for the next frame
@@ -257,6 +295,13 @@ class Gamespace {
                                     case Zombie.CFO:
                                         ctx.drawImage(zombie_CFO_Down, object.x, object.y - 48, 48, 96);
                                         break;
+                                    case Zombie.CEO:
+                                        ctx.drawImage(zombie_CEO_Down, object.x, object.y - 48, 48, 96);
+                                        break;
+                                    case Zombie.VC_EXEC:
+                                        ctx.drawImage(zombie_VC_EXEC_Down, object.x, object.y - 48, 48, 96);
+                                        break;
+
                                 }
                                 break;
                             case (Pit.DIRECTION_UP):
@@ -267,6 +312,12 @@ class Gamespace {
                                         break;
                                     case Zombie.CFO:
                                         ctx.drawImage(zombie_CFO_Up, object.x, object.y - 48, 48, 96);
+                                        break;
+                                    case Zombie.CEO:
+                                        ctx.drawImage(zombie_CEO_Up, object.x, object.y - 48, 48, 96);
+                                        break;
+                                    case Zombie.VC_EXEC:
+                                        ctx.drawImage(zombie_VC_EXEC_Up, object.x, object.y - 48, 48, 96);
                                         break;
                                 }
 

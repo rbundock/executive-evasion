@@ -5,7 +5,7 @@ class Zombie {
     static VC_EXEC = 'VC_EXEC';
 
     constructor(x, y) {
-        const types = [Zombie.RECRUITER, Zombie.CFO]; //, Zombie.CEO, Zombie.VC_EXEC];
+        const types = [Zombie.RECRUITER, Zombie.CFO, Zombie.CFO, Zombie.VC_EXEC]; //, Zombie.CEO, Zombie.VC_EXEC];
 
         this.x = x;
         this.y = y;

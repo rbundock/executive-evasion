@@ -90,6 +90,15 @@ let zombie_CFO_Down = newImage('img/characters/nurse_1/nurse_1_down.png');
 let zombie_CFO_Left = newImage('img/characters/nurse_1/nurse_1_left.png');
 let zombie_CFO_Right = newImage('img/characters/nurse_1/nurse_1_right.png');
 
+let zombie_CEO_Up = newImage('img/characters/ceo_2/ceo_2_up.png');
+let zombie_CEO_Down = newImage('img/characters/ceo_2/ceo_2_down.png');
+let zombie_CEO_Left = newImage('img/characters/ceo_2/ceo_2_left.png');
+let zombie_CEO_Right = newImage('img/characters/ceo_2/ceo_2_right.png');
+
+let zombie_VC_EXEC_Up = newImage('img/characters/amelia/amelia_up.png');
+let zombie_VC_EXEC_Down = newImage('img/characters/amelia/amelia_down.png');
+let zombie_VC_EXEC_Left = newImage('img/characters/amelia/amelia_left.png');
+let zombie_VC_EXEC_Right = newImage('img/characters/amelia/amelia_right.png');
 
 let chairGreyUpImage = new Image();
 chairGreyUpImage.src = 'img/chair_grey_up.png';
