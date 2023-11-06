@@ -68,17 +68,10 @@ let keys = {
     ArrowDown: false
 };
 
-let playerImageUp = new Image();
-playerImageUp.src = 'img/characters/roxi/roxi_up.png';
-let playerImageDown = new Image();
-playerImageDown.src = 'img/characters/roxi/roxi_down.png';
-let playerImageLeft = new Image();
-playerImageLeft.src = 'img/characters/roxi/roxi_left.png';
-let playerImageRight = new Image();
-playerImageRight.src = 'img/characters/roxi/roxi_right.png';
-
-//let pitImage = new Image();
-//pitImage.src = 'img/meeting_space.png';
+let playerImageUp = newImage('img/characters/roxi/roxi_up.png');
+let playerImageDown = newImage('img/characters/roxi/roxi_down.png');
+let playerImageLeft = newImage('img/characters/roxi/roxi_left.png');
+let playerImageRight = newImage('img/characters/roxi/roxi_right.png');
 
 let zombie_RECRUITER_Up = newImage('img/characters/ceo_1/ceo_1_up.png');
 let zombie_RECRUITER_Down = newImage('img/characters/ceo_1/ceo_1_down.png');
@@ -100,22 +93,14 @@ let zombie_VC_EXEC_Down = newImage('img/characters/amelia/amelia_down.png');
 let zombie_VC_EXEC_Left = newImage('img/characters/amelia/amelia_left.png');
 let zombie_VC_EXEC_Right = newImage('img/characters/amelia/amelia_right.png');
 
-let chairGreyUpImage = new Image();
-chairGreyUpImage.src = 'img/chair_grey_up.png';
-let chairGreyDownImage = new Image();
-chairGreyDownImage.src = 'img/chair_grey_down.png';
+let chairGreyUpImage = newImage('img/chair_grey_up.png');
+let chairGreyDownImage = newImage('img/chair_grey_down.png');
 
-let tileImage = new Image();
-tileImage.src = 'img/floor_tile.png';
+let tileImage = newImage('img/floor_tile.png');
+let tileHCImage = newImage('img/floor_tile_hc.png');
+let tileCraftImage = newImage('img/floor_tile_craft.png');
 
-let tileHCImage = new Image();
-tileHCImage.src = 'img/floor_tile_hc.png';
-
-let tileCraftImage = new Image();
-tileCraftImage.src = 'img/floor_tile_craft.png';
-
-let treasureImage = new Image();
-treasureImage.src = 'img/watercooler.png';
+let treasureImage = newImage('img/watercooler.png');
 
 if (setGamespace) {
     window.innerWidth = 1920;

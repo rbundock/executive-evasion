@@ -23,16 +23,9 @@ class Treasure {
     }
 
     draw() {
-
       gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
       return;
 
-      if (debugMode) {
-          ctx.fillStyle = 'red';
-          ctx.fillRect(this.x, this.y, gridSize, gridSize);
-      }
-    
-      ctx.drawImage(treasureImage, this.x, this.y - 48, 48, 96);
     }
 }
 
@@ -41,8 +34,6 @@ function setupTreasure() {
 }
 
 function shouldSpawnTreasure() {
-
-    
 
     // Define the bounding box for the player
     const playerMargin = spawnDistanceTreasure;  // Adjust this value as you see fit
