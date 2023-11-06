@@ -42,7 +42,7 @@ function initializeFloorTiles() {
 
 // Utility function to generate random coordinates within given boundaries
 function getRandomCoordinate(canvasSize, borderSize, objectSize) {
-    const min = borderSize/2; 
+    const min = borderSize / 2;
     const max = canvasSize - borderSize - objectSize;
     const coordinate = (parseInt((Math.random() * (max - min) + min) / gridSize)) * gridSize;
     return parseInt(coordinate);
@@ -68,10 +68,10 @@ function isCollidingGrid(rect1, rect2, distance = 1) {
     r1gridY = parseInt(rect1.y / gridSize);
     r2gridX = parseInt(rect2.x / gridSize);
     r2gridY = parseInt(rect2.y / gridSize);
-    
+
     if (distance == 10) {
         console.log("r1 x: " + r1gridX + " y: " + r1gridY + " distance: " + distance);
-        console.log("r2 x: " + r2gridX + " y: " + r2gridY + " distance: " + distance);  
+        console.log("r2 x: " + r2gridX + " y: " + r2gridY + " distance: " + distance);
     }
 
     return (
@@ -102,6 +102,24 @@ function newImage(src) {
     var image = new Image();
     image.src = src;
     return image;
+}
+
+function choosePlayer() {
+
+    switch (Math.floor(Math.random() * (1 + 1))) {
+        case 0:
+            playerImageUp = player1ImageUp;
+            playerImageDown = player1ImageDown;
+            playerImageLeft = player1ImageLeft;
+            playerImageRight = player1ImageRight;
+            break;
+        case 1:
+            playerImageUp = player2ImageUp;
+            playerImageDown = player2ImageDown;
+            playerImageLeft = player2ImageLeft;
+            playerImageRight = player2ImageRight;
+            break;
+    }
 }
 
 async function sendScoreAndGenerateQR(score) {

@@ -14,7 +14,7 @@ const numLeaderBoardPositions = 15;
 
 const debugMode = false;
 const silentMode = false;
-const setGamespace = true;
+const setGamespace = false;
 
 //const gamepad = navigator.getGamepads()[0];
 
@@ -68,10 +68,20 @@ let keys = {
     ArrowDown: false
 };
 
-let playerImageUp = newImage('img/characters/roxi/roxi_up.png');
-let playerImageDown = newImage('img/characters/roxi/roxi_down.png');
-let playerImageLeft = newImage('img/characters/roxi/roxi_left.png');
-let playerImageRight = newImage('img/characters/roxi/roxi_right.png');
+let playerImageUp;
+let playerImageDown;
+let playerImageLeft;
+let playerImageRight;
+
+let player1ImageUp = newImage('img/characters/roxi/roxi_up.png');
+let player1ImageDown = newImage('img/characters/roxi/roxi_down.png');
+let player1ImageLeft = newImage('img/characters/roxi/roxi_left.png');
+let player1ImageRight = newImage('img/characters/roxi/roxi_right.png');
+
+let player2ImageUp = newImage('img/characters/samuel/samuel_up.png');
+let player2ImageDown = newImage('img/characters/samuel/samuel_down.png');
+let player2ImageLeft = newImage('img/characters/samuel/samuel_left.png');
+let player2ImageRight = newImage('img/characters/samuel/samuel_right.png');
 
 let zombie_RECRUITER_Up = newImage('img/characters/ceo_1/ceo_1_up.png');
 let zombie_RECRUITER_Down = newImage('img/characters/ceo_1/ceo_1_down.png');
@@ -314,6 +324,8 @@ const Game = (function () {
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
                             numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea) + (level * 2);
+
+                            choosePlayer();
 
                             setupZombies(numTotalZombies / 3); // start a 3rd
                             setupPits(numTotalZombies); // four chairs per pit
