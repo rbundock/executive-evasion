@@ -21,21 +21,7 @@ class Pit {
 
         gamespace.addObject(parseInt(this.x/gridSize), parseInt(this.y/gridSize), this);
         return;
-
-        if (!debugMode) {
-            ctx.globalAlpha = 0.1;
-            ctx.fillStyle = 'black';
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-            ctx.globalAlpha = 1;
-        }
-
-        ctx.drawImage(pitImage, this.x, this.y, this.width, this.height);
         
-        ctx.fillStyle = 'white';
-        ctx.font = '24px Barlow';
-        ctx.fillText(this.capacity, this.x+15, this.y+25);  // Positioning it below the score
-
-
     }
 
     incBodies() {

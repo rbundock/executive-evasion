@@ -168,7 +168,7 @@ const Game = (function () {
         }
 
         // If the player has closed a pit, then spawn treasure to help them out
-        if (pits.length < numPitsPerLevel) {
+        if (pits.length < zombies.length) {
             if (shouldSpawnTreasure() || debugMode) {
                 // Only spawn one
                 if (treasures.length === 0) {
@@ -338,6 +338,7 @@ const Game = (function () {
                     resetLevel: function () {
                         console.log("Level RESET called");
                         gamespace.objects = [];
+                        numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea) + (level * 2);
 
                         setupZombies(numTotalZombies / 3);
                         setupPits(numTotalZombies); // four chairs per pit

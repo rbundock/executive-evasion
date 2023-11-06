@@ -10,9 +10,9 @@ function drawLevel() {
     ctx.fillText('Day: ' + level, 10, 60);  // Positioning it below the score
 
     ctx.fillText('Zombies: ' + numTotalZombies + '/' + numZombiesFallen, 10, 90);
-    ctx.fillText('Zombies Speed: ' + zombieDelay, 10, 120);
 
     if (debugMode) {
+        ctx.fillText('Zombies Speed: ' + zombieDelay, 10, 120);
         let gridX = parseInt(canvas.width / gridSize);
         let gridY = parseInt(canvas.height / gridSize);
         ctx.fillText('Grid X: ' + gridX + " Y:" + gridY, 10, 90);  // Positioning it below the score
