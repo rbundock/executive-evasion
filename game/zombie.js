@@ -171,7 +171,7 @@ function setupZombies(numZombiesToSetup) {
     numZombiesFallen = 0; // Reset 
     stepZombie = 0; // reset
     stepRepeat = 1000; 
-    for (let i = 0; i < numZombiesToSetup; i++) {  // Spawn 6 zombies plus additional zombies based on the level
+    for (let i = 0; i < numZombiesToSetup; i++) {  // Spawn zombies plus additional zombies based on the level
         let x, y;
         do {
             x = getRandomCoordinate(canvas.width, safeBorderSize, gridSize);
@@ -179,7 +179,7 @@ function setupZombies(numZombiesToSetup) {
 
         } while (
             overlapsPit(x, y, gridSize, gridSize) ||
-            (player && !isValidZombieSpawnPoint(x, y, minSpawnDistanceFromPlayer))  // Skip the check if player is undefined
+            (player && !isValidZombieSpawnPoint(x, y, minSpawnDistanceFromPlayer)) 
         );
         // Repeat until a position not overlapping a pit and far enough from the player is found
         let newZ = new Zombie(x, y)
@@ -215,7 +215,6 @@ function playStepSound() {
                 playSound(zombie_step_3);
                 break;
                
-
         }
 
         stepZombie++;
