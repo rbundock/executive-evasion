@@ -31,17 +31,11 @@ class Gamespace {
     }
 
     addObject(x, y, object) {
-        //console.log(x + " :x: " + this.width);
-        //console.log(y + " :y: " + this.height);
         if (x >= 0 && x < this.width) {  // Check x against number of columns
             if (y >= 0 && y < this.height) {  // Check y against number of rows
                 this.gamespace[y][x] = object;
-            } else {
-                //console.error("Invalid grid position: (" + x + ", " + y + ")");
-            }
-        } else {
-            //console.error("Invalid grid position: (" + x + ", " + y + ")");
-        }
+            } 
+        } 
     }
 
     draw(ctx) {
@@ -97,7 +91,6 @@ class Gamespace {
                                 break;
                         }
 
-                        //ctx.drawImage(chairGreyUpImage, x * gridSize, y * gridSize, gridSize, gridSize*2);
                         break;
 
                     case (this.gamespace[y][x] instanceof Zombie):
@@ -252,14 +245,13 @@ class Gamespace {
             // animate
             switch (true) {
 
-                // FIX: Add in animation to highlight start position
                 // Beam of light
                 case (object instanceof Player):
 
                     if (object.animateFrame < 100) {
                         // Create a beam
                         ctx.globalAlpha = 0.5;
-                        ctx.fillStyle = '#DAFF02'; // Set the fill color to red
+                        ctx.fillStyle = '#DAFF02'; // Set the fill color to lime
                         let beamWidth = (gridSize / object.animateFrame) * gridSize;
                         ctx.fillRect((object.x + (gridSize / 2)) - (beamWidth / 2), 0, beamWidth, object.y + gridSize);
                         ctx.globalAlpha = 1;

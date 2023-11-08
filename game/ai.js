@@ -9,7 +9,6 @@ function playAI(player, zombies, pit) {
         }
 
         if (zombies.length === 0) {
-            console.log("No zombies to run from.");
             return; // No zombies to run from
         }
 
@@ -23,8 +22,6 @@ function playAI(player, zombies, pit) {
                 nearestZombie = zombie;
             }
         }
-
-        console.log(`Nearest zombie is at (${nearestZombie.x}, ${nearestZombie.y}) with distance: ${nearestDistance}`);
 
     // Calculate new interval based on nearestDistance
     let newInterval = Math.max(150, nearestDistance); // Assuming nearestDistance is in a reasonable range
@@ -41,8 +38,6 @@ function playAI(player, zombies, pit) {
     } else {
         direction = dy > 0 ? 'down' : 'up';
     }
-
-        console.log(`Moving player ${direction}`);
         player.move(direction);
     }
 

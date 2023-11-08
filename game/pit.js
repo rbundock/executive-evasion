@@ -27,7 +27,6 @@ class Pit {
     incBodies() {
         // Increase the count of zombies in pit
         this.capacity--;
-        //console.log("Pit has: " + this.capacity);
     }
 
 }
@@ -37,13 +36,8 @@ function setupPits(totalRequired) {
     let tries = 0;
 
     while (pits.length < totalRequired && tries < 100) {
-        //console.log("spawnPit("+pits.length+")");
         spawnPit(1);
         tries++;
-    }
-
-    if (tries === 100 ) {
-        console.log("HALTED over 100 tries");
     }
 }
 
@@ -91,42 +85,19 @@ function animateOut(x, y, direction) {
     // Base condition to stop the recursion
     if (y <= 0) return;
 
-    // Clear the previous image to avoid smearing, if necessary.
-    // ctx.clearRect(x, y, width, height); // specify the correct x, y, width, height to clear
-
     // Draw the images based on the direction
     switch (direction) {
         case Pit.DIRECTION_DOWN:
-            ctx.drawImage(chairGreyDownImage, x, y - 48, 48, 96);
             // Add occupant in the seat
-            // if (this.gamespace[y][x].capacity == 0) {
-            //     ctx.drawImage(zombieImageDown, x, y, 48, 96);
-            // }
+            ctx.drawImage(chairGreyDownImage, x, y - 48, 48, 96);
             break;
         case Pit.DIRECTION_UP:
+            // Add occupant in the seat    
             ctx.drawImage(chairGreyUpImage, x, y - 48, 48, 96);
-            // Add occupant in the seat
-            // if (this.gamespace[y][x].capacity == 0) {
-            //     ctx.drawImage(zombieImageDown, x * gridSize, y * gridSize - 58, 48, 96);
-            // }
             break;
     }
 
-    // Use requestAnimationFrame to call animateOut again, with the updated position
-    //requestAnimationFrame(function() {
-    //    animateOut(x, y - 1, direction); // Move the image up by 1 pixel each frame
-    //});
 }
-
-/*
-function isValidPitSpawnPoint(x, y, minDistance) {
-    //console.log("isValidPitSpawnPoint: " + minDistance);
-    if (!player) return true;  // If player is undefined, skip the check
-    const distance = Math.sqrt(Math.pow(x - player.x, 2) + Math.pow(y - player.y, 2));
-    //console.log("distance: " + distance);
-    return distance >= minDistance;
-}
-*/
 
 function overlapsPit(x, y, width, height) {
     for (let pit of pits) {

@@ -15,8 +15,6 @@ class Zombie {
         this.direction = "down";
         this.path = [];
         this.pathStep = 0;
-        //this.gridX = parseInt(x/gridSize);
-        //this.gridY = parseInt(y/gridSize);
     }
 
     get gridX() {
@@ -74,7 +72,7 @@ class Zombie {
         // If other zombies exist, check we aren't stepping on their toes. 
         let collision = false;
         let alreadyColliding = false;
-        //if (zombies.length> 1) {
+
         for (let otherZombie of zombies) {
             if (otherZombie !== this) {
                 if (isColliding(this, otherZombie)) {
@@ -88,10 +86,6 @@ class Zombie {
         }
 
         for (let pit of pits) {
-            //if (isColliding(this, pit)) {
-            // break the deadlock when two zombies are ontop of each other
-            //    alreadyColliding = true;
-            //}
             // Only avoid full pits. 
             if (pit.capacity == 0) {
                 if (isColliding({ x: potentialX, y: potentialY, width: this.width, height: this.height }, pit)) {
@@ -99,7 +93,6 @@ class Zombie {
                 }
             }
         }
-        //}
 
         if (!collision || alreadyColliding) {
             this.x = potentialX;
@@ -107,7 +100,6 @@ class Zombie {
 
         }
 
-        //console.log("Zombie move");
     }
 
     draw() {
@@ -165,23 +157,13 @@ function spawnZombie() {
                 break;
         }
 
-        if (!attempt) {
-            console.log("No spawn");
-        }
         attempts++;
     }
 
-    // FIX THIS: Collision with a buffer area
-    //if (Math.abs(player.gridX - x) > 3 && Math.abs(player.gridY - y) > 3) {
-    // Create and return the new Zombie object
     let newZ = new Zombie(x * gridSize, y * gridSize)
     zombies.push(newZ);
     gamespace.addObject(parseInt(x), parseInt(y), newZ);
 
-    console.log("Spanwed zombie: x: " + x + " y:" + y);
-    console.log("Player at: x: " + player.gridX + " y:" + player.gridY);
-    //return;
-    //}
 }
 
 function setupZombies(numZombiesToSetup) {

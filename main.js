@@ -13,10 +13,8 @@ const numGamepadPollRate = 16.7;    // ms
 const numLeaderBoardPositions = 15;
 
 const debugMode = false;
-const silentMode = false;
+const silentMode = true;
 const setGamespace = false;
-
-//const gamepad = navigator.getGamepads()[0];
 
 let autoPlayEnabled = false; // This is the flag
 
@@ -31,17 +29,8 @@ let zombieDelay;
 let maxZombieDelay = 1000; // in ms
 let minZombieDelay = 150; // in ms
 
-//let minPitCapacity = 2; // You can't have a meeting on your own
-//let maxPitCapacity = 4;
-
 /*
 
-TODO:
-
-- xSpeed up the zombies by half for every half that are removed
-- xMove to a grid
-- xZombies to step
-- Zombies avoid pits once full
 
 GRAPHICS
 - https://limezu.itch.io/modernoffice
@@ -50,10 +39,7 @@ AUDIO
 - Zombie step
 - https://www.youtube.com/watch?v=oy_usKHTXOY
 
-*//////
-
-
-//canvas.requestFullscreen();
+*/
 
 // Initilise 
 let player;
@@ -123,17 +109,10 @@ canvas.height = window.innerHeight; // 1080
 
 let gridArea = parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize);
 
-console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
-console.log("Grid width:" + parseInt(canvas.width / gridSize));
-console.log("Grid height:" + parseInt(canvas.height / gridSize));
-
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     initializeFloorTiles(); // Rebuild tiles
-    console.log("Grid area:" + parseInt(canvas.width / gridSize) * parseInt(canvas.height / gridSize));
-    console.log("Grid width:" + parseInt(canvas.width / gridSize));
-    console.log("Grid height:" + parseInt(canvas.height / gridSize));
 });
 
 let gamespace = new Gamespace(canvas.width, canvas.height, gridSize);
@@ -150,15 +129,13 @@ const Game = (function () {
     let flagGamepadVerticalAccept = true;
 
     function gameLoop() {
-        // ... (rest of your game loop code)
+        // ... (rest of the game loop code)
         canvas.style.cursor = 'none';
 
         // RESTART
         if (zombies.length === 0 && !debugMode) {  // All zombies have been removed
             playSound(restart);
             level++;  // Increase the level
-            // zombieSpeed = zombieSpeed + 0.1; // Increase Zombie speed
-            console.log("Last level time: " + (Date.now() - levelStartTime) / 1000);
             game.resetLevel();
         }
 
@@ -166,7 +143,6 @@ const Game = (function () {
 
             game.stop();
 
-            console.log("Total game time: " + lastGameTime);
             playSound(gameover);
 
             ModalGameOverScreen.loadGameOverScreen();
@@ -242,7 +218,6 @@ const Game = (function () {
         } else {
             zombieDelay = parseInt(maxZombieDelay - ((maxZombieDelay - minZombieDelay) * (numZombiesFallen / numTotalZombies)));
         }
-        //console.log("Zombie Delay: " + zombieDelay);
 
         // Calc step repeat
         switch (true) {
@@ -291,7 +266,6 @@ const Game = (function () {
     }
 
     function setupKeyListeners() {
-        console.log("setupKeyListeners");
 
         // Remove existing listeners first
         window.removeEventListener('keydown', handleKeyDown);
@@ -314,7 +288,6 @@ const Game = (function () {
                         return gameLoopRunning;
                     },
                     start: function () {
-                        console.log("Game START called");
                         if (!gameLoopRunning) {
                             player = new Player(); // Initialize player with random safe location
                             initializeFloorTiles();
@@ -342,12 +315,10 @@ const Game = (function () {
                         }
                     },
                     stop: function () {
-                        console.log("Game STOP called");
                         gameLoopRunning = false;
                         lastGameTime = (Date.now() - levelStartTime) / 1000;
                     },
                     resetLevel: function () {
-                        console.log("Level RESET called");
                         gamespace.objects = [];
                         numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea) + (level * 2);
 
@@ -379,15 +350,12 @@ function initJoystick() {
     let latchFirePressed = false;
 
     window.addEventListener('gamepadconnected', (event) => {
-        console.log('Gamepad connected:', event.gamepad);
         const gamepadLoop = setInterval(() => {
             const gamepad = navigator.getGamepads()[0];
 
             // Check for joystick and button input
             // Axis information is usually on gamepad.axes, button info on gamepad.buttons
             const AXIS_THRESHOLD = 0.1;
-
-            console.log("Checking gamepad");
 
             if (gamepad) {
 
@@ -401,8 +369,6 @@ function initJoystick() {
                 // For joystick: axes[0] is the horizontal axis, axes[1] is the vertical axis
                 if (gamepad.axes[0] > 0.5 && flagGamepadHorizontalAccept) {
 
-                    console.log("RIGHT");
-
                     if (game.isGameLoopRunning()) {
                         player.move('right');
                     } else {
@@ -415,7 +381,6 @@ function initJoystick() {
                     flagGamepadHorizontalAccept = false;
                 } else if (gamepad.axes[0] < -0.5 && flagGamepadHorizontalAccept) {
 
-                    console.log("LEFT");
                     if (game.isGameLoopRunning()) {
                         player.move('left');
                     } else {
@@ -430,7 +395,6 @@ function initJoystick() {
 
                 if (gamepad.axes[1] > 0.5 && flagGamepadVerticalAccept) {
 
-                    console.log("DOWN");
                     if (game.isGameLoopRunning()) {
                         player.move('down');
                     } else {
@@ -443,7 +407,6 @@ function initJoystick() {
                     flagGamepadVerticalAccept = false;
                 } else if (gamepad.axes[1] < -0.5 && flagGamepadVerticalAccept) {
 
-                    console.log("UP");
                     if (game.isGameLoopRunning()) {
                         player.move('up');
                     } else {
@@ -467,7 +430,6 @@ function initJoystick() {
 
                 latchFirePressed = true;
 
-                console.log("FIRE");
                 if (game.isGameLoopRunning()) {
                     // Do nothing
                 } else {
@@ -507,9 +469,6 @@ function checkCollisions() {
 
     for (let zombie of zombies) {
         if (isColliding(zombie, player)) {
-            console.log("Player hit Zombie at gx:" + zombie.gridX + " gy:" + zombie.gridY);
-            console.log("Player at:" + player.gridX + " gy:" + player.gridY);
-            //debugger;
             return true;  // Collision with zombie detected
         }
     }

@@ -68,25 +68,11 @@ class ModalGameOverScreen {
     static loadGameOverScreen() {
 
         document.getElementById('finalScore').textContent = 'Your Final Score: ' + score;
-        //sendScoreAndGenerateQR(score);
         document.getElementById('gameOverModal').style.display = 'flex';
 
         canvas.style.cursor = 'auto';
 
         window.addEventListener('keydown', ModalGameOverScreen.startKeyListener);
-
-
-        // Attach event listeners to dropdowns
-        // document.querySelectorAll('.initial-dropdown').forEach(dropdown => {
-        //     dropdown.addEventListener('keydown', ModalGameOverScreen.dropdownKeyHandler);
-        // });
-
-        // Attach event listener to the "Submit" button for left and right arrow navigation
-        // const submitButton = document.getElementById('submitInitials');
-        //  submitButton.addEventListener('keydown', ModalGameOverScreen.submitKeyHandler);
-
-        // Handle initials submission
-        //  submitButton.addEventListener('click', ModalGameOverScreen.submitClickHandler);
 
         ModalGameOverScreen.renderLeaderboard();
         document.getElementById('initial1').focus();
@@ -128,10 +114,6 @@ class ModalGameOverScreen {
                 return a.timeTaken - b.timeTaken;  // Secondary sort by time taken (assuming smaller is better)
             }
         });
-
-        for (let score of sortedScores) {
-            console.log(score.score + " in " + score.timeTaken);
-        }
 
         return sortedScores.slice(0, numLeaderBoardPositions);
     }
@@ -183,8 +165,6 @@ class ModalGameOverScreen {
             timeTaken: game.lastGameTime(),
             timestamp: new Date().toISOString()  // Stores the current date and time as a string in ISO format
         };
-
-        console.log("Score saved " + scoreEntry);
 
         scores.push(scoreEntry);
         localStorage.setItem('gameScores', JSON.stringify(scores));
