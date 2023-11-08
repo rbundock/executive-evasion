@@ -9,7 +9,8 @@ class Treasure {
             y = getRandomCoordinate(canvas.height, safeBorderSize, gridSize);  // Random Y position, ensuring treasure fits within canvas
 
             // Check if this position overlaps with any pit or zombie
-            if (!overlapsEntity(x, y, pits, minSpawnDistanceFromPlayer) && !overlapsEntity(x, y, zombies, minSpawnDistanceFromPlayer)) {
+            if (!overlapsEntity(x, y, pits, minSpawnDistanceFromPlayer) && 
+                !overlapsEntity(x, y, zombies, minSpawnDistanceFromPlayer)) {
                 safeSpawn = true;  // Found a safe spawn location
             }
         }

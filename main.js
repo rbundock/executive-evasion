@@ -323,6 +323,7 @@ const Game = (function () {
                             score = 0;
                             gameLoopRunning = true;
                             levelStartTime = Date.now();
+
                             numTotalZombies = parseInt(gridArea / numPoplulationPerGridArea) + (level * 2);
 
                             choosePlayer();

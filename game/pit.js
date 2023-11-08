@@ -65,6 +65,13 @@ function spawnPit(totalRequired) {
             }
         }
 
+        // Check player
+        let distance = Math.sqrt(Math.pow(player.x - x, 2) + Math.pow(player.y - y, 2));
+        if (distance < (player.width * 4)) {  // Twice the pit width, adjust as needed
+            overlapping = true;
+            console.error("overlapping pit! Attempts: " + attempts);
+        }
+
         if (!overlapping) {
             // Just check we aren't spawning on the player if this is a new level
             if (!isColliding({ x, y, width: pitSize * 2, height: pitSize * 3 }, player)) {
