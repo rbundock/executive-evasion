@@ -30,7 +30,7 @@ function initializeFloorTiles() {
             // Instead of randomizing during drawing, we randomize during initialization
             if (Math.random() < 0.985) {
                 tileRow.push('regular');
-            } else if (Math.random() < 0.90) {
+            } else if (Math.random() < 0.60) {
                 tileRow.push('HC');
             } else {
                 tileRow.push('craft');
