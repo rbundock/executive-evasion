@@ -94,7 +94,7 @@ let chairGreyDownImage = newImage('img/chair_grey_down.png');
 
 let tileImage = newImage('img/floor_tile.png');
 let tileHCImage = newImage('img/floor_tile_hc.png');
-let tileCraftImage = newImage('img/floor_tile_craft.png');
+let tileCraftImage = newImage('img/floor_tile_reconnect.png');
 
 let treasureImage = newImage('img/watercooler.png');
 
